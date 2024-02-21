@@ -1,9 +1,7 @@
 import 'dart:convert';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:winhealth_admin_v2/models/user_model.dart';
@@ -231,8 +229,6 @@ class BaseService {
         if (kDebugMode) {
           print(responseMap['errors']);
         }
-        await FirebaseAuth.instance.signOut();
-        await GoogleSignIn().signOut();
         var prefs = await SharedPreferences.getInstance();
         await prefs.clear();
       }

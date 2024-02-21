@@ -4,8 +4,6 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   file_saver
-  firebase_auth
-  firebase_core
   smart_auth
   url_launcher_windows
 )
