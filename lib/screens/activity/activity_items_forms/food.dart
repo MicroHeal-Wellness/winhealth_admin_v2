@@ -129,14 +129,18 @@ class _ActivityItemFoodFormState extends State<ActivityItemFoodForm> {
             .ceilToDouble();
     double weight = double.parse(widget.currentUser!.weight ?? "0.0");
     double height = double.parse(widget.currentUser!.height ?? "0.0");
-    Map<String, String> exerciseListEng = {
-      "never": "Never",
-      "light": "Light",
-      "moderate": "Moderate",
-      "active": "Active",
-      "highlyactive": "Highly Active"
-    };
-    if (widget.currentUser!.gender == "male") {
+    print("gENDER: ${widget.currentUser!.gender}");
+    print("Age: $age");
+    print("weight: $weight");
+    print("height: $height");
+    // Map<String, String> exerciseListEng = {
+    //   "never": "Never",
+    //   "light": "Light",
+    //   "moderate": "Moderate",
+    //   "active": "Active",
+    //   "highlyactive": "Highly Active"
+    // };
+    if (widget.currentUser!.gender!.toLowerCase() == "male") {
       maxKcal = (10 * weight) + (6.25 * height) - (5 * age) + 5;
     } else {
       maxKcal = (10 * weight) + (6.25 * height) - (5 * age) - 161;
@@ -145,19 +149,19 @@ class _ActivityItemFoodFormState extends State<ActivityItemFoodForm> {
         widget.currentUser!.exerciseType == "never") {
       maxKcal = maxKcal * 1.2;
     } else if (widget.currentUser!.exerciseType == "light") {
-      maxKcal = maxKcal * 1.375;
+      maxKcal = maxKcal * 1.25;
     } else if (widget.currentUser!.exerciseType == "moderate") {
-      maxKcal = maxKcal * 1.55;
+      maxKcal = maxKcal * 1.35;
     } else if (widget.currentUser!.exerciseType == "active") {
-      maxKcal = maxKcal * 1.725;
+      maxKcal = maxKcal * 1.5;
     } else if (widget.currentUser!.exerciseType == "highlyactive") {
-      maxKcal = maxKcal * 1.9;
+      maxKcal = maxKcal * 1.65;
     }
+    print(maxKcal);
     setState(() {
-      maxcarbs = double.parse(((maxKcal * 0.45) / 4).toStringAsFixed(2));
-      maxProtien = double.parse(((maxKcal * 0.25) / 4).toStringAsFixed(2));
-      maxFat = double.parse(((maxKcal * 0.3) / 9).toStringAsFixed(2));
-
+      maxcarbs = double.parse(((maxKcal * 0.55) / 4).toStringAsFixed(2));
+      maxProtien = double.parse(((maxKcal * 0.15) / 4).toStringAsFixed(2));
+      maxFat = double.parse(((maxKcal * 0.30) / 9).toStringAsFixed(2));
       maxKcal = double.parse(maxKcal.toStringAsFixed(2));
     });
   }
