@@ -426,7 +426,7 @@ class _PatientInfoCardState extends State<PatientInfoCard> {
                         ),
                       ),
                       Text(
-                        "${widget.patient.pregnant}",
+                        widget.patient.pregnant! ? "Yes" : "No",
                         style: const TextStyle(
                           fontSize: 16,
                         ),
