@@ -16,6 +16,7 @@ class Appointment {
   UserModel? userCreated;
   DateTime? dateCreated;
   String? cancelledBy;
+  String? language;
   bool? completed;
   Slot? slot;
   String? roomId;
@@ -25,6 +26,7 @@ class Appointment {
       this.userCreated,
       this.dateCreated,
       this.cancelledBy,
+      this.language,
       this.completed,
       this.slot,
       this.roomId});
@@ -35,6 +37,7 @@ class Appointment {
         dateCreated: json["date_created"] == null
             ? null
             : DateTime.parse(json["date_created"]),
+        language: json["language"] ?? "English",
         cancelledBy: json["cancelled_by"],
         completed: json["completed"],
         slot: json["slot"] == null ? null : Slot.fromJson(json["slot"]),
@@ -44,6 +47,7 @@ class Appointment {
   Map<String, dynamic> toJson() => {
         "id": id,
         "user_created": userCreated?.toJson(),
+        "language": language,
         "date_created": dateCreated?.toIso8601String(),
         "cancelled_by": cancelledBy,
         "completed": completed,

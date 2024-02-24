@@ -58,6 +58,7 @@ class _AppointmentHomeState extends State<AppointmentHome> {
   }
 
   getAppointments() async {
+    print("getAppointments");
     appointments = await AppointmentService.getAppointmentsByDocterIDandDate(
         widget.currentUser!.id!,
         "${currentDate!.year.toString()}-${currentDate!.month.toString().padLeft(2, "0")}-${currentDate!.day.toString().padLeft(2, "0")}");
@@ -141,6 +142,7 @@ class _AppointmentHomeState extends State<AppointmentHome> {
                                 DateTime.now();
                             setState(() {});
                             await getAppointments();
+                            setState(() {});
                           },
                           child: const CircleAvatar(
                             radius: 24,

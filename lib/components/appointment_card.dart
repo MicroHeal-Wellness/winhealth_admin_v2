@@ -31,6 +31,10 @@ class AppointmentCard extends StatelessWidget {
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           Text(
+            "Prefered Language: ${appointment.language!}",
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          Text(
             "Appointment for: ${appointment.userCreated!.firstName} ${appointment.userCreated!.lastName}",
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
@@ -48,6 +52,7 @@ class AppointmentCard extends StatelessWidget {
             // overflow: TextOverflow.ellipsis,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
+          const SizedBox(height: 8,),
           Row(
             children: [
               // const Text(
