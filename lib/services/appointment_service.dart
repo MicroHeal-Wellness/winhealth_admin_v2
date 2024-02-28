@@ -7,7 +7,7 @@ class AppointmentService {
   static Future<List<Appointment>> getAppointmentsByDocterIDandDate(
       String userID, String date) async {
     final response = await BaseService.makeAuthenticatedRequest(
-      '${BaseService.BASE_URL}/items/appointments?fields=*,slot.*,slot.doctor.*,user_created.*&filter={"slot":{"date":{"_eq":"$date"}}}',
+      '${BaseService.BASE_URL}/items/appointments?fields=*,slot.*,slot.doctor.*,user_created.*&filter={"_and":[{"slot":{"date":{"_eq":"$date"}}},{"cancelled_by":{"_eq":"none"}}]}',
       method: 'GET',
     );
     final List<Appointment> data = [];
