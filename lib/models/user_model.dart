@@ -37,32 +37,35 @@ class UserModel {
   dynamic license;
   bool? appFormAanswered;
   String? exerciseType;
+  List<String>? speaks;
 
-  UserModel(
-      {this.firstName,
-      this.emailAddress,
-      this.lastName,
-      this.phoneNumber,
-      this.email,
-      this.dob,
-      this.gender,
-      this.avatar,
-      this.pregnant,
-      this.diet,
-      this.height,
-      this.access,
-      this.weight,
-      this.authType,
-      this.bio,
-      this.role,
-      this.id,
-      this.status,
-      this.title,
-      this.registrationYear,
-      this.doctorType,
-      this.license,
-      this.appFormAanswered,
-      this.exerciseType});
+  UserModel({
+    this.firstName,
+    this.emailAddress,
+    this.lastName,
+    this.phoneNumber,
+    this.email,
+    this.dob,
+    this.gender,
+    this.avatar,
+    this.pregnant,
+    this.diet,
+    this.height,
+    this.access,
+    this.weight,
+    this.authType,
+    this.bio,
+    this.role,
+    this.id,
+    this.status,
+    this.title,
+    this.registrationYear,
+    this.doctorType,
+    this.license,
+    this.appFormAanswered,
+    this.exerciseType,
+    this.speaks,
+  });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
@@ -94,6 +97,9 @@ class UserModel {
       license: json["license"],
       appFormAanswered: json['app_form_answered'] ?? false,
       exerciseType: json['exercise_type'] ?? "Daily",
+      speaks: json['speaks'] == null
+          ? []
+          : List<String>.from(json["speaks"]!.map((x) => x)),
     );
   }
 
@@ -126,5 +132,6 @@ class UserModel {
         "license": license,
         "app_form_answered": appFormAanswered,
         "exercise_type": exerciseType,
+        "speaks": speaks
       };
 }

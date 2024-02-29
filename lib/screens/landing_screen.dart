@@ -10,6 +10,8 @@ import 'package:winhealth_admin_v2/screens/form_builder/patient_form_builder.dar
 import 'package:winhealth_admin_v2/screens/access_management_home.dart';
 import 'package:winhealth_admin_v2/screens/patient_screens/patient_home.dart';
 import 'package:winhealth_admin_v2/screens/slots_home.dart';
+import 'package:winhealth_admin_v2/screens/task_calander.dart';
+import 'package:winhealth_admin_v2/screens/task_view.dart';
 import 'package:winhealth_admin_v2/screens/user_directory_home.dart';
 import 'package:winhealth_admin_v2/services/base_service.dart';
 
@@ -26,19 +28,9 @@ class _LandingScreenState extends State<LandingScreen> {
   screenSwitcher(int index) {
     switch (index) {
       case -1:
-        return
-            // currentUser!.access != null &&
-            //         currentUser!.access!.permission!.contains("appointment")
-            //     ?
-            const DefaultPage();
-      // : const NotAllowed();
+        return const DefaultPage();
       case 0:
-        return
-            // currentUser!.access != null &&
-            //         currentUser!.access!.permission!.contains("appointment")
-            //     ?
-            AppointmentHome(currentUser: currentUser!);
-      // : const NotAllowed();
+        return AppointmentHome(currentUser: currentUser!);
       case 1:
         return SlotsHome(currentUser: currentUser!);
       case 2:
@@ -51,6 +43,8 @@ class _LandingScreenState extends State<LandingScreen> {
         return UserDirectory(currentUser: currentUser!);
       case 6:
         return const AccessMangementHome();
+      case 7:
+        return TaskView(currentUser: currentUser!);
       default:
         return AppointmentHome(currentUser: currentUser!);
     }
@@ -221,8 +215,17 @@ class _LandingScreenState extends State<LandingScreen> {
                                 title: "Access",
                               )
                             : const SizedBox(),
+                        currentUser!.access != null &&
+                                currentUser!.access!.permission!
+                                    .contains("taskview")
+                            ? const SideBarItem(
+                                pageKey: 7,
+                                iconData: Icons.task_alt,
+                                title: "TaskView",
+                              )
+                            : const SizedBox(),
                         const SideBarItem(
-                          pageKey: 7,
+                          pageKey: 8,
                           isDisabled: true,
                           iconData: Icons.logout,
                           title: "Logout",

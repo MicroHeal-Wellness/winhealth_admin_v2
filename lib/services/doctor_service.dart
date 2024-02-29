@@ -50,4 +50,29 @@ class DoctorService {
       return false;
     }
   }
+
+  static Future<List<UserModel>> getExperts() async {
+    final response = await BaseService.makeUnauthenticatedRequest(
+      '${BaseService.BASE_URL}/users?filter[role][_eq]=12b13cd2-5929-47d2-846c-5b6ad05938d4',
+      method: 'GET',
+    );
+    if (response.statusCode == 200) {
+      final Map responseJson = json.decode(response.body);
+      try {
+        // doctors map
+        List<UserModel> doctors = [];
+
+        for (var element in responseJson.entries) {
+          element.value.forEach((e) {
+            doctors.add(UserModel.fromJson(e));
+          });
+        }
+        return doctors;
+      } catch (error) {
+        return [];
+      }
+    } else {
+      return [];
+    }
+  }
 }
