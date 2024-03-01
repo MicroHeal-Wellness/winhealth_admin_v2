@@ -1,5 +1,8 @@
+// ignore_for_file: avoid_web_libraries_in_flutter
+
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/material.dart';
+import 'dart:html' as html;
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:winhealth_admin_v2/models/notes.dart';
 import 'package:winhealth_admin_v2/models/report.dart';
@@ -44,11 +47,9 @@ class ReportsCard extends StatelessWidget {
                     const Spacer(),
                     MaterialButton(
                       onPressed: () async {
-                        await FileSaver.instance.saveFile(
-                            name: report.file!.filenameDownload!,
-                            link: LinkDetails(
-                                link:
-                                    "${BaseService.BASE_URL}/assets/${report.file!.id!}"));
+                        html.window.open(
+                            "${BaseService.BASE_URL}/assets/${report.file!.id!}",
+                            'new tab');
                       },
                       color: primaryColor,
                       shape: RoundedRectangleBorder(
