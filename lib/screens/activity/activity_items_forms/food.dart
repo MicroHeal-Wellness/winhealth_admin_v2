@@ -129,17 +129,7 @@ class _ActivityItemFoodFormState extends State<ActivityItemFoodForm> {
             .ceilToDouble();
     double weight = double.parse(widget.currentUser!.weight ?? "0.0");
     double height = double.parse(widget.currentUser!.height ?? "0.0");
-    print("gENDER: ${widget.currentUser!.gender}");
-    print("Age: $age");
-    print("weight: $weight");
-    print("height: $height");
-    // Map<String, String> exerciseListEng = {
-    //   "never": "Never",
-    //   "light": "Light",
-    //   "moderate": "Moderate",
-    //   "active": "Active",
-    //   "highlyactive": "Highly Active"
-    // };
+
     if (widget.currentUser!.gender!.toLowerCase() == "male") {
       maxKcal = (10 * weight) + (6.25 * height) - (5 * age) + 5;
     } else {
@@ -157,7 +147,6 @@ class _ActivityItemFoodFormState extends State<ActivityItemFoodForm> {
     } else if (widget.currentUser!.exerciseType == "highlyactive") {
       maxKcal = maxKcal * 1.65;
     }
-    print(maxKcal);
     setState(() {
       maxcarbs = double.parse(((maxKcal * 0.55) / 4).toStringAsFixed(2));
       maxProtien = double.parse(((maxKcal * 0.15) / 4).toStringAsFixed(2));

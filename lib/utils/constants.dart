@@ -22,10 +22,25 @@ const accessSpecifiers = {
   "user_directory": "User Directory"
 };
 
+langCode(val) {
+  switch (val) {
+    case "english":
+      return "English";
+    case "telugu":
+      return "తెలుగు";
+    case "hindi":
+      return "हिंदी";
+    case "urdu":
+      return "اردو";
+    default:
+      return val;
+  }
+}
+
 String getDoctorAvatarPath(String gender) {
   return gender == 'm'
-      ? 'assets/images/missing-avatar-male.jpeg'
-      : 'assets/images/missing-avatar-female.jpeg';
+      ? 'images/missing-avatar-male.jpeg'
+      : 'images/missing-avatar-female.jpeg';
 }
 
 jobLabel(String val) {

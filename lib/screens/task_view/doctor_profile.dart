@@ -15,7 +15,8 @@ import 'package:winhealth_admin_v2/utils/date_time_utils.dart';
 
 class DoctorProfile extends StatefulWidget {
   final UserModel doctor;
-  const DoctorProfile({super.key, required this.doctor});
+  final UserModel patient;
+  const DoctorProfile({super.key, required this.doctor, required this.patient});
 
   @override
   State<DoctorProfile> createState() => _DoctorProfileState();
@@ -62,7 +63,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
     });
     // String date = DateTimeUtils.apiFormattedDate('2023-05-27');
     String date = DateTimeUtils.apiFormattedDate(DateTimeUtils.getUtcDateNow());
-    currentUser = await BaseService.getCurrentUser();
+    currentUser = widget.patient;
     slots =
         await SlotService.getSlotsByDocterID(widget.doctor.id.toString(), date);
     setState(() {
@@ -129,9 +130,10 @@ class _DoctorProfileState extends State<DoctorProfile> {
     });
     final Map<String, dynamic> payload = {
       "slot": {"id": selectedSlot?.id, "status": "booked"},
+      "patient": currentUser!.id
     };
-    List allowed = await AppointmentService.getAppointmentsByDocterIDandDate(
-      widget.doctor.id!,
+    List allowed = await AppointmentService.getAppointmentsByDateAndPatientId(
+      widget.patient.id!,
       selectedDate!,
     );
     if (allowed.isEmpty) {
@@ -225,7 +227,10 @@ class _DoctorProfileState extends State<DoctorProfile> {
                   today.month,
                   today.day,
                   int.parse(
-                    slot.startTime!.split(":").first,
+                    slot.startTime!.split(":")[0],
+                  ),
+                  int.parse(
+                    slot.startTime!.split(":")[1],
                   ),
                 ).isAfter(today),
               )

@@ -103,7 +103,7 @@ class _DietHomeState extends State<DietHome> {
     double weight = double.parse(widget.patient.weight ?? "0.0");
     double height = double.parse(widget.patient.height ?? "0.0");
 
-    if (widget.patient.gender == "male") {
+    if (widget.patient.gender!.toLowerCase() == "male") {
       maxKcal = (10 * weight) + (6.25 * height) - (5 * age) + 5;
     } else {
       maxKcal = (10 * weight) + (6.25 * height) - (5 * age) - 161;
@@ -112,19 +112,18 @@ class _DietHomeState extends State<DietHome> {
         widget.patient.exerciseType == "never") {
       maxKcal = maxKcal * 1.2;
     } else if (widget.patient.exerciseType == "light") {
-      maxKcal = maxKcal * 1.375;
+      maxKcal = maxKcal * 1.25;
     } else if (widget.patient.exerciseType == "moderate") {
-      maxKcal = maxKcal * 1.55;
+      maxKcal = maxKcal * 1.35;
     } else if (widget.patient.exerciseType == "active") {
-      maxKcal = maxKcal * 1.725;
+      maxKcal = maxKcal * 1.5;
     } else if (widget.patient.exerciseType == "highlyactive") {
-      maxKcal = maxKcal * 1.9;
+      maxKcal = maxKcal * 1.65;
     }
     setState(() {
-      maxcarbs = double.parse(((maxKcal / 4) * 0.45).toStringAsFixed(2));
-      maxProtien = double.parse(((maxKcal / 4) * 0.25).toStringAsFixed(2));
-      maxFat = double.parse(((maxKcal / 9) * 0.3).toStringAsFixed(2));
-
+      maxcarbs = double.parse(((maxKcal * 0.55) / 4).toStringAsFixed(2));
+      maxProtien = double.parse(((maxKcal * 0.15) / 4).toStringAsFixed(2));
+      maxFat = double.parse(((maxKcal * 0.30) / 9).toStringAsFixed(2));
       maxKcal = double.parse(maxKcal.toStringAsFixed(2));
     });
   }

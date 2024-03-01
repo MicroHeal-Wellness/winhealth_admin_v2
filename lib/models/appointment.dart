@@ -20,10 +20,12 @@ class Appointment {
   bool? completed;
   Slot? slot;
   String? roomId;
+  UserModel? patient;
 
   Appointment(
       {this.id,
       this.userCreated,
+      this.patient,
       this.dateCreated,
       this.cancelledBy,
       this.language,
@@ -34,6 +36,7 @@ class Appointment {
   factory Appointment.fromJson(Map<String, dynamic> json) => Appointment(
         id: json["id"],
         userCreated: UserModel.fromJson(json["user_created"]),
+        patient: UserModel.fromJson(json["patient"]),
         dateCreated: json["date_created"] == null
             ? null
             : DateTime.parse(json["date_created"]),
@@ -47,6 +50,7 @@ class Appointment {
   Map<String, dynamic> toJson() => {
         "id": id,
         "user_created": userCreated?.toJson(),
+        "patient": patient?.toJson(),
         "language": language,
         "date_created": dateCreated?.toIso8601String(),
         "cancelled_by": cancelledBy,

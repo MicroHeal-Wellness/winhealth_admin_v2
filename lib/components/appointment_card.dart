@@ -35,7 +35,7 @@ class AppointmentCard extends StatelessWidget {
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           Text(
-            "Appointment for: ${appointment.userCreated!.firstName} ${appointment.userCreated!.lastName}",
+            "Appointment for: ${appointment.patient!.firstName} ${appointment.patient!.lastName}",
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           Text(

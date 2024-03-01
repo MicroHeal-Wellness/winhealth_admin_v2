@@ -1,13 +1,15 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:winhealth_admin_v2/models/appointment.dart' as AppModel;
 import 'package:winhealth_admin_v2/models/subscription.dart';
 import 'package:winhealth_admin_v2/models/task_list.dart';
 import 'package:winhealth_admin_v2/models/user_model.dart';
-import 'package:winhealth_admin_v2/screens/doctor_profile.dart';
+import 'package:winhealth_admin_v2/screens/task_view/doctor_profile.dart';
 import 'package:winhealth_admin_v2/screens/landing_screen.dart';
+import 'package:winhealth_admin_v2/screens/task_view/doctor_selection_page.dart';
 import 'package:winhealth_admin_v2/services/appointment_service.dart';
 import 'package:winhealth_admin_v2/services/base_service.dart';
 import 'package:winhealth_admin_v2/services/doctor_service.dart';
@@ -15,9 +17,8 @@ import 'package:winhealth_admin_v2/services/subscription_service.dart';
 import 'package:winhealth_admin_v2/services/task_service.dart';
 
 class TaskCalander extends StatefulWidget {
-  const TaskCalander({
-    super.key,
-  });
+  final UserModel? patient;
+  const TaskCalander({super.key, required this.patient});
 
   @override
   State<TaskCalander> createState() => _TaskCalanderState();
@@ -44,7 +45,7 @@ class _TaskCalanderState extends State<TaskCalander> {
     setState(() {
       loading = true;
     });
-    UserModel? currentUser = await BaseService.getCurrentUser();
+    UserModel? currentUser = widget.patient;
     if (currentUser != null) {
       activeSubscriptions =
           await SubscriptionService.fetchActiveSubscriptionByUserId(
@@ -54,8 +55,11 @@ class _TaskCalanderState extends State<TaskCalander> {
             await TaskService.fetchTasks(activeSubscriptions.first.plan!.id!);
         preTasks = await TaskService.fetchPreTasks(
             activeSubscriptions.first.plan!.id!);
-        patientAppointments = await AppointmentService.getAppointments();
+        patientAppointments =
+            await AppointmentService.getAppointmentsByPatientId(
+                widget.patient!.id!);
       } else {
+        Fluttertoast.showToast(msg: "Not yet Subscribed");
         Navigator.of(context).pop();
       }
     }
@@ -147,7 +151,7 @@ class _TaskCalanderState extends State<TaskCalander> {
       if (dateTime == today) {
         return "true";
       } else if (dateTime.isAfter(today)) {
-        return "false";
+        return "true";
       } else {
         return "true";
       }
@@ -164,7 +168,7 @@ class _TaskCalanderState extends State<TaskCalander> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Appointment Calander"),
+        title: Text("${widget.patient!.firstName!}'s Calander"),
         leading: const BackButton(),
         centerTitle: true,
       ),
@@ -191,39 +195,26 @@ class _TaskCalanderState extends State<TaskCalander> {
                         List<UserModel> doctors =
                             await DoctorService.getExperts();
                         if (doctors.isNotEmpty) {
-                          int doctor = doctors.indexWhere(
-                            (element) => selected.appointments!.first!.subject
-                                .toLowerCase()
-                                .contains(element.doctorType!.toLowerCase()),
-                          );
-                          if (doctor != -1) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DoctorProfile(
-                                  doctor: doctors[doctor],
-                                ),
+                          List<UserModel> filteredDoctors = doctors
+                              .where(
+                                (element) => selected
+                                    .appointments!.first!.subject
+                                    .toLowerCase()
+                                    .contains(
+                                        element.doctorType!.toLowerCase()),
+                              )
+                              .toList();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DoctorSelectionPage(
+                                doctors: filteredDoctors,
+                                patient: widget.patient!,
                               ),
-                            );
-                          } else {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => const LandingScreen(
-                            //       index: 1,
-                            //     ),
-                            //   ),
-                            // );
-                          }
+                            ),
+                          );
                         } else {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => const LandingScreen(
-                          //       index: 1,
-                          //     ),
-                          //   ),
-                          // );
+                          Fluttertoast.showToast(msg: "No Doctors Available");
                         }
                       }
                     }

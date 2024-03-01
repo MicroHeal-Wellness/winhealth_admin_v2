@@ -5,6 +5,7 @@ import 'package:winhealth_admin_v2/models/appointment.dart';
 import 'package:winhealth_admin_v2/models/user_model.dart';
 import 'package:winhealth_admin_v2/services/appointment_service.dart';
 import 'package:winhealth_admin_v2/utils/constants.dart';
+import 'package:winhealth_admin_v2/utils/date_time_utils.dart';
 
 class AppointmentHome extends StatefulWidget {
   final UserModel? currentUser;
@@ -58,10 +59,10 @@ class _AppointmentHomeState extends State<AppointmentHome> {
   }
 
   getAppointments() async {
-    print("getAppointments");
     appointments = await AppointmentService.getAppointmentsByDocterIDandDate(
-        widget.currentUser!.id!,
-        "${currentDate!.year.toString()}-${currentDate!.month.toString().padLeft(2, "0")}-${currentDate!.day.toString().padLeft(2, "0")}");
+      widget.currentUser!.id!,
+      DateTimeUtils.apiFormattedDate(currentDate.toString()),
+    );
   }
 
   @override
@@ -278,4 +279,5 @@ class _AppointmentHomeState extends State<AppointmentHome> {
             ),
     );
   }
+
 }
