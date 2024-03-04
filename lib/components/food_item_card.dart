@@ -188,14 +188,31 @@ class FoodItemCard extends StatelessWidget {
                       width: 16,
                     ),
                     const Text(
-                      "Fats: ",
+                      "Unsaturated Fats: ",
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
                       ),
                     ),
                     Text(
-                      "${recommendedDietItem.foodItem!.fats} g",
+                      "${recommendedDietItem.foodItem!.unSaturatedFats} g",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 18,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 16,
+                    ),
+                    const Text(
+                      "Saturated Fats: ",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                      ),
+                    ),
+                    Text(
+                      "${recommendedDietItem.foodItem!.saturatedFats} g",
                       style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 18,

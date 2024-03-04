@@ -14,7 +14,8 @@ class FoodItem {
     double? energy;
     double? cho;
     double? protien;
-    double? fats;
+    double? saturatedFats;
+    double? unSaturatedFats;
     double? fibre;
     double? ironPercentage;
     double? calciumPercentage;
@@ -32,7 +33,8 @@ class FoodItem {
         this.energy,
         this.cho,
         this.protien,
-        this.fats,
+        this.saturatedFats,
+        this.unSaturatedFats,
         this.fibre,
         this.ironPercentage,
         this.calciumPercentage,
@@ -51,7 +53,8 @@ class FoodItem {
         energy: json["energy"].toDouble(),
         cho: json["cho"].toDouble(),
         protien: json["protien"]?.toDouble(),
-        fats: json["fats"].toDouble(),
+        saturatedFats: json["saturated_fat"].toDouble(),
+        unSaturatedFats: json["unsaturated_fats"].toDouble(),
         fibre: json["fibre"]?.toDouble(),
         ironPercentage: json["iron_percentage"].toDouble(),
         calciumPercentage: json["calcium_percentage"].toDouble(),
@@ -70,7 +73,8 @@ class FoodItem {
         "energy": energy,
         "cho": cho,
         "protien": protien,
-        "fats": fats,
+        "saturated_fat": saturatedFats,
+        "unsaturated_fats": unSaturatedFats,
         "fibre": fibre,
         "iron_percentage": ironPercentage,
         "calcium_percentage": calciumPercentage,

@@ -139,14 +139,31 @@ class FoodItemInfoCard extends StatelessWidget {
                   width: 16,
                 ),
                 const Text(
-                  "Fats: ",
+                  "Saturated Fats: ",
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 18,
                   ),
                 ),
                 Text(
-                  "${foodItem.fats} g",
+                  "${foodItem.saturatedFats} g",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 18,
+                  ),
+                ),
+                const SizedBox(
+                  width: 16,
+                ),
+                const Text(
+                  "UnSaturated Fats: ",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+                  ),
+                ),
+                Text(
+                  "${foodItem.unSaturatedFats} g",
                   style: const TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 18,
