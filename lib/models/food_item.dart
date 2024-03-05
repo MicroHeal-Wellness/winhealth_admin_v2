@@ -15,7 +15,7 @@ class FoodItem {
     double? cho;
     double? protien;
     double? saturatedFats;
-    double? unSaturatedFats;
+    double? unsaturatedFats;
     double? fibre;
     double? ironPercentage;
     double? calciumPercentage;
@@ -34,7 +34,7 @@ class FoodItem {
         this.cho,
         this.protien,
         this.saturatedFats,
-        this.unSaturatedFats,
+        this.unsaturatedFats,
         this.fibre,
         this.ironPercentage,
         this.calciumPercentage,
@@ -44,27 +44,27 @@ class FoodItem {
         this.type,
         this.fodmapType,
         this.recomendedQuantity,
-        this.recipe
+        this.recipe,
     });
 
     factory FoodItem.fromJson(Map<String, dynamic> json) => FoodItem(
         id: json["id"],
         name: json["name"],
-        energy: json["energy"].toDouble(),
-        cho: json["cho"].toDouble(),
+        energy: json["energy"]?.toDouble(),
+        cho: json["cho"]?.toDouble(),
         protien: json["protien"]?.toDouble(),
-        saturatedFats: json["saturated_fat"].toDouble(),
-        unSaturatedFats: json["unsaturated_fats"].toDouble(),
+        saturatedFats: json["saturated_fats"]?.toDouble(),
+        unsaturatedFats: json["unsaturated_fats"]?.toDouble(),
         fibre: json["fibre"]?.toDouble(),
-        ironPercentage: json["iron_percentage"].toDouble(),
-        calciumPercentage: json["calcium_percentage"].toDouble(),
-        sodium: json["sodium"].toDouble(),
-        vitaminAPercentage: json["vitamin_a_percentage"].toDouble(),
-        vitaminCPercentage: json["vitamin_c_percentage"].toDouble(),
+        ironPercentage: json["iron_percentage"]?.toDouble(),
+        calciumPercentage: json["calcium_percentage"]?.toDouble(),
+        sodium: json["sodium"]?.toDouble(),
+        vitaminAPercentage: json["vitamin_a_percentage"]?.toDouble(),
+        vitaminCPercentage: json["vitamin_c_percentage"]?.toDouble(),
         type: json["type"],
         fodmapType: json["fodmap_type"],
         recomendedQuantity: json["recomended_quantity"],
-        recipe: json["recipe"] ?? "N/A"
+        recipe: json["recipe"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -73,8 +73,8 @@ class FoodItem {
         "energy": energy,
         "cho": cho,
         "protien": protien,
-        "saturated_fat": saturatedFats,
-        "unsaturated_fats": unSaturatedFats,
+        "saturated_fats": saturatedFats,
+        "unsaturated_fats": unsaturatedFats,
         "fibre": fibre,
         "iron_percentage": ironPercentage,
         "calcium_percentage": calciumPercentage,
@@ -84,6 +84,6 @@ class FoodItem {
         "type": type,
         "fodmap_type": fodmapType,
         "recomended_quantity": recomendedQuantity,
-        "recipe": recipe
+        "recipe": recipe,
     };
 }

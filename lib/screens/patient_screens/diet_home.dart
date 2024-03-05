@@ -140,7 +140,7 @@ class _DietHomeState extends State<DietHome> {
         eatencarbs += recommendedDiets[i].items![j].foodItem!.cho!;
         eatenProtien += recommendedDiets[i].items![j].foodItem!.protien!;
         eatenFat += recommendedDiets[i].items![j].foodItem!.saturatedFats!;
-        eatenFat += recommendedDiets[i].items![j].foodItem!.unSaturatedFats!;
+        eatenFat += recommendedDiets[i].items![j].foodItem!.unsaturatedFats!;
       }
     }
     setState(() {
