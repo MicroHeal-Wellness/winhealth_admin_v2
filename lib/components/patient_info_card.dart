@@ -10,6 +10,7 @@ import 'package:winhealth_admin_v2/screens/patient_screens/notes_home.dart';
 import 'package:winhealth_admin_v2/screens/patient_screens/report_home.dart';
 import 'package:winhealth_admin_v2/screens/patient_screens/team_notes_home.dart';
 import 'package:winhealth_admin_v2/services/activity_service.dart';
+import 'package:winhealth_admin_v2/utils/constants.dart';
 
 class PatientInfoCard extends StatefulWidget {
   final UserModel patient;
@@ -434,6 +435,26 @@ class _PatientInfoCardState extends State<PatientInfoCard> {
                     ],
                   )
                 : const SizedBox(),
+            const SizedBox(
+              height: 8,
+            ),
+            Row(
+              children: [
+                const Text(
+                  "Speaks: ",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  widget.patient.speaks!.map((e) => langCode(e)).toString(),
+                  style: const TextStyle(
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
             const SizedBox(
               height: 8,
             ),
