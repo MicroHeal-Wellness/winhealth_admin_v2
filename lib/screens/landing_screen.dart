@@ -14,6 +14,7 @@ import 'package:winhealth_admin_v2/screens/task_view/task_calander.dart';
 import 'package:winhealth_admin_v2/screens/task_view/task_view.dart';
 import 'package:winhealth_admin_v2/screens/user_directory_home.dart';
 import 'package:winhealth_admin_v2/services/base_service.dart';
+import 'package:winhealth_admin_v2/utils/constants.dart';
 
 class LandingScreen extends StatefulWidget {
   const LandingScreen({super.key});
@@ -80,7 +81,7 @@ class _LandingScreenState extends State<LandingScreen> {
                   flex: 2,
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: primaryColor,
                       border: Border.all(
                         color: Colors.grey.shade400,
                       ),
@@ -95,43 +96,50 @@ class _LandingScreenState extends State<LandingScreen> {
                               horizontal: size.width * 0.004,
                               vertical: size.width * 0.002),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisAlignment:
+                                MediaQuery.of(context).size.width > 1200
+                                    ? MainAxisAlignment.start
+                                    : MainAxisAlignment.center,
                             children: [
                               Image.asset(
                                 "assets/logo_new.png",
-                                height: MediaQuery.of(context).size.width > 1600
+                                height: MediaQuery.of(context).size.width > 1200
                                     ? 50 - size.width * 0.001
                                     : 36 - size.width * 0.005,
                               ),
-                              MediaQuery.of(context).size.width > 1600
+                              MediaQuery.of(context).size.width > 1200
                                   ? const SizedBox(
                                       width: 32,
                                     )
                                   : const SizedBox(),
-                              MediaQuery.of(context).size.width > 1600
+                              MediaQuery.of(context).size.width > 1200
                                   ? const Text(
                                       "Winhealth",
                                       style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
                                     )
                                   : const SizedBox()
                             ],
                           ),
                         ),
-                        MediaQuery.of(context).size.width > 1600
+                        MediaQuery.of(context).size.width > 1200
                             ? Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 16.0, vertical: 8),
                                 child: Text(
                                   "${currentUser!.firstName}",
                                   style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               )
                             : const SizedBox(),
-                        MediaQuery.of(context).size.width > 1600
+                        MediaQuery.of(context).size.width > 1200
                             ? Padding(
                                 padding: const EdgeInsets.only(
                                     left: 16.0, right: 16.0, bottom: 8),
@@ -140,6 +148,7 @@ class _LandingScreenState extends State<LandingScreen> {
                                   currentUser!.access!.title!,
                                   style: const TextStyle(
                                     fontSize: 14,
+                                    color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),

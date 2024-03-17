@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
-        textTheme: GoogleFonts.nunitoTextTheme(),
+        textTheme: GoogleFonts.josefinSansTextTheme(),
       ),
       home: const InitialRouter(),
     );

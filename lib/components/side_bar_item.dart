@@ -34,38 +34,39 @@ class SideBarItem extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: context.watch<SideBarProvider>().currentPage == pageKey
-              ? primaryColor
-              : Colors.white,
+              ? Colors.white
+              : primaryColor,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
           child: Row(
-            mainAxisAlignment: MediaQuery.of(context).size.width > 1600
+            mainAxisAlignment: MediaQuery.of(context).size.width > 1200
                 ? MainAxisAlignment.start
                 : MainAxisAlignment.center,
             children: [
               Icon(
                 iconData,
                 color: context.watch<SideBarProvider>().currentPage == pageKey
-                    ? Colors.white
-                    : Colors.black,
+                    ? Colors.black
+                    : Colors.white,
               ),
-              MediaQuery.of(context).size.width > 1600
+              MediaQuery.of(context).size.width > 1200
                   ? const SizedBox(
-                      width: 32,
+                      width: 16,
                     )
                   : const SizedBox(),
-              MediaQuery.of(context).size.width > 1600
+              MediaQuery.of(context).size.width > 1200
                   ? Text(
                       title,
                       style: TextStyle(
                         fontSize: 18,
                         color: context.watch<SideBarProvider>().currentPage ==
                                 pageKey
-                            ? Colors.white
-                            : Colors.black,
+                            ? Colors.black
+                            : Colors.white,
                       ),
+                      overflow: TextOverflow.ellipsis,
                     )
                   : const SizedBox(),
             ],

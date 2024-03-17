@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-const primaryColor = Color(0xFFFF8692);
+const primaryColor = Color(0xFFE85462);
+const primaryColor2 = Color(0xFFFF8692);
 
 const accessSpecifiers = {
   "appointment": "Appointment",

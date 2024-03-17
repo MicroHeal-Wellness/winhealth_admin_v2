@@ -65,6 +65,7 @@ class AppointmentService {
     if (response.statusCode == 200) {
       final List<Appointment> appointments = [];
       var responseJson = json.decode(response.body);
+      print(responseJson);
       for (final appointment in responseJson['data']) {
         appointments.add(Appointment.fromJson(appointment));
       }
