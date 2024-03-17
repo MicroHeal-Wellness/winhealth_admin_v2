@@ -49,8 +49,6 @@ class _ActivityInfoState extends State<ActivityInfo> {
   }
 
   getInitData() async {
-    print(currentDate);
-    print(today);
     setState(() {
       isLoadingActivities = true;
     });
@@ -118,13 +116,14 @@ class _ActivityInfoState extends State<ActivityInfo> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16, vertical: 8),
                           decoration: BoxDecoration(
-                            color: Colors.greenAccent,
+                            color: primaryColor,
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(
                             "Date: ${currentDate!.day.toString().padLeft(2, "0")}-${currentDate!.month.toString().padLeft(2, "0")}-${currentDate!.year.toString().padLeft(2, "0")}",
                             style: const TextStyle(
                               fontSize: 20,
+                              color: Colors.white,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -147,9 +146,10 @@ class _ActivityInfoState extends State<ActivityInfo> {
                           },
                           child: const CircleAvatar(
                             radius: 24,
-                            backgroundColor: Colors.greenAccent,
+                            backgroundColor: primaryColor,
                             child: Icon(
                               Icons.calendar_month,
+                              color: Colors.white,
                               size: 24,
                             ),
                           ),

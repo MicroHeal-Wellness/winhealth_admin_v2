@@ -5,7 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:winhealth_admin_v2/components/slot_card.dart';
 import 'package:winhealth_admin_v2/models/slot.dart';
 import 'package:winhealth_admin_v2/models/user_model.dart';
-import 'package:winhealth_admin_v2/screens/batch_slot_update.dart';
+import 'package:winhealth_admin_v2/screens/slot/batch_slot_update.dart';
 import 'package:winhealth_admin_v2/services/slot_service.dart';
 import 'package:winhealth_admin_v2/utils/constants.dart';
 
@@ -71,10 +71,8 @@ class _SlotsHomeState extends State<SlotsHome> {
     setState(() {
       loading = true;
     });
-    print(slots.length);
     slots = await SlotService.getSlotsByDocterID(widget.currentUser!.id!,
         "${currentDate!.year}-${currentDate!.month.toString().padLeft(2, "0")}-${currentDate!.day.toString().padLeft(2, "0")}");
-    print(slots.length);
     setState(() {
       loading = false;
     });
@@ -128,13 +126,14 @@ class _SlotsHomeState extends State<SlotsHome> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16, vertical: 8),
                           decoration: BoxDecoration(
-                            color: Colors.greenAccent,
+                            color: primaryColor,
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(
                             "Date: ${currentDate!.day.toString().padLeft(2, "0")}-${currentDate!.month.toString().padLeft(2, "0")}-${currentDate!.year.toString().padLeft(2, "0")}",
                             style: const TextStyle(
                               fontSize: 20,
+                              color: Colors.white,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -157,9 +156,10 @@ class _SlotsHomeState extends State<SlotsHome> {
                           },
                           child: const CircleAvatar(
                             radius: 24,
-                            backgroundColor: Colors.greenAccent,
+                            backgroundColor:primaryColor,
                             child: Icon(
                               Icons.calendar_month,
+                              color: Colors.white,
                               size: 24,
                             ),
                           ),

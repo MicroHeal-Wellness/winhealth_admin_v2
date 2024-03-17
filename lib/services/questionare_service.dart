@@ -51,4 +51,23 @@ class QuestionareService {
       return [];
     }
   }
+
+  static Future<List<FormResponse>> getFormAnswer(String userId) async {
+    final response = await BaseService.makeAuthenticatedRequest(
+      '${BaseService.BASE_URL}/items/form_responses?fields=*,form.*,form.questions.form_question_id.*,answers.form_answers_id.*,answers.form_answers_id.question.*,answers.form_answers_id.question.choices.form_choice_id.*&filter[patient][_eq]=$userId&filter[form][name][_icontains]=app',
+      method: 'GET',
+    );
+    if (response.statusCode == 200) {
+      final List<FormResponse> data = [];
+      var responseJson = json.decode(response.body);
+      print(responseJson);
+      for (final appointment in responseJson['data']) {
+        data.add(FormResponse.fromJson(appointment));
+      }
+      return data;
+    } else {
+      print(response.body);
+      return [];
+    }
+  }
 }

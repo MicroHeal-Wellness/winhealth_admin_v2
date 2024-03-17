@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:winhealth_admin_v2/screens/form_builder/add_form.dart';
+import 'package:winhealth_admin_v2/screens/forms/add_form.dart';
 import 'package:winhealth_admin_v2/utils/constants.dart';
 
 import '../../models/form_response.dart';

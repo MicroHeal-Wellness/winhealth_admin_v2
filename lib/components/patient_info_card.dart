@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:winhealth_admin_v2/models/user_model.dart';
 import 'package:winhealth_admin_v2/screens/activity/activity_info.dart';
-import 'package:winhealth_admin_v2/screens/foms_home.dart';
+import 'package:winhealth_admin_v2/screens/forms/foms_home.dart';
 import 'package:intl/intl.dart';
 import 'package:winhealth_admin_v2/screens/patient_screens/activity_stats.dart';
 import 'package:winhealth_admin_v2/screens/patient_screens/diet_home.dart';

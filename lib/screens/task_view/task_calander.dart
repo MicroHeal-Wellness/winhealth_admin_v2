@@ -8,7 +8,7 @@ import 'package:winhealth_admin_v2/models/subscription.dart';
 import 'package:winhealth_admin_v2/models/task_list.dart';
 import 'package:winhealth_admin_v2/models/user_model.dart';
 import 'package:winhealth_admin_v2/screens/task_view/doctor_profile.dart';
-import 'package:winhealth_admin_v2/screens/landing_screen.dart';
+import 'package:winhealth_admin_v2/screens/pre/landing_screen.dart';
 import 'package:winhealth_admin_v2/screens/task_view/doctor_selection_page.dart';
 import 'package:winhealth_admin_v2/services/appointment_service.dart';
 import 'package:winhealth_admin_v2/services/base_service.dart';

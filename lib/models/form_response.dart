@@ -4,6 +4,8 @@
 
 // ignore_for_file: constant_identifier_names
 
+import 'question.dart' as q;
+
 import 'dart:convert';
 
 List<FormResponse> formResponseFromJson(String str) => List<FormResponse>.from(
@@ -87,7 +89,7 @@ class FormAnswersId {
   DateTime? dateCreated;
   dynamic userUpdated;
   dynamic dateUpdated;
-  String? question;
+  q.Question? question;
   List<String>? response;
 
   FormAnswersId({
@@ -109,7 +111,7 @@ class FormAnswersId {
           : DateTime.parse(json["date_created"]),
       userUpdated: json["user_updated"],
       dateUpdated: json["date_updated"],
-      question: json["question"],
+      question: json["question"] == null || json["question"].runtimeType == String ? null : q.Question.fromJson(json["question"]),
       response: json["response"] == null
           ? []
           : List<String>.from(jsonDecode(json["response"])!.map((x) => x)),
@@ -122,7 +124,7 @@ class FormAnswersId {
         "date_created": dateCreated?.toIso8601String(),
         "user_updated": userUpdated,
         "date_updated": dateUpdated,
-        "question": question,
+        "question": question?.toJson(),
         "response":
             response == null ? [] : List<dynamic>.from(response!.map((x) => x)),
       };

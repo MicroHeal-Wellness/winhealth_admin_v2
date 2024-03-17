@@ -5,9 +5,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:winhealth_admin_v2/models/user_model.dart';
 import 'package:winhealth_admin_v2/screens/auth/login_screen.dart';
-import 'package:winhealth_admin_v2/screens/batch_slot_update.dart';
-import 'package:winhealth_admin_v2/screens/foms_home.dart';
-import 'package:winhealth_admin_v2/screens/landing_screen.dart';
+import 'package:winhealth_admin_v2/screens/slot/batch_slot_update.dart';
+import 'package:winhealth_admin_v2/screens/forms/foms_home.dart';
+import 'package:winhealth_admin_v2/screens/pre/landing_screen.dart';
 import 'package:winhealth_admin_v2/services/auth_service.dart';
 import 'package:winhealth_admin_v2/services/base_service.dart';
 
