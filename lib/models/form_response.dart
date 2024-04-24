@@ -42,7 +42,9 @@ class FormResponse {
             ? null
             : DateTime.parse(json["date_created"]),
         userUpdated: json["user_updated"],
-        dateUpdated: json["date_updated"],
+        dateUpdated: json["date_updated"] == null
+            ? null
+            : DateTime.parse(json["date_updated"]),
         patient: json['patient'],
         answers: json["answers"] == null
             ? []
@@ -111,7 +113,10 @@ class FormAnswersId {
           : DateTime.parse(json["date_created"]),
       userUpdated: json["user_updated"],
       dateUpdated: json["date_updated"],
-      question: json["question"] == null || json["question"].runtimeType == String ? null : q.Question.fromJson(json["question"]),
+      question:
+          json["question"] == null || json["question"].runtimeType == String
+              ? null
+              : q.Question.fromJson(json["question"]),
       response: json["response"] == null
           ? []
           : List<String>.from(jsonDecode(json["response"])!.map((x) => x)),

@@ -23,7 +23,7 @@ class FormResponseCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "⦿ ${formResponse.form!.questions!.firstWhere((element) => element.formQuestionId!.id == e.formAnswersId!.question!).formQuestionId!.question!}",
+                        "⦿ ${e.formAnswersId!.question!.question!.trimLeft()}",
                         style: const TextStyle(fontSize: 18),
                       ),
                       Text(

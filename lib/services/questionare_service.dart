@@ -20,7 +20,7 @@ class QuestionareService {
   static Future<List<FormResponse>> getAllFormAnswerByUserId(
       String userId) async {
     final response = await BaseService.makeAuthenticatedRequest(
-      '${BaseService.BASE_URL}/items/form_responses?fields=*,form.*,form.questions.form_question_id.*,answers.form_answers_id.*&filter[patient][_eq]=$userId',
+      '${BaseService.BASE_URL}/items/form_responses?fields=*,form.*,form.questions.form_question_id.*,answers.form_answers_id.*,answers.form_answers_id.question.*,answers.form_answers_id.question.choices.form_choice_id.*&filter[patient][_eq]=$userId&sort[]=-date_created&limit=-1',
       method: 'GET',
     );
     if (response.statusCode == 200) {
