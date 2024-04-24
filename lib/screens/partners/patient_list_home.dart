@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:winhealth_admin_v2/components/patient_info_card.dart';
 import 'package:winhealth_admin_v2/models/answer.dart';
+import 'package:winhealth_admin_v2/models/patient_group.dart';
 import 'package:winhealth_admin_v2/models/user_model.dart';
 import 'package:winhealth_admin_v2/services/patient_service.dart';
 import 'package:winhealth_admin_v2/utils/constants.dart';
-import 'package:winhealth_admin_v2/utils/drag.dart';
 
-class PatientHome extends StatefulWidget {
+class PatientListHome extends StatefulWidget {
+  final PatientGroup patientGroup;
   final UserModel currentUser;
-  const PatientHome({super.key, required this.currentUser});
+  const PatientListHome(
+      {super.key, required this.patientGroup, required this.currentUser});
 
   @override
-  State<PatientHome> createState() => _PatientHomeState();
+  State<PatientListHome> createState() => _PatientHomeState();
 }
 
-class _PatientHomeState extends State<PatientHome> {
+class _PatientHomeState extends State<PatientListHome> {
   ScrollController scrollController = ScrollController();
   int page = 1;
   bool showbtn = false;
@@ -52,7 +54,10 @@ class _PatientHomeState extends State<PatientHome> {
     if (scrollController.position.pixels ==
         scrollController.position.maxScrollExtent) {
       List<UserModel> patientList2 =
-          await PatientService.getPatients(page: page, limit: 8);
+          await PatientService.getPatientsByPatientGroup(
+              widget.patientGroup.id!,
+              page: page,
+              limit: 10);
       if (patientList2.isNotEmpty) {
         page = page + 1;
         setState(() {
@@ -66,7 +71,10 @@ class _PatientHomeState extends State<PatientHome> {
     setState(() {
       loading = true;
     });
-    patientList = await PatientService.getPatients(page: 1, limit: 8);
+    patientList = await PatientService.getPatientsByPatientGroup(
+        widget.patientGroup.id!,
+        page: 1,
+        limit: 10);
     page = page + 1;
     setState(() {
       loading = false;
@@ -102,11 +110,11 @@ class _PatientHomeState extends State<PatientHome> {
                 controller: scrollController,
                 child: Column(
                   children: [
-                    const Align(
+                    Align(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        "All Patients",
-                        style: TextStyle(
+                        "${widget.patientGroup.name}'s Patients",
+                        style: const TextStyle(
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
                         ),

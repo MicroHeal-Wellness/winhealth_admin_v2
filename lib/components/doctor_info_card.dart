@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:winhealth_admin_v2/models/user_model.dart';
 
@@ -29,16 +30,6 @@ class _DoctorInfoCardState extends State<DoctorInfoCard> {
         padding: const EdgeInsets.all(16.0),
         // ignore: prefer_const_constructors
         child: Column(children: [
-          // const Text(
-          //   "",
-          //   style: TextStyle(
-          //     fontSize: 24,
-          //     fontWeight: FontWeight.bold,
-          //   ),
-          // ),
-          // const SizedBox(
-          //   height: 8,
-          // ),
           Row(
             children: [
               const Text(
@@ -102,6 +93,7 @@ class _DoctorInfoCardState extends State<DoctorInfoCard> {
             height: 8,
           ),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
                 "Specialization: ",
@@ -110,10 +102,12 @@ class _DoctorInfoCardState extends State<DoctorInfoCard> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text(
-                "${widget.doctor.doctorType ?? "N/A"}",
-                style: const TextStyle(
-                  fontSize: 16,
+              Flexible(
+                child: Text(
+                  "${widget.doctor.doctorType ?? "N/A"}",
+                  style: const TextStyle(
+                    fontSize: 16,
+                  ),
                 ),
               ),
             ],

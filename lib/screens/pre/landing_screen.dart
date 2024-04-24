@@ -4,13 +4,13 @@ import 'package:winhealth_admin_v2/components/side_bar_item.dart';
 import 'package:winhealth_admin_v2/models/user_model.dart';
 import 'package:winhealth_admin_v2/provider/sidebar_provvider.dart';
 import 'package:winhealth_admin_v2/screens/appointment/appointment_home.dart';
+import 'package:winhealth_admin_v2/screens/partners/partner_home.dart';
 import 'package:winhealth_admin_v2/screens/pre/defualt_page.dart';
 import 'package:winhealth_admin_v2/screens/doctors/doctor_home.dart';
 import 'package:winhealth_admin_v2/screens/forms/patient_form_builder.dart';
 import 'package:winhealth_admin_v2/screens/access/access_management_home.dart';
 import 'package:winhealth_admin_v2/screens/patient_screens/patient_home.dart';
 import 'package:winhealth_admin_v2/screens/slot/slots_home.dart';
-import 'package:winhealth_admin_v2/screens/task_view/task_calander.dart';
 import 'package:winhealth_admin_v2/screens/task_view/task_view.dart';
 import 'package:winhealth_admin_v2/screens/users/user_directory_home.dart';
 import 'package:winhealth_admin_v2/services/base_service.dart';
@@ -46,8 +46,10 @@ class _LandingScreenState extends State<LandingScreen> {
         return const AccessMangementHome();
       case 7:
         return TaskView(currentUser: currentUser!);
+      case 9:
+        return PartnerHome(currentUser: currentUser!);
       default:
-        return AppointmentHome(currentUser: currentUser!);
+        return const DefaultPage();
     }
   }
 
@@ -231,6 +233,14 @@ class _LandingScreenState extends State<LandingScreen> {
                                 pageKey: 7,
                                 iconData: Icons.task_alt,
                                 title: "TaskView",
+                              )
+                            : const SizedBox(),
+                        currentUser!.role ==
+                                '7afc4f86-e282-4eb6-a9f3-b7eb7290b3fb'
+                            ? const SideBarItem(
+                                pageKey: 9,
+                                iconData: Icons.group,
+                                title: "Partners",
                               )
                             : const SizedBox(),
                         const SideBarItem(

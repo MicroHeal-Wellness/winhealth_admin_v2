@@ -124,29 +124,6 @@ class _DoctorHomeState extends State<DoctorHome> {
                             .toList(),
                       ),
                     )
-                    // GridView.builder(
-                    //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    //     crossAxisCount: MediaQuery.of(context).size.width > 1800
-                    //         ? 3
-                    //         : MediaQuery.of(context).size.width > 1200
-                    //             ? 2
-                    //             : 1,
-                    //     childAspectRatio:
-                    //         MediaQuery.of(context).size.width > 600 ? 2 : 1.5,
-                    //     crossAxisSpacing: 16,
-                    //     mainAxisSpacing: 16,
-                    //   ),
-                    //   itemBuilder: (context, index) {
-                    //     return DoctorInfoCard(
-                    //       doctor: doctorsList[index],
-                    //       currentUser: widget.currentUser,
-                    //       roles: roles,
-                    //       callback: getInitData,
-                    //     );
-                    //   },
-                    //   shrinkWrap: true,
-                    //   itemCount: doctorsList.length,
-                    // ),
                   ],
                 ),
               ),
