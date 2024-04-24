@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:winhealth_admin_v2/components/partner_card.dart';
 import 'package:winhealth_admin_v2/components/patient_group_card.dart';
@@ -7,6 +8,7 @@ import 'package:winhealth_admin_v2/models/patient_group.dart';
 import 'package:winhealth_admin_v2/models/user_model.dart';
 import 'package:winhealth_admin_v2/services/partner_group_service.dart';
 import 'package:winhealth_admin_v2/services/partner_service.dart';
+import 'package:winhealth_admin_v2/services/patient_service.dart';
 import 'package:winhealth_admin_v2/utils/constants.dart';
 
 class PartnerHome extends StatefulWidget {
@@ -26,6 +28,7 @@ class _PartnerHomeState extends State<PartnerHome> {
   bool showbtn = false;
   List<Partner> partners = [];
   List<PatientGroup> patientGroups = [];
+  List<int> patientGroupsCount = [];
 
   Partner? selectedPartner;
   @override
@@ -177,6 +180,13 @@ class _PartnerHomeState extends State<PartnerHome> {
                                                 await PatientGroupService
                                                     .fetchPatientGroupsByPartner(
                                                         partner.id!);
+                                            patientGroupsCount.clear();
+                                            for (var element in patientGroups) {
+                                              int count = await PatientService
+                                                  .getPatientCountByPatientGroup(
+                                                      element.id!);
+                                              patientGroupsCount.add(count);
+                                            }
                                             setState(() {
                                               selectedPartner = partner;
                                             });
@@ -202,18 +212,36 @@ class _PartnerHomeState extends State<PartnerHome> {
                   ),
                   Expanded(
                     flex: 1,
-                    child: patientGroups.isEmpty
-                        ? const Center(
-                            child: Text("No Patient Group"),
-                          )
-                        : ListView.builder(
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) => PatientGroupCard(
-                              patientGroup: patientGroups[index],
-                              currentUser: widget.currentUser,
+                    child: Column(
+                      children: [
+                        const Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            "Patient Groups",
+                            style: TextStyle(
+                              fontSize: 32,
+                              fontWeight: FontWeight.bold,
                             ),
-                            itemCount: patientGroups.length,
                           ),
+                        ),
+                        Expanded(
+                          child: patientGroups.isEmpty
+                              ? const Center(
+                                  child: Text("No Patient Group"),
+                                )
+                              : ListView.builder(
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) =>
+                                      PatientGroupCard(
+                                          patientGroup: patientGroups[index],
+                                          currentUser: widget.currentUser,
+                                          patientGroupPatientCount:
+                                              patientGroupsCount[index]),
+                                  itemCount: patientGroups.length,
+                                ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),

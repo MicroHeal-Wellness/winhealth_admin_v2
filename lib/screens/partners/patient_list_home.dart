@@ -127,27 +127,33 @@ class _PatientHomeState extends State<PatientListHome> {
                     const SizedBox(
                       height: 16,
                     ),
-                    Wrap(
-                      direction: Axis.horizontal,
-                      runSpacing: 16,
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      spacing: 16,
-                      children: patientList
-                          .map(
-                            (patient) => SizedBox(
-                              width: MediaQuery.of(context).size.width > 1800
-                                  ? 350
-                                  : MediaQuery.of(context).size.width > 1200
-                                      ? 400
-                                      : 600,
-                              child: PatientInfoCard(
-                                patient: patient,
-                                currentUser: widget.currentUser,
-                              ),
-                            ),
+                    patientList.isEmpty
+                        ? const Center(
+                            child: Text("No Patients"),
                           )
-                          .toList(),
-                    ),
+                        : Wrap(
+                            direction: Axis.horizontal,
+                            runSpacing: 16,
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            spacing: 16,
+                            children: patientList
+                                .map(
+                                  (patient) => SizedBox(
+                                    width: MediaQuery.of(context).size.width >
+                                            1800
+                                        ? 350
+                                        : MediaQuery.of(context).size.width >
+                                                1200
+                                            ? 400
+                                            : 600,
+                                    child: PatientInfoCard(
+                                      patient: patient,
+                                      currentUser: widget.currentUser,
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                          ),
                   ],
                 ),
               ),
