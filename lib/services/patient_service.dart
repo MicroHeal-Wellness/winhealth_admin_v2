@@ -6,7 +6,7 @@ class PatientService {
   static Future<List<UserModel>> getPatients(
       {int page = 1, int limit = -1}) async {
     final response = await BaseService.makeAuthenticatedRequest(
-      '${BaseService.BASE_URL}/users?filter[role][_eq]=a4f8c484-438d-4c9e-ac17-2b1c7ecd57e1&limit=$limit&page=$page',
+      '${BaseService.BASE_URL}/users?filter[role][_eq]=a4f8c484-438d-4c9e-ac17-2b1c7ecd57e1&fields=*,patient_group.*&limit=$limit&page=$page&sort[]=first_name',
       method: 'GET',
     );
     if (response.statusCode == 200) {
@@ -23,7 +23,7 @@ class PatientService {
 
   static Future<int> getPatientCountByPatientGroup(String patientGroup) async {
     final response = await BaseService.makeAuthenticatedRequest(
-      '${BaseService.BASE_URL}/users?filter={"_and":[{"role":{"_eq":"a4f8c484-438d-4c9e-ac17-2b1c7ecd57e1"}},{"patient_group":{"_eq":"$patientGroup"}}]}&limit=1&meta=filter_count',
+      '${BaseService.BASE_URL}/users?filter={"_and":[{"role":{"_eq":"a4f8c484-438d-4c9e-ac17-2b1c7ecd57e1"}},{"patient_group":{"_eq":"$patientGroup"}}]}&fields=*,patient_group.*&limit=1&meta=filter_count&sort[]=first_name',
       method: 'GET',
     );
     if (response.statusCode == 200) {
@@ -36,7 +36,7 @@ class PatientService {
 
   static Future<List<UserModel>> getPatientsByPatientGroup(String patientGroup,{int page = 1, int limit = -1}) async {
     final response = await BaseService.makeAuthenticatedRequest(
-      '${BaseService.BASE_URL}/users?filter={"_and":[{"role":{"_eq":"a4f8c484-438d-4c9e-ac17-2b1c7ecd57e1"}},{"patient_group":{"_eq":"$patientGroup"}}]}&limit=$limit&page=$page',
+      '${BaseService.BASE_URL}/users?filter={"_and":[{"role":{"_eq":"a4f8c484-438d-4c9e-ac17-2b1c7ecd57e1"}},{"patient_group":{"_eq":"$patientGroup"}}]}&fields=*,patient_group.*&limit=$limit&page=$page&sort[]=first_name',
       method: 'GET',
     );
     if (response.statusCode == 200) {

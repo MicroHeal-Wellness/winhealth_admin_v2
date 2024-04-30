@@ -481,6 +481,28 @@ class _PatientInfoCardState extends State<PatientInfoCard> {
             Row(
               children: [
                 const Text(
+                  "Patient Group: ",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  widget.patient.patientGroup == null
+                      ? "N/A"
+                      : "${widget.patient.patientGroup!.name}",
+                  style: const TextStyle(
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            Row(
+              children: [
+                const Text(
                   "App Form Status: ",
                   style: TextStyle(
                     fontSize: 16,
