@@ -1,3 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:winhealth_admin_v2/models/patient_group.dart';
@@ -11,22 +15,27 @@ import 'package:winhealth_admin_v2/screens/patient_screens/notes_home.dart';
 import 'package:winhealth_admin_v2/screens/patient_screens/report_home.dart';
 import 'package:winhealth_admin_v2/screens/patient_screens/team_notes_home.dart';
 import 'package:winhealth_admin_v2/services/activity_service.dart';
+import 'package:winhealth_admin_v2/services/patient_service.dart';
 import 'package:winhealth_admin_v2/utils/constants.dart';
 
-class PatientInfoCard extends StatefulWidget {
+class PatientInfoCard2 extends StatefulWidget {
   final UserModel patient;
   final UserModel currentUser;
-  const PatientInfoCard(
+  final List<PatientGroup> patientGroups;
+  const PatientInfoCard2(
       {super.key,
       required this.patient,
-      required this.currentUser,});
+      required this.currentUser,
+      required this.patientGroups});
 
   @override
-  State<PatientInfoCard> createState() => _PatientInfoCardState();
+  State<PatientInfoCard2> createState() => _PatientInfoCardState();
 }
 
-class _PatientInfoCardState extends State<PatientInfoCard> {
+class _PatientInfoCardState extends State<PatientInfoCard2> {
   List statuses = [];
+  String? patientGroupId;
+  List<PatientGroup> patientGroups = [];
 
   @override
   void initState() {
@@ -44,6 +53,7 @@ class _PatientInfoCardState extends State<PatientInfoCard> {
       final DateTime date = firstDayOfWeek.add(Duration(days: index));
       return date;
     });
+    patientGroups = widget.patientGroups;
     // statuses = days.map((date) => {"date": date, "status": 1}).toList();
     for (int i = 0; i < days.length; i++) {
       int val = await ActivityService.getActivityCount(
@@ -96,11 +106,118 @@ class _PatientInfoCardState extends State<PatientInfoCard> {
                         }
                       },
                       icon: const Icon(Icons.more_horiz),
-                      tooltip: 'Show menu',
+                      // tooltip: 'Show menu',
                     );
                   },
                   menuChildren: [
-                    
+                    MenuItemButton(
+                      style: const ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(Colors.white),
+                      ),
+                      onPressed: (widget.currentUser.access != null &&
+                              widget.currentUser.access!.permission!
+                                  .contains("assign_group"))
+                          ? () async {
+                              bool? res = await showDialog(
+                                context: context,
+                                builder: (context) => StatefulBuilder(
+                                    builder: (context, setState) {
+                                  return AlertDialog(
+                                    title: const Text("Update Patient Group"),
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Patient Name: ${widget.patient.firstName} ${widget.patient.lastName}",
+                                        ),
+                                        Text(
+                                          "Current Patient Group: ${widget.patient.patientGroup == null ? "N/A" : "${widget.patient.patientGroup!.name}"}",
+                                        ),
+                                        const SizedBox(
+                                          height: 16,
+                                        ),
+                                        DropdownButtonHideUnderline(
+                                          child: DropdownButton<String>(
+                                            value: patientGroupId,
+                                            focusColor: Colors.white,
+                                            icon: const Icon(
+                                                Icons.arrow_downward),
+                                            elevation: 16,
+                                            hint: const Text(
+                                                "Choose Patient Group"),
+                                            style: const TextStyle(
+                                              color: Colors.deepPurple,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            onChanged: (String? value) async {
+                                              setState(() {
+                                                patientGroupId = value;
+                                              });
+                                            },
+                                            items: patientGroups
+                                                .map<DropdownMenuItem<String>>(
+                                                    (PatientGroup value) {
+                                              return DropdownMenuItem<String>(
+                                                value: value.id,
+                                                child: Text(value.name!),
+                                              );
+                                            }).toList(),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    actions: [
+                                      MaterialButton(
+                                        onPressed: () async {
+                                          bool resp = await PatientService
+                                              .udpatePatientGroup(
+                                                  widget.patient.id!,
+                                                  patientGroupId == "1"
+                                                      ? null
+                                                      : patientGroupId!);
+                                          if (resp) {
+                                            setState(() {
+                                              widget.patient.patientGroup =
+                                                  patientGroups.firstWhere(
+                                                      (element) =>
+                                                          element.id ==
+                                                          patientGroupId);
+                                            });
+                                            Navigator.of(context).pop(true);
+                                          } else {
+                                            Fluttertoast.showToast(
+                                                msg: "Failed to update group!");
+                                            Navigator.of(context).pop();
+                                          }
+                                        },
+                                        child: const Text("Update"),
+                                      ),
+                                      MaterialButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text("Cancel"),
+                                      ),
+                                    ],
+                                  );
+                                }),
+                              );
+                              if (res != null && res == true) {
+                                setState(() {
+                                  widget.patient.patientGroup =
+                                      patientGroups.firstWhere((element) =>
+                                          element.id == patientGroupId);
+                                });
+                              }
+                            }
+                          : () {
+                              Fluttertoast.showToast(msg: "Access Denied");
+                            },
+                      child: const Text('Assign Group'),
+                    ),
                     MenuItemButton(
                       style: const ButtonStyle(
                         backgroundColor: MaterialStatePropertyAll(Colors.white),

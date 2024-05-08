@@ -23,6 +23,23 @@ class PatientGroupService {
     }
   }
 
+  static Future<List<PatientGroup>> fetchAllPatientGroups() async {
+    final response = await BaseService.makeAuthenticatedRequest(
+      '${BaseService.BASE_URL}/items/patient_group?sort[]=name',
+      method: 'GET',
+    );
+    if (response.statusCode == 200) {
+      final List<PatientGroup> data = [];
+      var responseJson = json.decode(response.body);
+      for (final appointment in responseJson['data']) {
+        data.add(PatientGroup.fromJson(appointment));
+      }
+      return data;
+    } else {
+      return [];
+    }
+  }
+
   // static Future<bool> addNote(payload) async {
   //   print(payload);
   //   final response = await BaseService.makeAuthenticatedRequest(
