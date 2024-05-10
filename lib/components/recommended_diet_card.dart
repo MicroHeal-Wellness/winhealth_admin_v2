@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:winhealth_admin_v2/models/recommended_diet.dart';
-import 'package:winhealth_admin_v2/services/diet_service.dart';
+import 'package:winhealth_admin_v2/models/diet_model.dart';
 import 'package:winhealth_admin_v2/utils/constants.dart';
 
 var typeBreif = {
@@ -11,7 +10,7 @@ var typeBreif = {
 };
 
 class RecommendedDietCard extends StatelessWidget {
-  final RecommendedDiet recommendedDiet;
+  final DietModel recommendedDiet;
   final VoidCallback onDelete;
   final bool isSelected;
   const RecommendedDietCard(
@@ -40,7 +39,8 @@ class RecommendedDietCard extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    typeBreif[recommendedDiet.type!]!,
+                    // typeBreif[recommendedDiet.type!]!,
+                    recommendedDiet.name!,
                     style: const TextStyle(
                         fontSize: 24, fontWeight: FontWeight.bold),
                   ),

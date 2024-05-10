@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:winhealth_admin_v2/models/diet_item_model.dart';
 import 'package:winhealth_admin_v2/models/recommended_diet.dart';
 
 var typeBreif = {
@@ -10,7 +11,7 @@ var typeBreif = {
 };
 
 class FoodItemCard extends StatelessWidget {
-  final RecommendedDietItem recommendedDietItem;
+  final DietItemModel recommendedDietItem;
   final bool showMenu;
   final VoidCallback onRemove;
   final VoidCallback onEdit;
@@ -97,7 +98,7 @@ class FoodItemCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      recommendedDietItem.quantity!,
+                      recommendedDietItem.quantity!.toString(),
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
@@ -111,7 +112,7 @@ class FoodItemCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      typeBreif[recommendedDietItem.foodItem!.type!]!,
+                      recommendedDietItem.foodItem!.name!,
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
@@ -125,7 +126,7 @@ class FoodItemCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      recommendedDietItem.foodItem!.fodmapType!.toUpperCase(),
+                      'recommendedDietItem.foodItem!.fodmapType!.toUpperCase()',
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
@@ -144,7 +145,7 @@ class FoodItemCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "${recommendedDietItem.foodItem!.energy} KCal",
+                      "${recommendedDietItem.foodItem!.name} KCal",
                       style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 18,
@@ -161,7 +162,7 @@ class FoodItemCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "${recommendedDietItem.foodItem!.cho} g",
+                      "${recommendedDietItem.foodItem!.name} g",
                       style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 18,
@@ -178,7 +179,7 @@ class FoodItemCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "${recommendedDietItem.foodItem!.protien} g",
+                      "${recommendedDietItem.foodItem!.name} g",
                       style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 18,
@@ -195,7 +196,7 @@ class FoodItemCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "${recommendedDietItem.foodItem!.unsaturatedFats} g",
+                      "${recommendedDietItem.foodItem!.name} g",
                       style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 18,
@@ -212,7 +213,7 @@ class FoodItemCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "${recommendedDietItem.foodItem!.saturatedFats} g",
+                      "${recommendedDietItem.foodItem!.name} g",
                       style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 18,
@@ -229,7 +230,7 @@ class FoodItemCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "${recommendedDietItem.foodItem!.fibre} g",
+                      "${recommendedDietItem.foodItem!.name} g",
                       style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 18,
@@ -246,7 +247,7 @@ class FoodItemCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "${recommendedDietItem.foodItem!.ironPercentage} %",
+                      "${recommendedDietItem.foodItem!.name} %",
                       style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 18,
@@ -263,7 +264,7 @@ class FoodItemCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "${recommendedDietItem.foodItem!.calciumPercentage} %",
+                      "${recommendedDietItem.foodItem!.name} %",
                       style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 18,
@@ -280,7 +281,7 @@ class FoodItemCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "${recommendedDietItem.foodItem!.sodium} g",
+                      "${recommendedDietItem.foodItem!.name} g",
                       style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 18,
@@ -297,7 +298,7 @@ class FoodItemCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "${recommendedDietItem.foodItem!.vitaminAPercentage} %",
+                      "${recommendedDietItem.foodItem!.name} %",
                       style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 18,
@@ -314,7 +315,7 @@ class FoodItemCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "${recommendedDietItem.foodItem!.vitaminCPercentage} %",
+                      "${recommendedDietItem.foodItem!.name} %",
                       style: const TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 18,
@@ -331,7 +332,7 @@ class FoodItemCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  recommendedDietItem.otherInstruction!,
+                  recommendedDietItem.foodItem!.name!,
                   style: const TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 18,
@@ -345,7 +346,7 @@ class FoodItemCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  recommendedDietItem.cookingInstruction!,
+                  recommendedDietItem.foodItem!.name!,
                   style: const TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 18,

@@ -3,9 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:winhealth_admin_v2/components/diet_item_card.dart';
 import 'package:winhealth_admin_v2/components/food_item_card.dart';
 import 'package:winhealth_admin_v2/components/food_item_info_card.dart';
 import 'package:winhealth_admin_v2/components/recommended_diet_card.dart';
+import 'package:winhealth_admin_v2/models/diet_model.dart';
 import 'package:winhealth_admin_v2/models/food_item.dart';
 import 'package:winhealth_admin_v2/models/recommended_diet.dart';
 import 'package:winhealth_admin_v2/models/user_model.dart';
@@ -27,9 +29,9 @@ class _DietHomeState extends State<DietHome> {
   bool loading = false;
   bool searchLoading = false;
 
-  List<RecommendedDiet> recommendedDiets = [];
+  List<DietModel> recommendedDiets = [];
   List<FoodItem> filterdFoodItems = [];
-  RecommendedDiet? selecetedRecommendedDiet;
+  DietModel? selecetedRecommendedDiet;
   TextEditingController searchController = TextEditingController();
   TextEditingController qunatityController = TextEditingController(text: "");
   TextEditingController instructionController = TextEditingController(text: "");
@@ -134,15 +136,15 @@ class _DietHomeState extends State<DietHome> {
     eatencarbs = 0;
     eatenProtien = 0;
     eatenFat = 0;
-    for (int i = 0; i < recommendedDiets.length; i++) {
-      for (int j = 0; j < recommendedDiets[i].items!.length; j++) {
-        eatenKcal += recommendedDiets[i].items![j].foodItem!.energy!;
-        eatencarbs += recommendedDiets[i].items![j].foodItem!.cho!;
-        eatenProtien += recommendedDiets[i].items![j].foodItem!.protien!;
-        eatenFat += recommendedDiets[i].items![j].foodItem!.saturatedFats ?? 0;
-        eatenFat += recommendedDiets[i].items![j].foodItem!.unsaturatedFats ?? 0;
-      }
-    }
+    // for (int i = 0; i < recommendedDiets.length; i++) {
+    //   for (int j = 0; j < recommendedDiets[i].items!.length; j++) {
+    //     eatenKcal += recommendedDiets[i].items![j].foodItem!.energy!;
+    //     eatencarbs += recommendedDiets[i].items![j].foodItem!.cho!;
+    //     eatenProtien += recommendedDiets[i].items![j].foodItem!.protien!;
+    //     eatenFat += recommendedDiets[i].items![j].foodItem!.saturatedFats ?? 0;
+    //     eatenFat += recommendedDiets[i].items![j].foodItem!.unsaturatedFats ?? 0;
+    //   }
+    // }
     setState(() {
       eatenKcal = double.parse(eatenKcal.toStringAsFixed(2));
       eatencarbs = double.parse(eatencarbs.toStringAsFixed(2));
@@ -153,7 +155,7 @@ class _DietHomeState extends State<DietHome> {
 
   @override
   Widget build(BuildContext context) {
-    genNutrientValue();
+    // genNutrientValue();
     return Scaffold(
       backgroundColor: Colors.grey.shade100.withOpacity(0.4),
       floatingActionButton: AnimatedOpacity(
@@ -371,7 +373,7 @@ class _DietHomeState extends State<DietHome> {
                               Row(
                                 children: [
                                   const Text(
-                                    "Routines",
+                                    "Diet Plans",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 24),
@@ -393,7 +395,7 @@ class _DietHomeState extends State<DietHome> {
                                     child: const Padding(
                                       padding: EdgeInsets.all(6.0),
                                       child: Text(
-                                        "Add Routine",
+                                        "Add Diet Plan",
                                         style: TextStyle(
                                             fontSize: 18, color: Colors.white),
                                       ),
@@ -407,7 +409,7 @@ class _DietHomeState extends State<DietHome> {
                               recommendedDiets.isEmpty
                                   ? const Center(
                                       child: Text(
-                                        "No Diet Group",
+                                        "No Diet Plans",
                                         style: TextStyle(
                                           fontSize: 24,
                                           fontWeight: FontWeight.bold,
@@ -472,11 +474,12 @@ class _DietHomeState extends State<DietHome> {
                           width: 32,
                         ),
                         Expanded(
+                          flex: 2,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
-                                "Nutrient Data for Selected Diet Group",
+                                "Food Items for Selected Diet Plan",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 24),
                               ),
@@ -486,7 +489,7 @@ class _DietHomeState extends State<DietHome> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "Selected: ${typeBreif[selecetedRecommendedDiet!.type!]}",
+                                          "Selected: ${selecetedRecommendedDiet!.name!}",
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold),
                                         ),
@@ -517,7 +520,7 @@ class _DietHomeState extends State<DietHome> {
                                       ],
                                     )
                                   : const Text(
-                                      "Select a Diet Group to add/show the Nutrient Data",
+                                      "Select a Diet plan to add/show the Food items data",
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold),
                                     ),
@@ -541,47 +544,47 @@ class _DietHomeState extends State<DietHome> {
                                       : ListView.builder(
                                           shrinkWrap: true,
                                           itemBuilder: (context, index) {
-                                            return FoodItemCard(
+                                            return DietItemCard(
                                               recommendedDietItem:
                                                   selecetedRecommendedDiet!
                                                       .items![index],
                                               onEdit: () async {
-                                                setState(() {
-                                                  qunatityController.text =
-                                                      selecetedRecommendedDiet!
-                                                              .items![index]
-                                                              .quantity ??
-                                                          "1";
-                                                  instructionController.text =
-                                                      selecetedRecommendedDiet!
-                                                              .items![index]
-                                                              .cookingInstruction ??
-                                                          "N/A";
-                                                });
-                                                await showDialog(
-                                                  context: context,
-                                                  builder: (context) =>
-                                                      editFoodDialogBoxPopup(
-                                                    selecetedRecommendedDiet!
-                                                        .items![index],
-                                                  ),
-                                                );
-                                                await getInitData();
+                                                // setState(() {
+                                                //   qunatityController.text =
+                                                //       selecetedRecommendedDiet!
+                                                //               .items![index]
+                                                //               .quantity ??
+                                                //           "1";
+                                                //   instructionController.text =
+                                                //       selecetedRecommendedDiet!
+                                                //               .items![index]
+                                                //               .cookingInstruction ??
+                                                //           "N/A";
+                                                // });
+                                                // await showDialog(
+                                                //   context: context,
+                                                //   builder: (context) =>
+                                                //       editFoodDialogBoxPopup(
+                                                //     selecetedRecommendedDiet!
+                                                //         .items![index],
+                                                //   ),
+                                                // );
+                                                // await getInitData();
                                               },
                                               onRemove: () async {
-                                                bool resp = await DietService
-                                                    .removeRecommendedDietItem(
-                                                  selecetedRecommendedDiet!
-                                                      .items![index].id,
-                                                );
-                                                if (resp) {
-                                                  await getInitData();
-                                                } else {
-                                                  Fluttertoast.showToast(
-                                                    msg:
-                                                        "Something Went Wrong Please Try Again",
-                                                  );
-                                                }
+                                                // bool resp = await DietService
+                                                //     .removeRecommendedDietItem(
+                                                //   selecetedRecommendedDiet!
+                                                //       .items![index].id,
+                                                // );
+                                                // if (resp) {
+                                                //   await getInitData();
+                                                // } else {
+                                                //   Fluttertoast.showToast(
+                                                //     msg:
+                                                //         "Something Went Wrong Please Try Again",
+                                                //   );
+                                                // }
                                               },
                                             );
                                           },
@@ -714,27 +717,27 @@ class _DietHomeState extends State<DietHome> {
                                         title: const Text("Add Food Item"),
                                         content: Column(
                                           children: [
-                                            FoodItemCard(
-                                              showMenu: false,
-                                              onEdit: () {},
-                                              onRemove: () {},
-                                              recommendedDietItem:
-                                                  RecommendedDietItem(
-                                                      id: filterdFoodItems[
-                                                              index]
-                                                          .id,
-                                                      quantity: filterdFoodItems[
-                                                              index]
-                                                          .recomendedQuantity,
-                                                      foodItem:
-                                                          filterdFoodItems[
-                                                              index],
-                                                      cookingInstruction:
-                                                          recipeController.text,
-                                                      otherInstruction:
-                                                          instructionController
-                                                              .text),
-                                            ),
+                                            // FoodItemCard(
+                                            //   showMenu: false,
+                                            //   onEdit: () {},
+                                            //   onRemove: () {},
+                                            //   recommendedDietItem:
+                                            //       RecommendedDietItem(
+                                            //           id: filterdFoodItems[
+                                            //                   index]
+                                            //               .id,
+                                            //           quantity: filterdFoodItems[
+                                            //                   index]
+                                            //               .recomendedQuantity,
+                                            //           foodItem:
+                                            //               filterdFoodItems[
+                                            //                   index],
+                                            //           cookingInstruction:
+                                            //               recipeController.text,
+                                            //           otherInstruction:
+                                            //               instructionController
+                                            //                   .text),
+                                            // ),
                                             const SizedBox(
                                               height: 12,
                                             ),
@@ -1024,12 +1027,12 @@ class _DietHomeState extends State<DietHome> {
         title: const Text("Add Food Item"),
         content: Column(
           children: [
-            FoodItemCard(
-              showMenu: false,
-              onEdit: () {},
-              onRemove: () {},
-              recommendedDietItem: recommendedDietItem,
-            ),
+            // FoodItemCard(
+            //   showMenu: false,
+            //   onEdit: () {},
+            //   onRemove: () {},
+            //   recommendedDietItem: recommendedDietItem,
+            // ),
             const SizedBox(
               height: 12,
             ),

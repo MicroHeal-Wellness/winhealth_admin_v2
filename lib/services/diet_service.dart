@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:winhealth_admin_v2/models/diet_model.dart';
 import 'package:winhealth_admin_v2/models/food_item.dart';
 import 'package:winhealth_admin_v2/models/recommended_diet.dart';
 import 'package:winhealth_admin_v2/services/base_service.dart';
@@ -11,20 +12,19 @@ class DietService {
     'evening': 2,
     'night': 3,
   };
-  static Future<List<RecommendedDiet>> getRecommendedDietByPatientID(
+  static Future<List<DietModel>> getRecommendedDietByPatientID(
       String patinetId) async {
     final response = await BaseService.makeAuthenticatedRequest(
-      '${BaseService.BASE_URL}/items/recommended_diet?fields=*,items.recommended_diet_item_id.*,items.recommended_diet_item_id.food_item.*,user_created.*,user_updated.*&filter[patient][_eq]=$patinetId',
+      '${BaseService.BASE_URL}/items/diet?fields=*,items.diet_item_id.*,items.diet_item_id.food_item.*,items.diet_item_id.food_item.ingredients.food_recipe_item_id.*,items.diet_item_id.food_item.ingredients.food_recipe_item_id.item.*&filter[patient][_eq]=$patinetId&sort[]=name',
       method: 'GET',
     );
     if (response.statusCode == 200) {
-      final List<RecommendedDiet> data = [];
+      final List<DietModel> data = [];
       var responseJson = json.decode(response.body);
       for (final appointment in responseJson['data']) {
-        data.add(RecommendedDiet.fromJson(appointment));
+        data.add(DietModel.fromJson(appointment));
       }
-      data.sort(
-          (a, b) => typeRankList[a.type!].compareTo(typeRankList[b.type!]));
+      // data.sort((a, b) => typeRankList[a.name].compareTo(typeRankList[b.name]));
       return data;
     } else {
       return [];
@@ -45,7 +45,7 @@ class DietService {
 
   static Future<bool> removeRecommendedDietGroup(id) async {
     final response = await BaseService.makeAuthenticatedRequest(
-      '${BaseService.BASE_URL}/items/recommended_diet/$id',
+      '${BaseService.BASE_URL}/items/diet/$id',
       method: 'DELETE',
     );
     if (response.statusCode == 204) {
