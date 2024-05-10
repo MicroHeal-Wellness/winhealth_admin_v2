@@ -33,7 +33,7 @@ class DietService {
 
   static Future<bool> addRecommendedDietGroup(payload) async {
     final response = await BaseService.makeAuthenticatedRequest(
-        '${BaseService.BASE_URL}/items/recommended_diet',
+        '${BaseService.BASE_URL}/items/diet',
         method: 'POST',
         body: jsonEncode(payload));
     if (response.statusCode == 200) {

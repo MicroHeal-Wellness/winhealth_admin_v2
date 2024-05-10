@@ -36,6 +36,7 @@ class _DietHomeState extends State<DietHome> {
   TextEditingController qunatityController = TextEditingController(text: "");
   TextEditingController instructionController = TextEditingController(text: "");
   TextEditingController recipeController = TextEditingController(text: "");
+  TextEditingController dietPlanController = TextEditingController(text: "");
   @override
   void initState() {
     scrollController.addListener(() {
@@ -71,21 +72,6 @@ class _DietHomeState extends State<DietHome> {
       loading = false;
     });
   }
-
-  var typeBreif = {
-    'morning': 'Mornning 8 AM - 11 AM',
-    'afternoon': 'Afternoon 12 PM - 2 PM',
-    'evening': 'Evening 5 PM - 7 PM',
-    'night': 'Night 8 PM - 11 PM',
-  };
-  List<String> typeList = [
-    'morning',
-    'afternoon',
-    'evening',
-    'night',
-  ];
-
-  String selectedType = 'morning';
 
   double maxKcal = 0;
   double eatenKcal = 0;
@@ -1200,13 +1186,13 @@ class _DietHomeState extends State<DietHome> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
-        title: const Text("Add Routine"),
+        title: const Text("Add Diet Plan"),
         content: Column(
           children: [
             const Align(
               alignment: Alignment.topLeft,
               child: Text(
-                'Choose New Routine:',
+                'Diet Plan Name:',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 16,
@@ -1216,48 +1202,43 @@ class _DietHomeState extends State<DietHome> {
             const SizedBox(
               height: 12,
             ),
-            FormField<String>(
-              builder: (FormFieldState<String> state) {
-                return InputDecorator(
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.fromLTRB(12, 10, 20, 20),
-                    errorStyle: const TextStyle(
-                        color: Colors.redAccent, fontSize: 16.0),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
+            TextFormField(
+              controller: dietPlanController,
+              style: const TextStyle(color: Colors.black),
+              decoration: const InputDecoration(
+                hintText: 'Diet Plan Name:',
+                hintStyle: TextStyle(
+                  color: Colors.black,
+                ),
+                fillColor: Colors.transparent,
+                filled: true,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10.0),
                   ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      style: const TextStyle(
-                        fontSize: 16,
-                      ),
-                      hint: const Text(
-                        "Choose New Routine",
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 16,
-                        ),
-                      ),
-                      items: typeList
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem(
-                          value: value,
-                          child: Text(typeBreif[value]!),
-                        );
-                      }).toList(),
-                      isExpanded: true,
-                      isDense: true,
-                      onChanged: (String? newSelected) {
-                        setState(() {
-                          selectedType = newSelected!;
-                        });
-                      },
-                      value: selectedType,
-                    ),
+                  borderSide: BorderSide(
+                    color: Colors.black,
                   ),
-                );
-              },
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    width: 1,
+                    color: Colors.black,
+                  ),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10.0),
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    width: 1,
+                    color: Colors.grey,
+                  ),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10.0),
+                  ),
+                ),
+              ),
             ),
             const SizedBox(
               height: 12,
@@ -1266,7 +1247,7 @@ class _DietHomeState extends State<DietHome> {
               onPressed: () async {
                 bool resp = await DietService.addRecommendedDietGroup({
                   "patient": widget.patient.id,
-                  "type": selectedType,
+                  "name": dietPlanController.text,
                 });
                 if (resp) {
                   Navigator.of(context).pop();
@@ -1289,7 +1270,7 @@ class _DietHomeState extends State<DietHome> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  "Add Routine for ${widget.patient.firstName}",
+                  "Create Diet Plan for ${widget.patient.firstName}",
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,

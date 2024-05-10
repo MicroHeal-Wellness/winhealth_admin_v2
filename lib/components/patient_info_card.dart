@@ -16,10 +16,11 @@ import 'package:winhealth_admin_v2/utils/constants.dart';
 class PatientInfoCard extends StatefulWidget {
   final UserModel patient;
   final UserModel currentUser;
-  const PatientInfoCard(
-      {super.key,
-      required this.patient,
-      required this.currentUser,});
+  const PatientInfoCard({
+    super.key,
+    required this.patient,
+    required this.currentUser,
+  });
 
   @override
   State<PatientInfoCard> createState() => _PatientInfoCardState();
@@ -100,7 +101,6 @@ class _PatientInfoCardState extends State<PatientInfoCard> {
                     );
                   },
                   menuChildren: [
-                    
                     MenuItemButton(
                       style: const ButtonStyle(
                         backgroundColor: MaterialStatePropertyAll(Colors.white),
@@ -308,7 +308,7 @@ class _PatientInfoCardState extends State<PatientInfoCard> {
                   ),
                 ),
                 Text(
-                  "+91 ${widget.patient.phoneNumber}",
+                  widget.patient.phoneNumber!,
                   style: const TextStyle(
                     fontSize: 16,
                   ),

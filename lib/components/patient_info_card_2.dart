@@ -425,7 +425,7 @@ class _PatientInfoCardState extends State<PatientInfoCard2> {
                   ),
                 ),
                 Text(
-                  "+91 ${widget.patient.phoneNumber}",
+                  widget.patient.phoneNumber!,
                   style: const TextStyle(
                     fontSize: 16,
                   ),
