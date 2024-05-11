@@ -6,11 +6,15 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:winhealth_admin_v2/components/diet_item_card.dart';
 import 'package:winhealth_admin_v2/components/food_item_card.dart';
 import 'package:winhealth_admin_v2/components/food_item_info_card.dart';
+import 'package:winhealth_admin_v2/components/food_recipie_info_card.dart';
 import 'package:winhealth_admin_v2/components/recommended_diet_card.dart';
+import 'package:winhealth_admin_v2/models/diet_item_model.dart';
 import 'package:winhealth_admin_v2/models/diet_model.dart';
 import 'package:winhealth_admin_v2/models/food_item.dart';
+import 'package:winhealth_admin_v2/models/food_item_model.dart';
 import 'package:winhealth_admin_v2/models/recommended_diet.dart';
 import 'package:winhealth_admin_v2/models/user_model.dart';
+import 'package:winhealth_admin_v2/screens/patient_screens/new_recipie_screen.dart';
 import 'package:winhealth_admin_v2/services/diet_service.dart';
 import 'package:winhealth_admin_v2/utils/constants.dart';
 
@@ -30,12 +34,13 @@ class _DietHomeState extends State<DietHome> {
   bool searchLoading = false;
 
   List<DietModel> recommendedDiets = [];
-  List<FoodItem> filterdFoodItems = [];
+  List<FoodItemModel> filterdFoodRecipieItems = [];
   DietModel? selecetedRecommendedDiet;
   TextEditingController searchController = TextEditingController();
   TextEditingController qunatityController = TextEditingController(text: "");
   TextEditingController instructionController = TextEditingController(text: "");
-  TextEditingController recipeController = TextEditingController(text: "");
+  TextEditingController specialNotesController =
+      TextEditingController(text: "");
   TextEditingController dietPlanController = TextEditingController(text: "");
   @override
   void initState() {
@@ -437,6 +442,7 @@ class _DietHomeState extends State<DietHome> {
                                                     recommendedDiets[index]
                                                         .id) {
                                               setState(() {
+                                                specialNotesController.clear();
                                                 selecetedRecommendedDiet = null;
                                                 showNotes = !showNotes;
                                               });
@@ -444,6 +450,10 @@ class _DietHomeState extends State<DietHome> {
                                               setState(() {
                                                 selecetedRecommendedDiet =
                                                     recommendedDiets[index];
+                                                specialNotesController.text =
+                                                    recommendedDiets[index]
+                                                            .specialNotes ??
+                                                        "";
                                                 showNotes = !showNotes;
                                               });
                                             }
@@ -464,28 +474,30 @@ class _DietHomeState extends State<DietHome> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                "Food Items for Selected Diet Plan",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 24),
-                              ),
                               showNotes
                                   ? Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
                                         Text(
-                                          "Selected: ${selecetedRecommendedDiet!.name!}",
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold),
+                                          "Food Items for Diet Plan: ${selecetedRecommendedDiet!.name!}",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 24),
                                         ),
                                         MaterialButton(
                                           onPressed: () async {
-                                            await showDialog(
-                                              context: context,
-                                              builder: (context) =>
-                                                  addFoodDialogBoxPopup(),
-                                            );
+                                            await DietService
+                                                .updateRecommendedDietGroup(
+                                                    selecetedRecommendedDiet!
+                                                        .id,
+                                                    {
+                                                  "special_notes":
+                                                      specialNotesController
+                                                          .text,
+                                                });
                                             await getInitData();
                                           },
                                           color: primaryColor,
@@ -496,7 +508,7 @@ class _DietHomeState extends State<DietHome> {
                                           child: const Padding(
                                             padding: EdgeInsets.all(6.0),
                                             child: Text(
-                                              "Add Food Item",
+                                              "Update Special Notes",
                                               style: TextStyle(
                                                   fontSize: 18,
                                                   color: Colors.white),
@@ -517,10 +529,97 @@ class _DietHomeState extends State<DietHome> {
                                     ),
                               !showNotes
                                   ? const SizedBox()
+                                  : const Text(
+                                      "Diet Plan Notes",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                              !showNotes
+                                  ? const SizedBox()
+                                  : TextFormField(
+                                      controller: specialNotesController,
+                                      style:
+                                          const TextStyle(color: Colors.black),
+                                      minLines: 5,
+                                      maxLines: 10,
+                                      decoration: const InputDecoration(
+                                        hintText: 'Diet Plan Special Notes:',
+                                        hintStyle: TextStyle(
+                                          color: Colors.black,
+                                        ),
+                                        fillColor: Colors.transparent,
+                                        filled: true,
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0),
+                                          ),
+                                          borderSide: BorderSide(
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            width: 1,
+                                            color: Colors.black,
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0),
+                                          ),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            width: 1,
+                                            color: Colors.grey,
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                              !showNotes
+                                  ? const SizedBox()
+                                  : const SizedBox(
+                                      height: 16,
+                                    ),
+                              !showNotes
+                                  ? const SizedBox()
+                                  : MaterialButton(
+                                      onPressed: () async {
+                                        await showDialog(
+                                          context: context,
+                                          builder: (context) =>
+                                              addFoodDialogBoxPopup(),
+                                        );
+                                        await getInitData();
+                                      },
+                                      color: primaryColor,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: const Padding(
+                                        padding: EdgeInsets.all(6.0),
+                                        child: Text(
+                                          "Add Food Item",
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                              !showNotes
+                                  ? const SizedBox()
+                                  : const SizedBox(
+                                      height: 16,
+                                    ),
+                              !showNotes
+                                  ? const SizedBox()
                                   : selecetedRecommendedDiet!.items!.isEmpty
                                       ? const Center(
                                           child: Text(
-                                            "No Recommended Diet",
+                                            "No Diet items in selected Diet Plan",
                                             style: TextStyle(
                                               fontSize: 24,
                                               fontWeight: FontWeight.bold,
@@ -535,42 +634,44 @@ class _DietHomeState extends State<DietHome> {
                                                   selecetedRecommendedDiet!
                                                       .items![index],
                                               onEdit: () async {
-                                                // setState(() {
-                                                //   qunatityController.text =
-                                                //       selecetedRecommendedDiet!
-                                                //               .items![index]
-                                                //               .quantity ??
-                                                //           "1";
-                                                //   instructionController.text =
-                                                //       selecetedRecommendedDiet!
-                                                //               .items![index]
-                                                //               .cookingInstruction ??
-                                                //           "N/A";
-                                                // });
-                                                // await showDialog(
-                                                //   context: context,
-                                                //   builder: (context) =>
-                                                //       editFoodDialogBoxPopup(
-                                                //     selecetedRecommendedDiet!
-                                                //         .items![index],
-                                                //   ),
-                                                // );
-                                                // await getInitData();
+                                                setState(() {
+                                                  qunatityController.text =
+                                                      (selecetedRecommendedDiet!
+                                                                  .items![index]
+                                                                  .quantity ??
+                                                              1)
+                                                          .toString();
+                                                  instructionController.text =
+                                                      selecetedRecommendedDiet!
+                                                              .items![index]
+                                                              .specialInstruction ??
+                                                          "N/A";
+                                                });
+                                                await showDialog(
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      editFoodDialogBoxPopup(
+                                                    selecetedRecommendedDiet!
+                                                        .items![index],
+                                                  ),
+                                                );
+                                                await getInitData();
                                               },
                                               onRemove: () async {
-                                                // bool resp = await DietService
-                                                //     .removeRecommendedDietItem(
-                                                //   selecetedRecommendedDiet!
-                                                //       .items![index].id,
-                                                // );
-                                                // if (resp) {
-                                                //   await getInitData();
-                                                // } else {
-                                                //   Fluttertoast.showToast(
-                                                //     msg:
-                                                //         "Something Went Wrong Please Try Again",
-                                                //   );
-                                                // }
+                                                bool resp = await DietService
+                                                    .removeDietRecipeItem(
+                                                  selecetedRecommendedDiet!.id,
+                                                  selecetedRecommendedDiet!
+                                                      .items![index].id,
+                                                );
+                                                if (resp) {
+                                                  await getInitData();
+                                                } else {
+                                                  Fluttertoast.showToast(
+                                                    msg:
+                                                        "Something Went Wrong Please Try Again",
+                                                  );
+                                                }
                                               },
                                             );
                                           },
@@ -599,17 +700,46 @@ class _DietHomeState extends State<DietHome> {
 
   addFoodDialogBoxPopup() {
     searchController.clear();
-    filterdFoodItems.clear();
+    filterdFoodRecipieItems.clear();
     return StatefulBuilder(builder: (context, setState) {
       return AlertDialog(
         scrollable: true,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
-        title: const Text("Search your food item"),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text("Search your food recipie item"),
+            MaterialButton(
+              onPressed: () async {
+                await Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const NewRecipeScreen(),
+                  ),
+                );
+              },
+              color: primaryColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  "Add New Recipe",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
         content: SizedBox(
           width: MediaQuery.of(context).size.width > 300
-              ? MediaQuery.of(context).size.width * 0.4
+              ? MediaQuery.of(context).size.width * 0.9
               : 300,
           height: MediaQuery.of(context).size.height * 0.9,
           child: SingleChildScrollView(
@@ -620,7 +750,7 @@ class _DietHomeState extends State<DietHome> {
                   controller: searchController,
                   style: const TextStyle(color: Colors.black),
                   decoration: const InputDecoration(
-                    hintText: 'Enter Name of Food Item',
+                    hintText: 'Enter Name of Food Recipie Item',
                     hintStyle: TextStyle(
                       color: Colors.black,
                     ),
@@ -657,8 +787,8 @@ class _DietHomeState extends State<DietHome> {
                     setState(() {
                       searchLoading = true;
                     });
-                    filterdFoodItems =
-                        await DietService.getFoodItemsByQuery(value);
+                    filterdFoodRecipieItems =
+                        await DietService.getFoodRecipeItemsByQuery(value);
                     setState(() {
                       searchLoading = false;
                     });
@@ -672,25 +802,19 @@ class _DietHomeState extends State<DietHome> {
                 ),
                 searchLoading
                     ? const CircularProgressIndicator()
-                    : filterdFoodItems.isEmpty
-                        ? const Text("No Food Items found")
+                    : filterdFoodRecipieItems.isEmpty
+                        ? const Text("No Food Recipe Items found")
                         : Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ListView.builder(
                               shrinkWrap: true,
-                              itemCount: filterdFoodItems.length,
+                              itemCount: filterdFoodRecipieItems.length,
                               itemBuilder: (context, index) {
                                 return GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      qunatityController.text =
-                                          filterdFoodItems[index]
-                                                  .recomendedQuantity ??
-                                              "1";
+                                      qunatityController.text = "1";
                                       instructionController.text = "N/A";
-                                      recipeController.text =
-                                          filterdFoodItems[index].recipe ??
-                                              "N/A";
                                     });
                                     showDialog(
                                       context: context,
@@ -703,35 +827,11 @@ class _DietHomeState extends State<DietHome> {
                                         title: const Text("Add Food Item"),
                                         content: Column(
                                           children: [
-                                            // FoodItemCard(
-                                            //   showMenu: false,
-                                            //   onEdit: () {},
-                                            //   onRemove: () {},
-                                            //   recommendedDietItem:
-                                            //       RecommendedDietItem(
-                                            //           id: filterdFoodItems[
-                                            //                   index]
-                                            //               .id,
-                                            //           quantity: filterdFoodItems[
-                                            //                   index]
-                                            //               .recomendedQuantity,
-                                            //           foodItem:
-                                            //               filterdFoodItems[
-                                            //                   index],
-                                            //           cookingInstruction:
-                                            //               recipeController.text,
-                                            //           otherInstruction:
-                                            //               instructionController
-                                            //                   .text),
-                                            // ),
-                                            const SizedBox(
-                                              height: 12,
-                                            ),
-                                            const Align(
+                                            Align(
                                               alignment: Alignment.topLeft,
                                               child: Text(
-                                                'Updated Recommended Quantity:',
-                                                style: TextStyle(
+                                                'Special Instruction for ${widget.patient.firstName}:',
+                                                style: const TextStyle(
                                                   color: Colors.black,
                                                   fontSize: 16,
                                                 ),
@@ -741,7 +841,7 @@ class _DietHomeState extends State<DietHome> {
                                               height: 12,
                                             ),
                                             TextFormField(
-                                              controller: qunatityController,
+                                              controller: instructionController,
                                               style: const TextStyle(
                                                   color: Colors.black),
                                               decoration: const InputDecoration(
@@ -794,7 +894,7 @@ class _DietHomeState extends State<DietHome> {
                                             const Align(
                                               alignment: Alignment.topLeft,
                                               child: Text(
-                                                'Updated Recommended Recipe:',
+                                                'Qunatity:',
                                                 style: TextStyle(
                                                   color: Colors.black,
                                                   fontSize: 16,
@@ -805,75 +905,12 @@ class _DietHomeState extends State<DietHome> {
                                               height: 12,
                                             ),
                                             TextFormField(
-                                              controller: recipeController,
+                                              controller: qunatityController,
                                               style: const TextStyle(
                                                   color: Colors.black),
                                               decoration: const InputDecoration(
                                                 hintText:
-                                                    'Updated Recommended Recipe:',
-                                                hintStyle: TextStyle(
-                                                  color: Colors.black,
-                                                ),
-                                                fillColor: Colors.transparent,
-                                                filled: true,
-                                                border: OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                    Radius.circular(10.0),
-                                                  ),
-                                                  borderSide: BorderSide(
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                                focusedBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                    width: 1,
-                                                    color: Colors.black,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                    Radius.circular(10.0),
-                                                  ),
-                                                ),
-                                                enabledBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: BorderSide(
-                                                    width: 1,
-                                                    color: Colors.grey,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                    Radius.circular(10.0),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 12,
-                                            ),
-                                            const Align(
-                                              alignment: Alignment.topLeft,
-                                              child: Text(
-                                                'Updated Instructions:',
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 12,
-                                            ),
-                                            TextFormField(
-                                              controller: instructionController,
-                                              minLines: 5,
-                                              maxLines: 10,
-                                              style: const TextStyle(
-                                                  color: Colors.black),
-                                              decoration: const InputDecoration(
-                                                hintText:
-                                                    'Enter updated instructions',
+                                                    'Quantity of the Recipe Item:',
                                                 hintStyle: TextStyle(
                                                   color: Colors.black,
                                                 ),
@@ -918,15 +955,12 @@ class _DietHomeState extends State<DietHome> {
                                             MaterialButton(
                                               onPressed: () async {
                                                 bool resp = await DietService
-                                                    .addRecommendedDietItem({
-                                                  "recommended_diet_id":
+                                                    .addDietRecipeItem({
+                                                  "diet_id":
                                                       selecetedRecommendedDiet!
                                                           .id,
-                                                  "recommended_diet_item_id": {
-                                                    "food_item":
-                                                        filterdFoodItems[index]
-                                                            .id,
-                                                    "other_instruction":
+                                                  "diet_item_id": {
+                                                    "special_instruction":
                                                         instructionController
                                                                 .text.isEmpty
                                                             ? "N/A"
@@ -938,12 +972,10 @@ class _DietHomeState extends State<DietHome> {
                                                             ? "N/A"
                                                             : qunatityController
                                                                 .text,
-                                                    "cooking_instruction":
-                                                        recipeController
-                                                                .text.isEmpty
-                                                            ? "N/A"
-                                                            : recipeController
-                                                                .text,
+                                                    "food_item":
+                                                        filterdFoodRecipieItems[
+                                                                index]
+                                                            .id,
                                                   }
                                                 });
                                                 if (resp) {
@@ -974,7 +1006,7 @@ class _DietHomeState extends State<DietHome> {
                                                 padding:
                                                     const EdgeInsets.all(8.0),
                                                 child: Text(
-                                                  "Add Item for ${widget.patient.firstName}",
+                                                  "Add Recipie Item for ${widget.patient.firstName}",
                                                   style: const TextStyle(
                                                     fontSize: 20,
                                                     fontWeight: FontWeight.bold,
@@ -988,8 +1020,9 @@ class _DietHomeState extends State<DietHome> {
                                       ),
                                     );
                                   },
-                                  child: FoodItemInfoCard(
-                                    foodItem: filterdFoodItems[index],
+                                  child: FoodRecipieInfoCard(
+                                    foodRecipieItem:
+                                        filterdFoodRecipieItems[index],
                                   ),
                                 );
                               },
@@ -1003,30 +1036,21 @@ class _DietHomeState extends State<DietHome> {
     });
   }
 
-  editFoodDialogBoxPopup(RecommendedDietItem recommendedDietItem) {
+  editFoodDialogBoxPopup(DietItemModel dietRecipeItem) {
     return StatefulBuilder(builder: (context, setState) {
       return AlertDialog(
         scrollable: true,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
-        title: const Text("Add Food Item"),
+        title: const Text("Edit Diet Item"),
         content: Column(
           children: [
-            // FoodItemCard(
-            //   showMenu: false,
-            //   onEdit: () {},
-            //   onRemove: () {},
-            //   recommendedDietItem: recommendedDietItem,
-            // ),
-            const SizedBox(
-              height: 12,
-            ),
-            const Align(
+            Align(
               alignment: Alignment.topLeft,
               child: Text(
-                'Updated Recommended Quantity:',
-                style: TextStyle(
+                'Special Instruction for ${widget.patient.firstName}:',
+                style: const TextStyle(
                   color: Colors.black,
                   fontSize: 16,
                 ),
@@ -1036,7 +1060,7 @@ class _DietHomeState extends State<DietHome> {
               height: 12,
             ),
             TextFormField(
-              controller: qunatityController,
+              controller: instructionController,
               style: const TextStyle(color: Colors.black),
               decoration: const InputDecoration(
                 hintText: 'Updated Recommended Quantity:',
@@ -1076,10 +1100,13 @@ class _DietHomeState extends State<DietHome> {
             const SizedBox(
               height: 12,
             ),
+            const SizedBox(
+              height: 12,
+            ),
             const Align(
               alignment: Alignment.topLeft,
               child: Text(
-                'Updated Instructions:',
+                'Qunatity:',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 16,
@@ -1090,12 +1117,10 @@ class _DietHomeState extends State<DietHome> {
               height: 12,
             ),
             TextFormField(
-              controller: instructionController,
-              minLines: 5,
-              maxLines: 10,
+              controller: qunatityController,
               style: const TextStyle(color: Colors.black),
               decoration: const InputDecoration(
-                hintText: 'Enter updated instructions',
+                hintText: 'Quantity of the Recipe Item:',
                 hintStyle: TextStyle(
                   color: Colors.black,
                 ),
@@ -1134,14 +1159,14 @@ class _DietHomeState extends State<DietHome> {
             ),
             MaterialButton(
               onPressed: () async {
-                bool resp = await DietService.udpateRecommendedDietItem({
-                  "cooking_instruction": instructionController.text.isEmpty
+                bool resp = await DietService.udpateDietRecipeItem({
+                  "special_instruction": instructionController.text.isEmpty
                       ? "N/A"
                       : instructionController.text,
                   "quantity": qunatityController.text.isEmpty
                       ? "N/A"
                       : qunatityController.text,
-                }, selecetedRecommendedDiet!.id);
+                }, dietRecipeItem.id);
                 if (resp) {
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
@@ -1164,7 +1189,7 @@ class _DietHomeState extends State<DietHome> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  "Add Item for ${widget.patient.firstName}",
+                  "Update Item for ${widget.patient.firstName}",
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -1180,6 +1205,8 @@ class _DietHomeState extends State<DietHome> {
   }
 
   addRoutuineDialogBoxPopup() {
+    dietPlanController.clear();
+    specialNotesController.clear();
     return StatefulBuilder(builder: (context, setState) {
       return AlertDialog(
         scrollable: true,
@@ -1243,11 +1270,55 @@ class _DietHomeState extends State<DietHome> {
             const SizedBox(
               height: 12,
             ),
+            TextFormField(
+              controller: specialNotesController,
+              style: const TextStyle(color: Colors.black),
+              minLines: 5,
+              maxLines: 10,
+              decoration: const InputDecoration(
+                hintText: 'Diet Plan Special Notes:',
+                hintStyle: TextStyle(
+                  color: Colors.black,
+                ),
+                fillColor: Colors.transparent,
+                filled: true,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10.0),
+                  ),
+                  borderSide: BorderSide(
+                    color: Colors.black,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    width: 1,
+                    color: Colors.black,
+                  ),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10.0),
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    width: 1,
+                    color: Colors.grey,
+                  ),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10.0),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 12,
+            ),
             MaterialButton(
               onPressed: () async {
                 bool resp = await DietService.addRecommendedDietGroup({
                   "patient": widget.patient.id,
                   "name": dietPlanController.text,
+                  "special_notes": specialNotesController.text,
                 });
                 if (resp) {
                   Navigator.of(context).pop();

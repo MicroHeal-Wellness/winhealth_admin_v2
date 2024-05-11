@@ -13,6 +13,7 @@ class DietModel {
     dynamic userUpdated;
     dynamic dateUpdated;
     String? patient;
+    String? specialNotes;
     String? name;
     List<DietItemModel>? items;
 
@@ -23,6 +24,7 @@ class DietModel {
         this.userUpdated,
         this.dateUpdated,
         this.patient,
+        this.specialNotes,
         this.name,
         this.items,
     });
@@ -34,6 +36,7 @@ class DietModel {
         userUpdated: json["user_updated"],
         dateUpdated: json["date_updated"],
         patient: json["patient"],
+        specialNotes: json["special_notes"],
         name: json["name"],
         items: json["items"] == null ? [] : List<DietItemModel>.from(json["items"]!.map((x) => DietItemModel.fromJson(x["diet_item_id"]))),
     );
@@ -45,6 +48,7 @@ class DietModel {
         "user_updated": userUpdated,
         "date_updated": dateUpdated,
         "patient": patient,
+        "special_notes": specialNotes,
         "name": name,
         "items": items == null ? [] : List<dynamic>.from(items!.map((x) => x.toJson())),
     };

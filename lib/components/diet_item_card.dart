@@ -1,14 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:winhealth_admin_v2/models/diet_item_model.dart';
-import 'package:winhealth_admin_v2/models/recommended_diet.dart';
-
-var typeBreif = {
-  'breakfast': 'Breakfast',
-  'lunchanddinner': 'Lunch and Dinner',
-  'snacks': 'Snacks',
-  'junkfoods': 'Junk Foods',
-  'others': 'Others',
-};
 
 class DietItemCard extends StatelessWidget {
   final DietItemModel recommendedDietItem;
@@ -49,7 +40,6 @@ class DietItemCard extends StatelessWidget {
                             }
                           },
                           icon: const Icon(Icons.more_horiz),
-                          tooltip: 'Show menu',
                         );
                       },
                       menuChildren: [

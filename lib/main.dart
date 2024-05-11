@@ -6,7 +6,7 @@ import 'provider/question_provider.dart';
 import 'provider/sidebar_provvider.dart';
 import 'screens/pre/intial_router.dart';
 
-void main()  {
+void main() {
   runApp(
     MultiProvider(
       providers: [
