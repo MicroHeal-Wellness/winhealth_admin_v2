@@ -121,21 +121,122 @@ class _DietHomeState extends State<DietHome> {
     });
   }
 
+  double genDoubleValue(String val) {
+    if (val.contains("±")) {
+      return double.parse(val.split("±").first);
+    } else {
+      return double.parse(val);
+    }
+  }
+
   void genNutrientValue() {
     genNutrientLimits();
     eatenKcal = 0;
     eatencarbs = 0;
     eatenProtien = 0;
     eatenFat = 0;
-    // for (int i = 0; i < recommendedDiets.length; i++) {
-    //   for (int j = 0; j < recommendedDiets[i].items!.length; j++) {
-    //     eatenKcal += recommendedDiets[i].items![j].foodItem!.energy!;
-    //     eatencarbs += recommendedDiets[i].items![j].foodItem!.cho!;
-    //     eatenProtien += recommendedDiets[i].items![j].foodItem!.protien!;
-    //     eatenFat += recommendedDiets[i].items![j].foodItem!.saturatedFats ?? 0;
-    //     eatenFat += recommendedDiets[i].items![j].foodItem!.unsaturatedFats ?? 0;
-    //   }
-    // }
+    if (showNotes) {
+      for (int i = 0; i < recommendedDiets.length; i++) {
+        for (int j = 0; j < recommendedDiets[i].items!.length; j++) {
+          for (int k = 0;
+              k < recommendedDiets[i].items![j].foodItem!.ingredients!.length;
+              k++) {
+            eatenKcal += genDoubleValue(recommendedDiets[i]
+                    .items![j]
+                    .foodItem!
+                    .ingredients![k]
+                    .item!
+                    .energyKcal!) *
+                ((int.parse(recommendedDiets[i]
+                            .items![j]
+                            .foodItem!
+                            .ingredients![k]
+                            .standardizedCup!
+                            .standardizedValue!) *
+                        recommendedDiets[i]
+                            .items![j]
+                            .foodItem!
+                            .ingredients![k]
+                            .quantity!) /
+                    (int.parse(recommendedDiets[i]
+                        .items![j]
+                        .foodItem!
+                        .ingredients![k]
+                        .item!
+                        .baseQuantity!)));
+            eatencarbs += genDoubleValue(recommendedDiets[i]
+                    .items![j]
+                    .foodItem!
+                    .ingredients![k]
+                    .item!
+                    .carbohydrates!) *
+                ((int.parse(recommendedDiets[i]
+                            .items![j]
+                            .foodItem!
+                            .ingredients![k]
+                            .standardizedCup!
+                            .standardizedValue!) *
+                        recommendedDiets[i]
+                            .items![j]
+                            .foodItem!
+                            .ingredients![k]
+                            .quantity!) /
+                    (int.parse(recommendedDiets[i]
+                        .items![j]
+                        .foodItem!
+                        .ingredients![k]
+                        .item!
+                        .baseQuantity!)));
+            eatenProtien += genDoubleValue(recommendedDiets[i]
+                    .items![j]
+                    .foodItem!
+                    .ingredients![k]
+                    .item!
+                    .protein!) *
+                ((int.parse(recommendedDiets[i]
+                            .items![j]
+                            .foodItem!
+                            .ingredients![k]
+                            .standardizedCup!
+                            .standardizedValue!) *
+                        recommendedDiets[i]
+                            .items![j]
+                            .foodItem!
+                            .ingredients![k]
+                            .quantity!) /
+                    (int.parse(recommendedDiets[i]
+                        .items![j]
+                        .foodItem!
+                        .ingredients![k]
+                        .item!
+                        .baseQuantity!)));
+            eatenFat += genDoubleValue(recommendedDiets[i]
+                    .items![j]
+                    .foodItem!
+                    .ingredients![k]
+                    .item!
+                    .totalFat!) *
+                ((int.parse(recommendedDiets[i]
+                            .items![j]
+                            .foodItem!
+                            .ingredients![k]
+                            .standardizedCup!
+                            .standardizedValue!) *
+                        recommendedDiets[i]
+                            .items![j]
+                            .foodItem!
+                            .ingredients![k]
+                            .quantity!) /
+                    (int.parse(recommendedDiets[i]
+                        .items![j]
+                        .foodItem!
+                        .ingredients![k]
+                        .item!
+                        .baseQuantity!)));
+          }
+        }
+      }
+    }
     setState(() {
       eatenKcal = double.parse(eatenKcal.toStringAsFixed(2));
       eatencarbs = double.parse(eatencarbs.toStringAsFixed(2));
@@ -146,7 +247,7 @@ class _DietHomeState extends State<DietHome> {
 
   @override
   Widget build(BuildContext context) {
-    // genNutrientValue();
+    genNutrientValue();
     return Scaffold(
       backgroundColor: Colors.grey.shade100.withOpacity(0.4),
       floatingActionButton: AnimatedOpacity(
@@ -239,7 +340,9 @@ class _DietHomeState extends State<DietHome> {
                                           ),
                                           const SizedBox(height: 8.0),
                                           Text(
-                                            "$eatencarbs g / $maxcarbs g",
+                                            !showNotes
+                                                ? "0 g / 0 g"
+                                                : "$eatencarbs g / $maxcarbs g",
                                             style: const TextStyle(
                                               fontSize: 18,
                                               color: Colors.grey,
@@ -257,7 +360,9 @@ class _DietHomeState extends State<DietHome> {
                                           ),
                                           const SizedBox(height: 8.0),
                                           Text(
-                                            "$eatenProtien g / $maxProtien g",
+                                            !showNotes
+                                                ? "0 g / 0 g"
+                                                : "$eatenProtien g / $maxProtien g",
                                             style: const TextStyle(
                                               fontSize: 18,
                                               color: Colors.grey,
@@ -275,7 +380,9 @@ class _DietHomeState extends State<DietHome> {
                                           ),
                                           const SizedBox(height: 8.0),
                                           Text(
-                                            "$eatenFat g / $maxFat g",
+                                            !showNotes
+                                                ? "0 g / 0 g"
+                                                : "$eatenFat g / $maxFat g",
                                             style: const TextStyle(
                                               fontSize: 18,
                                               color: Colors.grey,
@@ -299,8 +406,10 @@ class _DietHomeState extends State<DietHome> {
                                               MainAxisAlignment.center,
                                           children: [
                                             Text(
-                                              (maxKcal - eatenKcal)
-                                                  .toStringAsFixed(2),
+                                              !showNotes
+                                                  ? "0"
+                                                  : (maxKcal - eatenKcal)
+                                                      .toStringAsFixed(2),
                                               style: const TextStyle(
                                                   color: Colors.grey,
                                                   fontSize: 20),
@@ -328,7 +437,9 @@ class _DietHomeState extends State<DietHome> {
                                           ),
                                           const SizedBox(height: 8.0),
                                           Text(
-                                            "$eatenKcal Kcal",
+                                            !showNotes
+                                                ? "0 Kcal"
+                                                : "$eatenKcal Kcal",
                                             style: const TextStyle(
                                               fontSize: 20,
                                               color: Colors.grey,
@@ -345,7 +456,9 @@ class _DietHomeState extends State<DietHome> {
                                           ),
                                           const SizedBox(height: 8.0),
                                           Text(
-                                            "$maxKcal Kcal",
+                                            !showNotes
+                                                ? "0 Kcal"
+                                                : "$maxKcal Kcal",
                                             style: const TextStyle(
                                               fontSize: 20,
                                               color: Colors.grey,

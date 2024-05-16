@@ -4,6 +4,7 @@ import 'package:winhealth_admin_v2/components/patient_info_card_2.dart';
 import 'package:winhealth_admin_v2/models/answer.dart';
 import 'package:winhealth_admin_v2/models/patient_group.dart';
 import 'package:winhealth_admin_v2/models/user_model.dart';
+import 'package:winhealth_admin_v2/screens/patient_screens/diet_home.dart';
 import 'package:winhealth_admin_v2/services/partner_group_service.dart';
 import 'package:winhealth_admin_v2/services/patient_service.dart';
 import 'package:winhealth_admin_v2/utils/constants.dart';
@@ -95,6 +96,13 @@ class _PatientHomeState extends State<PatientHome> {
       patientGroupId = patientGroups.first.id!;
       loading = false;
     });
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => DietHome(
+          patient: patientList.first,
+        ),
+      ),
+    );
   }
 
   @override

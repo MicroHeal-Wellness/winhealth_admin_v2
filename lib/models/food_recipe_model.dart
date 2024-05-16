@@ -23,7 +23,7 @@ class FoodRecipeModel {
 
     factory FoodRecipeModel.fromJson(Map<String, dynamic> json) => FoodRecipeModel(
         id: json["id"],
-        quantity: json["quantity"],
+        quantity: json["quantity"] ?? 1,
         standardizedCup: json["standardized_cup"] == null ? null : StandardizedCupsModel.fromJson(json["standardized_cup"]),
         item: json["item"] == null ? null : IngredientModel.fromJson(json["item"]),
     );
