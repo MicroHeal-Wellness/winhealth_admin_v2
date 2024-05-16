@@ -417,7 +417,7 @@ class _NewRecipeScreenState extends State<NewRecipeScreen> {
                                                       "food_recipe_item_id": {
                                                         "item": e.item!.id,
                                                         "quantity": e.quantity,
-                                                        "standardized_cup": 1
+                                                        "standardized_cup": e.standardizedCup!.id
                                                       }
                                                     })
                                                 .toList()

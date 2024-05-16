@@ -96,13 +96,6 @@ class _PatientHomeState extends State<PatientHome> {
       patientGroupId = patientGroups.first.id!;
       loading = false;
     });
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => DietHome(
-          patient: patientList.first,
-        ),
-      ),
-    );
   }
 
   @override
