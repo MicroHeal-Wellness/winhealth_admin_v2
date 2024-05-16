@@ -1282,7 +1282,6 @@ class _DietHomeState extends State<DietHome> {
                 }, dietRecipeItem.id);
                 if (resp) {
                   Navigator.of(context).pop();
-                  Navigator.of(context).pop();
                   Fluttertoast.showToast(
                     msg: "Updated Food Item for ${widget.patient.firstName}",
                   );
