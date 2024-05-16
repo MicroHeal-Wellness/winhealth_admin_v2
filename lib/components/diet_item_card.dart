@@ -94,34 +94,6 @@ class DietItemCard extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    // const Text(
-                    //   " Type: ",
-                    //   style: TextStyle(
-                    //     fontSize: 18,
-                    //     fontWeight: FontWeight.w900,
-                    //   ),
-                    // ),
-                    // Text(
-                    //   recommendedDietItem.foodItem!.name!,
-                    //   style: const TextStyle(
-                    //     fontSize: 18,
-                    //     fontWeight: FontWeight.w500,
-                    //   ),
-                    // ),
-                    // const Text(
-                    //   " | FODMAP Type: ",
-                    //   style: TextStyle(
-                    //     fontSize: 18,
-                    //     fontWeight: FontWeight.w900,
-                    //   ),
-                    // ),
-                    // Text(
-                    //   'recommendedDietItem.foodItem!.fodmapType!.toUpperCase()',
-                    //   style: const TextStyle(
-                    //     fontSize: 18,
-                    //     fontWeight: FontWeight.w500,
-                    //   ),
-                    // ),
                   ],
                 ),
                 const Divider(),
@@ -136,7 +108,7 @@ class DietItemCard extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return ExpansionTile(
                       title: Text(
-                        "${recommendedDietItem.foodItem!.ingredients![index].item!.description!} , ${recommendedDietItem.foodItem!.ingredients![index].quantity!} ${recommendedDietItem.foodItem!.ingredients![index].unit}",
+                        "${recommendedDietItem.foodItem!.ingredients![index].item!.description!} x ${recommendedDietItem.foodItem!.ingredients![index].quantity!} (${recommendedDietItem.foodItem!.ingredients![index].standardizedCup!.standardizedCup!}, ${recommendedDietItem.foodItem!.ingredients![index].standardizedCup!.standardizedValue} ${recommendedDietItem.foodItem!.ingredients![index].standardizedCup!.standardizedUnit})",
                         style: const TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 18,

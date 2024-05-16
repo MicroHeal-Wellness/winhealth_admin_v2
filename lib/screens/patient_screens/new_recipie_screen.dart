@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:winhealth_admin_v2/models/food_recipe_model.dart';
 import 'package:winhealth_admin_v2/models/ingredient_model.dart';
+import 'package:winhealth_admin_v2/models/standardized_cups_model.dart';
 import 'package:winhealth_admin_v2/services/diet_service.dart';
 import 'package:winhealth_admin_v2/utils/constants.dart';
 
@@ -23,14 +24,16 @@ class _NewRecipeScreenState extends State<NewRecipeScreen> {
   TextEditingController cookingInstructionController = TextEditingController();
   TextEditingController specialInstrctController = TextEditingController();
   TextEditingController quantityController = TextEditingController();
-  TextEditingController unitController = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   GlobalKey<FormState> recipeFormKey = GlobalKey<FormState>();
   bool searchLoading = false;
   List<FoodRecipeModel> ingredients = [];
   List<IngredientModel> searchFoodItems = [];
+  List<StandardizedCupsModel> standardizedCups = [];
+  StandardizedCupsModel? selectedStandardizedCup;
   DataFilter? selectedDataFilter = DataFilter.ingredients;
   bool showbtn = false;
+  bool loading = false;
   @override
   void initState() {
     scrollController.addListener(() {
@@ -51,6 +54,18 @@ class _NewRecipeScreenState extends State<NewRecipeScreen> {
       }
     });
     super.initState();
+    getInitData();
+  }
+
+  getInitData() async {
+    setState(() {
+      loading = true;
+    });
+    standardizedCups = await DietService.getStandardizedCupList();
+    selectedStandardizedCup = standardizedCups.first;
+    setState(() {
+      loading = false;
+    });
   }
 
   @override
@@ -72,535 +87,164 @@ class _NewRecipeScreenState extends State<NewRecipeScreen> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(32.0),
-        child: SingleChildScrollView(
-          controller: scrollController,
-          child: Column(
-            children: [
-              const Row(
-                children: [
-                  BackButton(),
-                  SizedBox(
-                    width: 32,
-                  ),
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      "Add a new recipe",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              const Divider(),
-              const SizedBox(
-                height: 16,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: Colors.white,
-                            border: Border.all(
-                                color: Colors.grey.withOpacity(0.4))),
-                        padding: const EdgeInsets.all(16),
-                        child: Form(
-                          key: recipeFormKey,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Recipe Name: ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 18,
-                                ),
-                              ),
-                              TextFormField(
-                                controller: nameController,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return "Name is required";
-                                  }
-                                  return null;
-                                },
-                                style: const TextStyle(color: Colors.black),
-                                decoration: const InputDecoration(
-                                  hintText: 'Enter Name of Food Recipie Item',
-                                  hintStyle: TextStyle(
-                                    color: Colors.black,
-                                  ),
-                                  fillColor: Colors.transparent,
-                                  filled: true,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10.0),
-                                    ),
-                                    borderSide: BorderSide(
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1,
-                                      color: Colors.black,
-                                    ),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10.0),
-                                    ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1,
-                                      color: Colors.grey,
-                                    ),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10.0),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const Divider(),
-                              const Text(
-                                "Ingredients: ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 18,
-                                ),
-                              ),
-                              ingredients.isEmpty
-                                  ? const Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Center(
-                                        child: Text("No Ingredients added"),
-                                      ),
-                                    )
-                                  : ListView.builder(
-                                      itemBuilder: (context, index) {
-                                        return ExpansionTile(
-                                          leading: IconButton(
-                                            icon: const Icon(Icons.delete),
-                                            onPressed: () {
-                                              setState(() {
-                                                ingredients.removeAt(index);
-                                              });
-                                            },
-                                          ),
-                                          title: Text(
-                                            "${ingredients[index].item!.description!} X ${ingredients[index].quantity!} ${ingredients[index].unit}",
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 18,
-                                            ),
-                                          ),
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(16.0),
-                                              child: Wrap(
-                                                spacing: 8,
-                                                runSpacing: 8,
-                                                children: ingredients[index]
-                                                    .item!
-                                                    .toJson()
-                                                    .entries
-                                                    .map(
-                                                      (e) => e.value != null
-                                                          ? RichText(
-                                                              text: TextSpan(
-                                                                text:
-                                                                    "${e.key}: ",
-                                                                style:
-                                                                    const TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  fontSize: 18,
-                                                                ),
-                                                                children: <TextSpan>[
-                                                                  TextSpan(
-                                                                    text:
-                                                                        e.value,
-                                                                    style:
-                                                                        const TextStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
-                                                                      fontSize:
-                                                                          18,
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            )
-                                                          : const SizedBox(),
-                                                    )
-                                                    .toList(),
-                                              ),
-                                            )
-                                          ],
-                                        );
-                                      },
-                                      shrinkWrap: true,
-                                      itemCount: ingredients.length,
-                                    ),
-                              const Divider(),
-                              const Text(
-                                "Cooking Instruction: ",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w900,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              TextFormField(
-                                controller: cookingInstructionController,
-                                style: const TextStyle(color: Colors.black),
-                                minLines: 5,
-                                maxLines: 10,
-                                decoration: const InputDecoration(
-                                  hintText:
-                                      'Enter Cooking Instruction of Food Recipie Item',
-                                  hintStyle: TextStyle(
-                                    color: Colors.black,
-                                  ),
-                                  fillColor: Colors.transparent,
-                                  filled: true,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10.0),
-                                    ),
-                                    borderSide: BorderSide(
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1,
-                                      color: Colors.black,
-                                    ),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10.0),
-                                    ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1,
-                                      color: Colors.grey,
-                                    ),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10.0),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              const Text(
-                                "Special Instructions: ",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w900,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              TextFormField(
-                                controller: specialInstrctController,
-                                style: const TextStyle(color: Colors.black),
-                                minLines: 5,
-                                maxLines: 10,
-                                decoration: const InputDecoration(
-                                  hintText:
-                                      'Enter Any Special Instruction of Food Recipie Item',
-                                  hintStyle: TextStyle(
-                                    color: Colors.black,
-                                  ),
-                                  fillColor: Colors.transparent,
-                                  filled: true,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10.0),
-                                    ),
-                                    borderSide: BorderSide(
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1,
-                                      color: Colors.black,
-                                    ),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10.0),
-                                    ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      width: 1,
-                                      color: Colors.grey,
-                                    ),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10.0),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              MaterialButton(
-                                onPressed: () async {
-                                  if (ingredients.isEmpty) {
-                                    Fluttertoast.showToast(
-                                        msg: "Add atleast one ingredient");
-                                  } else if (recipeFormKey.currentState!
-                                      .validate()) {
-                                    var payload = {
-                                      "name": nameController.text,
-                                      "cooking_instructions":
-                                          cookingInstructionController
-                                                  .text.isEmpty
-                                              ? "N/A"
-                                              : cookingInstructionController
-                                                  .text,
-                                      "special_notes":
-                                          specialInstrctController.text.isEmpty
-                                              ? "N/A"
-                                              : specialInstrctController.text,
-                                      "ingredients": ingredients
-                                          .map((e) => {
-                                                "food_recipe_item_id": {
-                                                  "item": e.item!.id,
-                                                  "quantity": e.quantity,
-                                                  "unit": e.unit,
-                                                }
-                                              })
-                                          .toList()
-                                    };
-                                    bool resp = await DietService.addRecipeItem(
-                                        payload);
-                                    if (resp) {
-                                      Navigator.of(context).pop(true);
-                                    } else {
-                                      Fluttertoast.showToast(
-                                          msg: "Failed to add recipie");
-                                    }
-                                  }
-                                },
-                                minWidth: MediaQuery.of(context).size.width,
-                                color: primaryColor,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "Add Recipe",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
+      body: loading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: SingleChildScrollView(
+                controller: scrollController,
+                child: Column(
+                  children: [
+                    const Row(
+                      children: [
+                        BackButton(),
+                        SizedBox(
+                          width: 32,
+                        ),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            "Add a new recipe",
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                  ),
-                  const SizedBox(
-                    width: 32,
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: Colors.white,
-                            border: Border.all(
-                                color: Colors.grey.withOpacity(0.4))),
-                        padding: const EdgeInsets.all(16),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Search",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                Radio<DataFilter>(
-                                  value: DataFilter.ingredients,
-                                  groupValue: selectedDataFilter,
-                                  onChanged: (DataFilter? value) {
-                                    setState(() {
-                                      selectedDataFilter = value;
-                                    });
-                                  },
-                                ),
-                                Text("Ingredients"),
-                                Radio<DataFilter>(
-                                  value: DataFilter.recipes,
-                                  groupValue: selectedDataFilter,
-                                  onChanged: (DataFilter? value) {
-                                    setState(() {
-                                      selectedDataFilter = value;
-                                    });
-                                  },
-                                ),
-                                Text("Recipes"),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 8,
-                            ),
-                            TextFormField(
-                              controller: searchController,
-                              style: const TextStyle(color: Colors.black),
-                              decoration: const InputDecoration(
-                                hintText: 'Search Food Recipie Ingredient',
-                                hintStyle: TextStyle(
-                                  color: Colors.black,
-                                ),
-                                fillColor: Colors.transparent,
-                                filled: true,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10.0),
-                                  ),
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    width: 1,
-                                    color: Colors.black,
-                                  ),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10.0),
-                                  ),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    width: 1,
-                                    color: Colors.grey,
-                                  ),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10.0),
-                                  ),
-                                ),
-                              ),
-                              onFieldSubmitted: (value) async {
-                                setState(() {
-                                  searchLoading = true;
-                                });
-                                searchFoodItems =
-                                    await DietService.getFoodIngredientsByQuery(
-                                        value,
-                                        selectedDataFilter! == DataFilter.ingredients
-                                            ? "Indian Foods"
-                                            : "American%20Foods");
-                                setState(() {
-                                  searchLoading = false;
-                                });
-                              },
-                            ),
-                            searchLoading
-                                ? const Padding(
-                                    padding: EdgeInsets.all(16.0),
-                                    child: Center(
-                                      child: CircularProgressIndicator(),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    const Divider(),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Colors.white,
+                                  border: Border.all(
+                                      color: Colors.grey.withOpacity(0.4))),
+                              padding: const EdgeInsets.all(16),
+                              child: Form(
+                                key: recipeFormKey,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      "Recipe Name: ",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 18,
+                                      ),
                                     ),
-                                  )
-                                : searchFoodItems.isEmpty
-                                    ? const Padding(
-                                        padding: EdgeInsets.all(16.0),
-                                        child: Center(
-                                          child: Text("No Items found"),
+                                    TextFormField(
+                                      controller: nameController,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return "Name is required";
+                                        }
+                                        return null;
+                                      },
+                                      style:
+                                          const TextStyle(color: Colors.black),
+                                      decoration: const InputDecoration(
+                                        hintText:
+                                            'Enter Name of Food Recipie Item',
+                                        hintStyle: TextStyle(
+                                          color: Colors.black,
                                         ),
-                                      )
-                                    : ListView.builder(
-                                        shrinkWrap: true,
-                                        itemCount: searchFoodItems.length,
-                                        itemBuilder: (context, index) {
-                                          return Padding(
-                                            padding: const EdgeInsets.only(
-                                              top: 16,
+                                        fillColor: Colors.transparent,
+                                        filled: true,
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0),
+                                          ),
+                                          borderSide: BorderSide(
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            width: 1,
+                                            color: Colors.black,
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0),
+                                          ),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            width: 1,
+                                            color: Colors.grey,
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const Divider(),
+                                    const Text(
+                                      "Ingredients: ",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                    ingredients.isEmpty
+                                        ? const Padding(
+                                            padding: EdgeInsets.all(8.0),
+                                            child: Center(
+                                              child:
+                                                  Text("No Ingredients added"),
                                             ),
-                                            child: GestureDetector(
-                                              onTap: () async {
-                                                await showDialog(
-                                                  context: context,
-                                                  builder: (context) =>
-                                                      addIngredientDialogBoxPopup(
-                                                          searchFoodItems[
-                                                              index]),
-                                                );
-                                                setState(() {});
-                                              },
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
-                                                  color: Colors.white,
-                                                  border: Border.all(
-                                                    color: Colors.grey
-                                                        .withOpacity(0.4),
+                                          )
+                                        : ListView.builder(
+                                            itemBuilder: (context, index) {
+                                              return ExpansionTile(
+                                                leading: IconButton(
+                                                  icon:
+                                                      const Icon(Icons.delete),
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      ingredients
+                                                          .removeAt(index);
+                                                    });
+                                                  },
+                                                ),
+                                                title: Text(
+                                                  "${ingredients[index].item!.description!} X ${ingredients[index].quantity!} (${ingredients[index].standardizedCup!.standardizedCup!}, ${ingredients[index].standardizedCup!.standardizedValue} ${ingredients[index].standardizedCup!.standardizedUnit})",
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 18,
                                                   ),
                                                 ),
-                                                padding:
-                                                    const EdgeInsets.all(16),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      searchFoodItems[index]
-                                                          .description!,
-                                                      style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        fontSize: 20,
-                                                      ),
-                                                    ),
-                                                    const Divider(),
-                                                    Wrap(
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            16.0),
+                                                    child: Wrap(
                                                       spacing: 8,
                                                       runSpacing: 8,
                                                       children:
-                                                          searchFoodItems[index]
+                                                          ingredients[index]
+                                                              .item!
                                                               .toJson()
                                                               .entries
                                                               .map(
-                                                                (e) => (e.value !=
-                                                                            null &&
-                                                                        (e.key !=
-                                                                            "description"))
+                                                                (e) => e.value !=
+                                                                        null
                                                                     ? RichText(
                                                                         text:
                                                                             TextSpan(
@@ -628,30 +272,419 @@ class _NewRecipeScreenState extends State<NewRecipeScreen> {
                                                               )
                                                               .toList(),
                                                     ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          );
+                                                  )
+                                                ],
+                                              );
+                                            },
+                                            shrinkWrap: true,
+                                            itemCount: ingredients.length,
+                                          ),
+                                    const Divider(),
+                                    const Text(
+                                      "Cooking Instruction: ",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w900,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    TextFormField(
+                                      controller: cookingInstructionController,
+                                      style:
+                                          const TextStyle(color: Colors.black),
+                                      minLines: 5,
+                                      maxLines: 10,
+                                      decoration: const InputDecoration(
+                                        hintText:
+                                            'Enter Cooking Instruction of Food Recipie Item',
+                                        hintStyle: TextStyle(
+                                          color: Colors.black,
+                                        ),
+                                        fillColor: Colors.transparent,
+                                        filled: true,
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0),
+                                          ),
+                                          borderSide: BorderSide(
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            width: 1,
+                                            color: Colors.black,
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0),
+                                          ),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            width: 1,
+                                            color: Colors.grey,
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    const Text(
+                                      "Special Instructions: ",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w900,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    TextFormField(
+                                      controller: specialInstrctController,
+                                      style:
+                                          const TextStyle(color: Colors.black),
+                                      minLines: 5,
+                                      maxLines: 10,
+                                      decoration: const InputDecoration(
+                                        hintText:
+                                            'Enter Any Special Instruction of Food Recipie Item',
+                                        hintStyle: TextStyle(
+                                          color: Colors.black,
+                                        ),
+                                        fillColor: Colors.transparent,
+                                        filled: true,
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0),
+                                          ),
+                                          borderSide: BorderSide(
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            width: 1,
+                                            color: Colors.black,
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0),
+                                          ),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            width: 1,
+                                            color: Colors.grey,
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    MaterialButton(
+                                      onPressed: () async {
+                                        if (ingredients.isEmpty) {
+                                          Fluttertoast.showToast(
+                                              msg:
+                                                  "Add atleast one ingredient");
+                                        } else if (recipeFormKey.currentState!
+                                            .validate()) {
+                                          var payload = {
+                                            "name": nameController.text,
+                                            "cooking_instructions":
+                                                cookingInstructionController
+                                                        .text.isEmpty
+                                                    ? "N/A"
+                                                    : cookingInstructionController
+                                                        .text,
+                                            "special_notes":
+                                                specialInstrctController
+                                                        .text.isEmpty
+                                                    ? "N/A"
+                                                    : specialInstrctController
+                                                        .text,
+                                            "ingredients": ingredients
+                                                .map((e) => {
+                                                      "food_recipe_item_id": {
+                                                        "item": e.item!.id,
+                                                        "quantity": e.quantity,
+                                                        "standardized_cup": 1
+                                                      }
+                                                    })
+                                                .toList()
+                                          };
+                                          bool resp =
+                                              await DietService.addRecipeItem(
+                                                  payload);
+                                          if (resp) {
+                                            Navigator.of(context).pop(true);
+                                          } else {
+                                            Fluttertoast.showToast(
+                                                msg: "Failed to add recipie");
+                                          }
+                                        }
+                                      },
+                                      minWidth:
+                                          MediaQuery.of(context).size.width,
+                                      color: primaryColor,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: const Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Text(
+                                          "Add Recipe",
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 32,
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Colors.white,
+                                  border: Border.all(
+                                      color: Colors.grey.withOpacity(0.4))),
+                              padding: const EdgeInsets.all(16),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    "Search",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Radio<DataFilter>(
+                                        value: DataFilter.ingredients,
+                                        groupValue: selectedDataFilter,
+                                        onChanged: (DataFilter? value) {
+                                          setState(() {
+                                            selectedDataFilter = value;
+                                          });
                                         },
                                       ),
-                          ],
+                                      const Text("Ingredients"),
+                                      Radio<DataFilter>(
+                                        value: DataFilter.recipes,
+                                        groupValue: selectedDataFilter,
+                                        onChanged: (DataFilter? value) {
+                                          setState(() {
+                                            selectedDataFilter = value;
+                                          });
+                                        },
+                                      ),
+                                      const Text("Recipes"),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                  TextFormField(
+                                    controller: searchController,
+                                    style: const TextStyle(color: Colors.black),
+                                    decoration: const InputDecoration(
+                                      hintText:
+                                          'Search Food Recipie Ingredient',
+                                      hintStyle: TextStyle(
+                                        color: Colors.black,
+                                      ),
+                                      fillColor: Colors.transparent,
+                                      filled: true,
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0),
+                                        ),
+                                        borderSide: BorderSide(
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          width: 1,
+                                          color: Colors.black,
+                                        ),
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0),
+                                        ),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          width: 1,
+                                          color: Colors.grey,
+                                        ),
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0),
+                                        ),
+                                      ),
+                                    ),
+                                    onFieldSubmitted: (value) async {
+                                      setState(() {
+                                        searchLoading = true;
+                                      });
+                                      searchFoodItems = await DietService
+                                          .getFoodIngredientsByQuery(
+                                              value,
+                                              selectedDataFilter! ==
+                                                      DataFilter.ingredients
+                                                  ? "Indian Foods"
+                                                  : "American%20Foods");
+                                      setState(() {
+                                        searchLoading = false;
+                                      });
+                                    },
+                                  ),
+                                  searchLoading
+                                      ? const Padding(
+                                          padding: EdgeInsets.all(16.0),
+                                          child: Center(
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                        )
+                                      : searchFoodItems.isEmpty
+                                          ? const Padding(
+                                              padding: EdgeInsets.all(16.0),
+                                              child: Center(
+                                                child: Text("No Items found"),
+                                              ),
+                                            )
+                                          : ListView.builder(
+                                              shrinkWrap: true,
+                                              itemCount: searchFoodItems.length,
+                                              itemBuilder: (context, index) {
+                                                return Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                    top: 16,
+                                                  ),
+                                                  child: GestureDetector(
+                                                    onTap: () async {
+                                                      await showDialog(
+                                                        context: context,
+                                                        builder: (context) =>
+                                                            addIngredientDialogBoxPopup(
+                                                                searchFoodItems[
+                                                                    index]),
+                                                      );
+                                                      setState(() {});
+                                                    },
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(12),
+                                                        color: Colors.white,
+                                                        border: Border.all(
+                                                          color: Colors.grey
+                                                              .withOpacity(0.4),
+                                                        ),
+                                                      ),
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              16),
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            searchFoodItems[
+                                                                    index]
+                                                                .description!,
+                                                            style:
+                                                                const TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: 20,
+                                                            ),
+                                                          ),
+                                                          const Divider(),
+                                                          Wrap(
+                                                            spacing: 8,
+                                                            runSpacing: 8,
+                                                            children:
+                                                                searchFoodItems[
+                                                                        index]
+                                                                    .toJson()
+                                                                    .entries
+                                                                    .map(
+                                                                      (e) => (e.value != null &&
+                                                                              (e.key != "description"))
+                                                                          ? RichText(
+                                                                              text: TextSpan(
+                                                                                text: "${e.key}: ",
+                                                                                style: const TextStyle(
+                                                                                  fontWeight: FontWeight.w600,
+                                                                                  fontSize: 18,
+                                                                                ),
+                                                                                children: <TextSpan>[
+                                                                                  TextSpan(
+                                                                                    text: e.value,
+                                                                                    style: const TextStyle(
+                                                                                      fontWeight: FontWeight.w500,
+                                                                                      fontSize: 18,
+                                                                                    ),
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                            )
+                                                                          : const SizedBox(),
+                                                                    )
+                                                                    .toList(),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                ],
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ),
-      ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
     );
   }
 
   addIngredientDialogBoxPopup(IngredientModel ingredient) {
-    unitController.clear();
     quantityController.clear();
+    quantityController.text = "1";
     return StatefulBuilder(
       builder: (context, setState) {
         return AlertDialog(
@@ -771,56 +804,38 @@ class _NewRecipeScreenState extends State<NewRecipeScreen> {
                       height: 12,
                     ),
                     const Text(
-                      "Unit: ",
+                      "Standardized Cup: ",
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w900,
                       ),
                     ),
-                    TextFormField(
-                      controller: unitController,
-                      style: const TextStyle(color: Colors.black),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Unit is required";
-                        }
-                        return null;
-                      },
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        hintText:
-                            'Enter Unit of the selected ingredient quantity',
-                        hintStyle: TextStyle(
-                          color: Colors.black,
+                    DropdownButtonHideUnderline(
+                      child: DropdownButton<StandardizedCupsModel>(
+                        value: selectedStandardizedCup,
+                        focusColor: Colors.white,
+                        icon: const Icon(Icons.arrow_downward),
+                        elevation: 16,
+                        hint: const Text("Choose Standardized Cup"),
+                        style: const TextStyle(
+                          color: Colors.deepPurple,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
                         ),
-                        fillColor: Colors.transparent,
-                        filled: true,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10.0),
-                          ),
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            width: 1,
-                            color: Colors.black,
-                          ),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10.0),
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            width: 1,
-                            color: Colors.grey,
-                          ),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10.0),
-                          ),
-                        ),
+                        onChanged: (StandardizedCupsModel? value) async {
+                          setState(() {
+                            selectedStandardizedCup = value;
+                          });
+                        },
+                        items: standardizedCups
+                            .map<DropdownMenuItem<StandardizedCupsModel>>(
+                                (StandardizedCupsModel value) {
+                          return DropdownMenuItem<StandardizedCupsModel>(
+                            value: value,
+                            child: Text(
+                                "${value.standardizedCup}, ${value.standardizedValue} ${value.standardizedUnit}"),
+                          );
+                        }).toList(),
                       ),
                     ),
                     const SizedBox(
@@ -833,12 +848,11 @@ class _NewRecipeScreenState extends State<NewRecipeScreen> {
                             () {
                               ingredients.add(
                                 FoodRecipeModel(
-                                  item: ingredient,
-                                  unit: unitController.text,
-                                  quantity: int.parse(
-                                    quantityController.text,
-                                  ),
-                                ),
+                                    item: ingredient,
+                                    quantity: int.parse(
+                                      quantityController.text,
+                                    ),
+                                    standardizedCup: selectedStandardizedCup),
                               );
                             },
                           );

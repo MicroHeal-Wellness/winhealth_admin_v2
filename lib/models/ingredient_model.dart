@@ -1,16 +1,15 @@
+// To parse this JSON data, do
+//
+//     final ingredientModel = ingredientModelFromJson(jsonString);
 
 import 'dart:convert';
 
-IngredientModel ingredientModelFromJson(String str) => IngredientModel.fromJson(json.decode(str));
+List<IngredientModel> ingredientModelFromJson(String str) => List<IngredientModel>.from(json.decode(str).map((x) => IngredientModel.fromJson(x)));
 
-String ingredientModelToJson(IngredientModel data) => json.encode(data.toJson());
+String ingredientModelToJson(List<IngredientModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class IngredientModel {
     String? id;
-    String? userCreated;
-    DateTime? dateCreated;
-    dynamic userUpdated;
-    dynamic dateUpdated;
     String? type;
     String? description;
     String? category;
@@ -21,7 +20,7 @@ class IngredientModel {
     String? insolubleDf;
     String? solubleDf;
     String? carbohydrates;
-    String? energyKiloJoules;
+    dynamic energyKiloJoules;
     String? energyKcal;
     String? thiamineB1;
     String? riboflavinB2;
@@ -30,12 +29,12 @@ class IngredientModel {
     String? totalB6;
     String? biotinB7;
     String? totalFolatesB9;
-    dynamic totalAscorbicAcidVitC;
+    String? totalAscorbicAcidVitC;
     String? vitA;
     String? vitE;
     String? vitK2;
     String? aluminiumAl;
-    dynamic arsenicAs;
+    String? arsenicAs;
     String? cadmiumCd;
     String? calciumCa;
     String? chromiumCr;
@@ -46,21 +45,21 @@ class IngredientModel {
     String? lithiumLi;
     String? magnesiumMg;
     String? manganeseMn;
-    dynamic mercuryHg;
+    String? mercuryHg;
     String? molybdeumMo;
     String? nickelNi;
     String? phosphorousP;
     String? potassiumK;
-    dynamic seleniumSe;
+    String? seleniumSe;
     String? sodiumNa;
     String? zincZn;
+    String? baseQuantity;
+    String? baseUnit;
+    String? standardCup;
+    String? standardValue;
 
     IngredientModel({
         this.id,
-        this.userCreated,
-        this.dateCreated,
-        this.userUpdated,
-        this.dateUpdated,
         this.type,
         this.description,
         this.category,
@@ -104,14 +103,14 @@ class IngredientModel {
         this.seleniumSe,
         this.sodiumNa,
         this.zincZn,
+        this.baseQuantity,
+        this.baseUnit,
+        this.standardCup,
+        this.standardValue,
     });
 
     factory IngredientModel.fromJson(Map<String, dynamic> json) => IngredientModel(
         id: json["id"],
-        userCreated: json["user_created"],
-        dateCreated: json["date_created"] == null ? null : DateTime.parse(json["date_created"]),
-        userUpdated: json["user_updated"],
-        dateUpdated: json["date_updated"],
         type: json["type"],
         description: json["description"],
         category: json["category"],
@@ -155,14 +154,14 @@ class IngredientModel {
         seleniumSe: json["selenium_se"],
         sodiumNa: json["sodium_na"],
         zincZn: json["zinc_zn"],
+        baseQuantity: json["base_quantity"],
+        baseUnit: json["base_unit"],
+        standardCup: json["standard_cup"],
+        standardValue: json["standard_value"],
     );
 
     Map<String, dynamic> toJson() => {
         "id": id,
-        "user_created": userCreated,
-        "date_created": dateCreated?.toIso8601String(),
-        "user_updated": userUpdated,
-        "date_updated": dateUpdated,
         "type": type,
         "description": description,
         "category": category,
@@ -206,5 +205,9 @@ class IngredientModel {
         "selenium_se": seleniumSe,
         "sodium_na": sodiumNa,
         "zinc_zn": zincZn,
+        "base_quantity": baseQuantity,
+        "base_unit": baseUnit,
+        "standard_cup": standardCup,
+        "standard_value": standardValue,
     };
 }

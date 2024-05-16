@@ -5,19 +5,31 @@ import 'package:winhealth_admin_v2/models/food_item.dart';
 import 'package:winhealth_admin_v2/models/food_item_model.dart';
 import 'package:winhealth_admin_v2/models/ingredient_model.dart';
 import 'package:winhealth_admin_v2/models/recommended_diet.dart';
+import 'package:winhealth_admin_v2/models/standardized_cups_model.dart';
 import 'package:winhealth_admin_v2/services/base_service.dart';
 
 class DietService {
-  static dynamic typeRankList = {
-    'morning': 0,
-    'afternoon': 1,
-    'evening': 2,
-    'night': 3,
-  };
+  static Future<List<StandardizedCupsModel>> getStandardizedCupList() async {
+    final response = await BaseService.makeAuthenticatedRequest(
+      '${BaseService.BASE_URL}/items/standardized_cups',
+      method: 'GET',
+    );
+    if (response.statusCode == 200) {
+      final List<StandardizedCupsModel> data = [];
+      var responseJson = json.decode(response.body);
+      for (final appointment in responseJson['data']) {
+        data.add(StandardizedCupsModel.fromJson(appointment));
+      }
+      // data.sort((a, b) => typeRankList[a.name].compareTo(typeRankList[b.name]));
+      return data;
+    } else {
+      return [];
+    }
+  }
   static Future<List<DietModel>> getRecommendedDietByPatientID(
       String patinetId) async {
     final response = await BaseService.makeAuthenticatedRequest(
-      '${BaseService.BASE_URL}/items/diet?fields=*,items.diet_item_id.*,items.diet_item_id.food_item.*,items.diet_item_id.food_item.ingredients.food_recipe_item_id.*,items.diet_item_id.food_item.ingredients.food_recipe_item_id.item.*&filter[patient][_eq]=$patinetId&sort[]=name',
+      '${BaseService.BASE_URL}/items/diet?fields=*,items.diet_item_id.*,items.diet_item_id.food_item.*,items.diet_item_id.food_item.ingredients.food_recipe_item_id.*,items.diet_item_id.food_item.ingredients.food_recipe_item_id.item.*,items.diet_item_id.food_item.ingredients.food_recipe_item_id.standardized_cup.*&filter[patient][_eq]=$patinetId&sort[]=name',
       method: 'GET',
     );
     if (response.statusCode == 200) {
@@ -109,7 +121,7 @@ class DietService {
   static Future<List<FoodItemModel>> getFoodRecipeItemsByQuery(
       String query) async {
     final response = await BaseService.makeAuthenticatedRequest(
-      '${BaseService.BASE_URL}/items/food_recipes?search=$query&fields=*,ingredients.food_recipe_item_id.*,ingredients.food_recipe_item_id.item.*',
+      '${BaseService.BASE_URL}/items/food_recipes?search=$query&fields=*,ingredients.food_recipe_item_id.*,ingredients.food_recipe_item_id.item.*,ingredients.food_recipe_item_id.standardized_cup.*',
       method: 'GET',
     );
     if (response.statusCode == 200) {

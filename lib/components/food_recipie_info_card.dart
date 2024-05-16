@@ -42,7 +42,7 @@ class FoodRecipieInfoCard extends StatelessWidget {
               itemBuilder: (context, index) {
                 return ExpansionTile(
                   title: Text(
-                    "${foodRecipieItem.ingredients![index].item!.description!} , ${foodRecipieItem.ingredients![index].quantity!} ${foodRecipieItem.ingredients![index].unit}",
+                    "${foodRecipieItem.ingredients![index].item!.description!} , ${foodRecipieItem.ingredients![index].quantity!}",
                     style: const TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 18,
