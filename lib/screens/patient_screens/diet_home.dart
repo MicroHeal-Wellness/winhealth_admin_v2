@@ -131,109 +131,83 @@ class _DietHomeState extends State<DietHome> {
 
   void genNutrientValue() {
     genNutrientLimits();
-    eatenKcal = 0;
-    eatencarbs = 0;
-    eatenProtien = 0;
-    eatenFat = 0;
+    setState(() {
+      eatenKcal = 0;
+      eatencarbs = 0;
+      eatenProtien = 0;
+      eatenFat = 0;
+    });
     if (showNotes) {
-      for (int i = 0; i < recommendedDiets.length; i++) {
-        for (int j = 0; j < recommendedDiets[i].items!.length; j++) {
-          for (int k = 0;
-              k < recommendedDiets[i].items![j].foodItem!.ingredients!.length;
-              k++) {
-            eatenKcal += genDoubleValue(recommendedDiets[i]
-                    .items![j]
-                    .foodItem!
-                    .ingredients![k]
-                    .item!
-                    .energyKcal!) *
-                ((int.parse(recommendedDiets[i]
-                            .items![j]
-                            .foodItem!
-                            .ingredients![k]
-                            .standardizedCup!
-                            .standardizedValue!) *
-                        recommendedDiets[i]
-                            .items![j]
-                            .foodItem!
-                            .ingredients![k]
-                            .quantity!) /
-                    (int.parse(recommendedDiets[i]
-                        .items![j]
-                        .foodItem!
-                        .ingredients![k]
-                        .item!
-                        .baseQuantity!)));
-            eatencarbs += genDoubleValue(recommendedDiets[i]
-                    .items![j]
-                    .foodItem!
-                    .ingredients![k]
-                    .item!
-                    .carbohydrates!) *
-                ((int.parse(recommendedDiets[i]
-                            .items![j]
-                            .foodItem!
-                            .ingredients![k]
-                            .standardizedCup!
-                            .standardizedValue!) *
-                        recommendedDiets[i]
-                            .items![j]
-                            .foodItem!
-                            .ingredients![k]
-                            .quantity!) /
-                    (int.parse(recommendedDiets[i]
-                        .items![j]
-                        .foodItem!
-                        .ingredients![k]
-                        .item!
-                        .baseQuantity!)));
-            eatenProtien += genDoubleValue(recommendedDiets[i]
-                    .items![j]
-                    .foodItem!
-                    .ingredients![k]
-                    .item!
-                    .protein!) *
-                ((int.parse(recommendedDiets[i]
-                            .items![j]
-                            .foodItem!
-                            .ingredients![k]
-                            .standardizedCup!
-                            .standardizedValue!) *
-                        recommendedDiets[i]
-                            .items![j]
-                            .foodItem!
-                            .ingredients![k]
-                            .quantity!) /
-                    (int.parse(recommendedDiets[i]
-                        .items![j]
-                        .foodItem!
-                        .ingredients![k]
-                        .item!
-                        .baseQuantity!)));
-            eatenFat += genDoubleValue(recommendedDiets[i]
-                    .items![j]
-                    .foodItem!
-                    .ingredients![k]
-                    .item!
-                    .totalFat!) *
-                ((int.parse(recommendedDiets[i]
-                            .items![j]
-                            .foodItem!
-                            .ingredients![k]
-                            .standardizedCup!
-                            .standardizedValue!) *
-                        recommendedDiets[i]
-                            .items![j]
-                            .foodItem!
-                            .ingredients![k]
-                            .quantity!) /
-                    (int.parse(recommendedDiets[i]
-                        .items![j]
-                        .foodItem!
-                        .ingredients![k]
-                        .item!
-                        .baseQuantity!)));
-          }
+      for (int j = 0; j < selecetedRecommendedDiet!.items!.length; j++) {
+        for (int k = 0;
+            k <
+                selecetedRecommendedDiet!
+                    .items![j].foodItem!.ingredients!.length;
+            k++) {
+          eatenKcal += genDoubleValue(selecetedRecommendedDiet!
+                  .items![j].foodItem!.ingredients![k].item!.energyKcal!) *
+              (((selecetedRecommendedDiet!.items![j].foodItem!.ingredients![k]
+                                  .item!.type !=
+                              'American Foods'
+                          ? int.parse(selecetedRecommendedDiet!
+                              .items![j]
+                              .foodItem!
+                              .ingredients![k]
+                              .standardizedCup!
+                              .standardizedValue!)
+                          : 1) *
+                      selecetedRecommendedDiet!
+                          .items![j].foodItem!.ingredients![k].quantity!) /
+                  (int.parse(selecetedRecommendedDiet!.items![j].foodItem!
+                      .ingredients![k].item!.baseQuantity!)));
+          eatencarbs += genDoubleValue(selecetedRecommendedDiet!
+                  .items![j].foodItem!.ingredients![k].item!.carbohydrates!) *
+              (((selecetedRecommendedDiet!.items![j].foodItem!.ingredients![k]
+                                  .item!.type !=
+                              'American Foods'
+                          ? int.parse(selecetedRecommendedDiet!
+                              .items![j]
+                              .foodItem!
+                              .ingredients![k]
+                              .standardizedCup!
+                              .standardizedValue!)
+                          : 1) *
+                      selecetedRecommendedDiet!
+                          .items![j].foodItem!.ingredients![k].quantity!) /
+                  (int.parse(selecetedRecommendedDiet!.items![j].foodItem!
+                      .ingredients![k].item!.baseQuantity!)));
+          eatenProtien += genDoubleValue(selecetedRecommendedDiet!
+                  .items![j].foodItem!.ingredients![k].item!.protein!) *
+              (((selecetedRecommendedDiet!.items![j].foodItem!.ingredients![k]
+                                  .item!.type !=
+                              'American Foods'
+                          ? int.parse(selecetedRecommendedDiet!
+                              .items![j]
+                              .foodItem!
+                              .ingredients![k]
+                              .standardizedCup!
+                              .standardizedValue!)
+                          : 1) *
+                      selecetedRecommendedDiet!
+                          .items![j].foodItem!.ingredients![k].quantity!) /
+                  (int.parse(selecetedRecommendedDiet!.items![j].foodItem!
+                      .ingredients![k].item!.baseQuantity!)));
+          eatenFat += genDoubleValue(selecetedRecommendedDiet!
+                  .items![j].foodItem!.ingredients![k].item!.totalFat!) *
+              (((selecetedRecommendedDiet!.items![j].foodItem!.ingredients![k]
+                                  .item!.type !=
+                              'American Foods'
+                          ? int.parse(selecetedRecommendedDiet!
+                              .items![j]
+                              .foodItem!
+                              .ingredients![k]
+                              .standardizedCup!
+                              .standardizedValue!)
+                          : 1) *
+                      selecetedRecommendedDiet!
+                          .items![j].foodItem!.ingredients![k].quantity!) /
+                  (int.parse(selecetedRecommendedDiet!.items![j].foodItem!
+                      .ingredients![k].item!.baseQuantity!)));
         }
       }
     }
@@ -247,7 +221,6 @@ class _DietHomeState extends State<DietHome> {
 
   @override
   Widget build(BuildContext context) {
-    genNutrientValue();
     return Scaffold(
       backgroundColor: Colors.grey.shade100.withOpacity(0.4),
       floatingActionButton: AnimatedOpacity(
@@ -557,7 +530,21 @@ class _DietHomeState extends State<DietHome> {
                                               setState(() {
                                                 specialNotesController.clear();
                                                 selecetedRecommendedDiet = null;
-                                                showNotes = !showNotes;
+                                                showNotes = false;
+                                              });
+                                            } else if (selecetedRecommendedDiet !=
+                                                    null &&
+                                                selecetedRecommendedDiet!.id !=
+                                                    recommendedDiets[index]
+                                                        .id) {
+                                              setState(() {
+                                                specialNotesController.clear();
+                                                selecetedRecommendedDiet = recommendedDiets[index];
+                                                specialNotesController.text =
+                                                    recommendedDiets[index]
+                                                            .specialNotes ??
+                                                        "";
+                                                showNotes = true;
                                               });
                                             } else {
                                               setState(() {
@@ -567,9 +554,10 @@ class _DietHomeState extends State<DietHome> {
                                                     recommendedDiets[index]
                                                             .specialNotes ??
                                                         "";
-                                                showNotes = !showNotes;
+                                                showNotes = true;
                                               });
                                             }
+                                            genNutrientValue();
                                           },
                                         );
                                       },
