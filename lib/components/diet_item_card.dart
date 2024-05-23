@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:winhealth_admin_v2/components/nutrient_data_box.dart';
 import 'package:winhealth_admin_v2/models/diet_item_model.dart';
+import 'package:winhealth_admin_v2/utils/constants.dart';
 
 class DietItemCard extends StatelessWidget {
   final DietItemModel recommendedDietItem;
@@ -115,40 +118,18 @@ class DietItemCard extends StatelessWidget {
                         ),
                       ),
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Wrap(
-                            spacing: 8,
-                            runSpacing: 8,
-                            children: recommendedDietItem
-                                .foodItem!.ingredients![index].item!
-                                .toJson()
-                                .entries
-                                .map(
-                                  (e) => e.value != null
-                                      ? RichText(
-                                          text: TextSpan(
-                                            text: "${e.key}: ",
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 18,
-                                            ),
-                                            children: <TextSpan>[
-                                              TextSpan(
-                                                text: e.value,
-                                                style: const TextStyle(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 18,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      : const SizedBox(),
-                                )
-                                .toList(),
+                         Padding(
+                          padding:
+                              const EdgeInsets.only(left: 16, right: 16, bottom: 8),
+                          child: Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                                "** The following nutrient data is per${recommendedDietItem.foodItem!.ingredients![index].item!.type != "American Foods" ? " 100 gm" : ""} serving.", style: const TextStyle(fontSize: 18, color: Colors.red),),
                           ),
-                        )
+                        ),
+                        NutrientBox(
+                            ingredientModel: recommendedDietItem
+                                .foodItem!.ingredients![index].item!),
                       ],
                     );
                   },
