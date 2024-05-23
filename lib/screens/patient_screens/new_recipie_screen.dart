@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:winhealth_admin_v2/components/nutrient_data_box.dart';
 import 'package:winhealth_admin_v2/models/food_recipe_model.dart';
 import 'package:winhealth_admin_v2/models/ingredient_model.dart';
 import 'package:winhealth_admin_v2/models/standardized_cups_model.dart';
@@ -417,7 +418,8 @@ class _NewRecipeScreenState extends State<NewRecipeScreen> {
                                                       "food_recipe_item_id": {
                                                         "item": e.item!.id,
                                                         "quantity": e.quantity,
-                                                        "standardized_cup": e.standardizedCup!.id
+                                                        "standardized_cup": e
+                                                            .standardizedCup!.id
                                                       }
                                                     })
                                                 .toList()
@@ -628,39 +630,65 @@ class _NewRecipeScreenState extends State<NewRecipeScreen> {
                                                             ),
                                                           ),
                                                           const Divider(),
-                                                          Wrap(
-                                                            spacing: 8,
-                                                            runSpacing: 8,
-                                                            children:
-                                                                searchFoodItems[
-                                                                        index]
-                                                                    .toJson()
-                                                                    .entries
-                                                                    .map(
-                                                                      (e) => (e.value != null &&
-                                                                              (e.key != "description"))
-                                                                          ? RichText(
-                                                                              text: TextSpan(
-                                                                                text: "${e.key}: ",
-                                                                                style: const TextStyle(
-                                                                                  fontWeight: FontWeight.w600,
-                                                                                  fontSize: 18,
-                                                                                ),
-                                                                                children: <TextSpan>[
-                                                                                  TextSpan(
-                                                                                    text: e.value,
-                                                                                    style: const TextStyle(
-                                                                                      fontWeight: FontWeight.w500,
-                                                                                      fontSize: 18,
-                                                                                    ),
-                                                                                  ),
-                                                                                ],
-                                                                              ),
-                                                                            )
-                                                                          : const SizedBox(),
-                                                                    )
-                                                                    .toList(),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .only(
+                                                                    left: 16,
+                                                                    right: 16,
+                                                                    bottom: 8),
+                                                            child: Align(
+                                                              alignment:
+                                                                  Alignment
+                                                                      .topLeft,
+                                                              child: Text(
+                                                                "** The following nutrient data is per${searchFoodItems[index].type != "American Foods" ? " 100 gm" : ""} serving.",
+                                                                style: const TextStyle(
+                                                                    fontSize:
+                                                                        18,
+                                                                    color: Colors
+                                                                        .red),
+                                                              ),
+                                                            ),
                                                           ),
+                                                          NutrientBox(
+                                                            ingredientModel:
+                                                                searchFoodItems[
+                                                                    index],
+                                                          )
+                                                          // Wrap(
+                                                          //   spacing: 8,
+                                                          //   runSpacing: 8,
+                                                          //   children:
+                                                          //       searchFoodItems[
+                                                          //               index]
+                                                          //           .toJson()
+                                                          //           .entries
+                                                          //           .map(
+                                                          //             (e) => (e.value != null &&
+                                                          //                     (e.key != "description"))
+                                                          //                 ? RichText(
+                                                          //                     text: TextSpan(
+                                                          //                       text: "${e.key}: ",
+                                                          //                       style: const TextStyle(
+                                                          //                         fontWeight: FontWeight.w600,
+                                                          //                         fontSize: 18,
+                                                          //                       ),
+                                                          //                       children: <TextSpan>[
+                                                          //                         TextSpan(
+                                                          //                           text: e.value,
+                                                          //                           style: const TextStyle(
+                                                          //                             fontWeight: FontWeight.w500,
+                                                          //                             fontSize: 18,
+                                                          //                           ),
+                                                          //                         ),
+                                                          //                       ],
+                                                          //                     ),
+                                                          //                   )
+                                                          //                 : const SizedBox(),
+                                                          //           )
+                                                          //           .toList(),
+                                                          // ),
                                                         ],
                                                       ),
                                                     ),
