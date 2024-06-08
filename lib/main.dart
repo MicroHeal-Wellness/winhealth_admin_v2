@@ -2,7 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:winhealth_admin_v2/screens/patient_screens/new_recipie_screen.dart';
+import 'package:winhealth_admin_v2/screens/patient_screens/weekly_patient_report_home.dart';
 import 'provider/question_provider.dart';
 import 'provider/sidebar_provvider.dart';
 import 'screens/pre/intial_router.dart';
@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.josefinSansTextTheme(),
       ),
       home: const InitialRouter(),
-      // home: const NewRecipeScreen(),
+      // home: const WeeklyPatientReport(),
     );
   }
 }

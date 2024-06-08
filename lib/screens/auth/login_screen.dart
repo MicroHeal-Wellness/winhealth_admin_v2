@@ -20,6 +20,10 @@ class _LoginScreenState extends State<LoginScreen> {
   //     TextEditingController(text: 'dtx1@winhealth.com');
   // TextEditingController passwordController =
   //     TextEditingController(text: 'dtx1@password');
+  // TextEditingController emailController =
+  //     TextEditingController(text: 'partner1@winhealth.com');
+  // TextEditingController passwordController =
+  //     TextEditingController(text: '12345678');
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   bool rememberMe = false;
