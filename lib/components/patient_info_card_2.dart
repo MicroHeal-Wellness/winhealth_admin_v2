@@ -233,6 +233,7 @@ class _PatientInfoCardState extends State<PatientInfoCard2> {
                           MaterialPageRoute(
                             builder: (context) => WeeklyPatientReportHome(
                               patient: widget.patient,
+                              curentUser: widget.currentUser,
                             ),
                           ),
                         );

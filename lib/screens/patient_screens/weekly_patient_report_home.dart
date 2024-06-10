@@ -10,8 +10,10 @@ import 'package:winhealth_admin_v2/services/weekly_report_service.dart';
 import 'package:winhealth_admin_v2/utils/constants.dart';
 
 class WeeklyPatientReportHome extends StatefulWidget {
+  final UserModel curentUser;
   final UserModel patient;
-  const WeeklyPatientReportHome({super.key, required this.patient});
+  const WeeklyPatientReportHome(
+      {super.key, required this.curentUser, required this.patient});
 
   @override
   State<WeeklyPatientReportHome> createState() => _WeeklyPatientReportState();
@@ -134,34 +136,39 @@ class _WeeklyPatientReportState extends State<WeeklyPatientReportHome> {
                       const SizedBox(
                         width: 32,
                       ),
-                      MaterialButton(
-                        onPressed: () async {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AddWeeklyReport(
-                                patient: widget.patient,
+                      [
+                        '12b13cd2-5929-47d2-846c-5b6ad05938d4',
+                        '7afc4f86-e282-4eb6-a9f3-b7eb7290b3fb'
+                      ].contains(widget.curentUser.role)
+                          ? MaterialButton(
+                              onPressed: () async {
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AddWeeklyReport(
+                                      patient: widget.patient,
+                                    ),
+                                  ),
+                                );
+                                await getInitData();
+                              },
+                              color: primaryColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
                               ),
-                            ),
-                          );
-                          await getInitData();
-                        },
-                        color: primaryColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            "Add report",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      )
+                              child: const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Add report",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            )
+                          : const SizedBox()
                     ],
                   ),
                   const SizedBox(

@@ -10,6 +10,7 @@ import 'package:winhealth_admin_v2/screens/patient_screens/diet_home.dart';
 import 'package:winhealth_admin_v2/screens/patient_screens/notes_home.dart';
 import 'package:winhealth_admin_v2/screens/patient_screens/report_home.dart';
 import 'package:winhealth_admin_v2/screens/patient_screens/team_notes_home.dart';
+import 'package:winhealth_admin_v2/screens/patient_screens/weekly_patient_report_home.dart';
 import 'package:winhealth_admin_v2/services/activity_service.dart';
 import 'package:winhealth_admin_v2/utils/constants.dart';
 
@@ -97,13 +98,29 @@ class _PatientInfoCardState extends State<PatientInfoCard> {
                         }
                       },
                       icon: const Icon(Icons.more_horiz),
-                      tooltip: 'Show menu',
+                      // tooltip: 'Show menu',
                     );
                   },
                   menuChildren: [
                     MenuItemButton(
                       style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(Colors.white),
+                        backgroundColor: WidgetStatePropertyAll(Colors.white),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => WeeklyPatientReportHome(
+                              patient: widget.patient,
+                              curentUser: widget.currentUser,
+                            ),
+                          ),
+                        );
+                      },
+                      child: const Text('Daily Report'),
+                    ),
+                    MenuItemButton(
+                      style: const ButtonStyle(
+                        backgroundColor: WidgetStatePropertyAll(Colors.white),
                       ),
                       onPressed: (widget.currentUser.access != null &&
                               widget.currentUser.access!.permission!
@@ -125,7 +142,7 @@ class _PatientInfoCardState extends State<PatientInfoCard> {
                     ),
                     MenuItemButton(
                       style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(Colors.white),
+                        backgroundColor: WidgetStatePropertyAll(Colors.white),
                       ),
                       onPressed: (widget.currentUser.access != null &&
                               widget.currentUser.access!.permission!
@@ -146,7 +163,7 @@ class _PatientInfoCardState extends State<PatientInfoCard> {
                     ),
                     MenuItemButton(
                       style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(Colors.white),
+                        backgroundColor: WidgetStatePropertyAll(Colors.white),
                       ),
                       onPressed: (widget.currentUser.access != null &&
                               widget.currentUser.access!.permission!
@@ -167,7 +184,7 @@ class _PatientInfoCardState extends State<PatientInfoCard> {
                     ),
                     MenuItemButton(
                       style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(Colors.white),
+                        backgroundColor: WidgetStatePropertyAll(Colors.white),
                       ),
                       onPressed: (widget.currentUser.access != null &&
                               widget.currentUser.access!.permission!
@@ -188,7 +205,7 @@ class _PatientInfoCardState extends State<PatientInfoCard> {
                     ),
                     MenuItemButton(
                       style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(Colors.white),
+                        backgroundColor: WidgetStatePropertyAll(Colors.white),
                       ),
                       onPressed: (widget.currentUser.access != null &&
                               widget.currentUser.access!.permission!
@@ -209,7 +226,7 @@ class _PatientInfoCardState extends State<PatientInfoCard> {
                     ),
                     MenuItemButton(
                       style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(Colors.white),
+                        backgroundColor: WidgetStatePropertyAll(Colors.white),
                       ),
                       onPressed: (widget.currentUser.access != null &&
                               widget.currentUser.access!.permission!
@@ -230,7 +247,7 @@ class _PatientInfoCardState extends State<PatientInfoCard> {
                     ),
                     MenuItemButton(
                       style: const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(Colors.white),
+                        backgroundColor: WidgetStatePropertyAll(Colors.white),
                       ),
                       onPressed: (widget.currentUser.access != null &&
                               widget.currentUser.access!.permission!

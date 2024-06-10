@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:winhealth_admin_v2/models/user_model.dart';
 import 'package:winhealth_admin_v2/screens/auth/login_screen.dart';
+import 'package:winhealth_admin_v2/screens/partner_module/partner_landing_screen.dart';
 import 'package:winhealth_admin_v2/screens/pre/landing_screen.dart';
 import 'package:winhealth_admin_v2/services/base_service.dart';
 
@@ -29,7 +30,7 @@ class AuthService {
 
   static Future<UserModel?> getUserByEmail(String email) async {
     var resp = await BaseService.makeUnauthenticatedRequest(
-      "${BaseService.BASE_URL}/users?filter[email][_eq]=$email&fields=*,access.*",
+      "${BaseService.BASE_URL}/users?filter[email][_eq]=$email&fields=*,access.*,patient_group.*",
       method: 'GET',
     );
     if (resp.statusCode == 200) {
@@ -69,11 +70,19 @@ class AuthService {
             data['data']['refresh_token'],
             user.toJson(),
           );
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => const LandingScreen(),
-            ),
-          );
+          if (user.role == "881dbecd-f779-4c65-927d-b07d39b336cb") {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const PartnerLandingScreen(),
+              ),
+            );
+          } else {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const LandingScreen(),
+              ),
+            );
+          }
         } else {
           Fluttertoast.showToast(msg: "Sign In Failed, Please Try again!");
         }

@@ -4,12 +4,12 @@ import 'package:winhealth_admin_v2/components/side_bar_item.dart';
 import 'package:winhealth_admin_v2/models/user_model.dart';
 import 'package:winhealth_admin_v2/provider/sidebar_provvider.dart';
 import 'package:winhealth_admin_v2/screens/appointment/appointment_home.dart';
+import 'package:winhealth_admin_v2/screens/partner_module/partner_patient_home.dart';
 import 'package:winhealth_admin_v2/screens/partners/partner_home.dart';
 import 'package:winhealth_admin_v2/screens/pre/defualt_page.dart';
 import 'package:winhealth_admin_v2/screens/doctors/doctor_home.dart';
 import 'package:winhealth_admin_v2/screens/forms/patient_form_builder.dart';
 import 'package:winhealth_admin_v2/screens/access/access_management_home.dart';
-import 'package:winhealth_admin_v2/screens/patient_screens/patient_home.dart';
 import 'package:winhealth_admin_v2/screens/slot/slots_home.dart';
 import 'package:winhealth_admin_v2/screens/task_view/task_view.dart';
 import 'package:winhealth_admin_v2/screens/users/user_directory_home.dart';
@@ -35,7 +35,7 @@ class _LandingScreenState extends State<PartnerLandingScreen> {
       case 1:
         return SlotsHome(currentUser: currentUser!);
       case 2:
-        return PatientHome(currentUser: currentUser!);
+        return PartnerPatientHome(currentUser: currentUser!);
       case 3:
         return DoctorHome(currentUser: currentUser!);
       case 4:

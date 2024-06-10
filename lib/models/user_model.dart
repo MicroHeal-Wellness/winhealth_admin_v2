@@ -103,7 +103,10 @@ class UserModel {
       speaks: json['speaks'] == null
           ? []
           : List<String>.from(json["speaks"]!.map((x) => x)),
-      patientGroup: (json["patient_group"] == null || json["patient_group"].runtimeType == String) ? null : PatientGroup.fromJson(json["patient_group"]),
+      patientGroup: (json["patient_group"] == null ||
+              json["patient_group"].runtimeType == String)
+          ? null
+          : PatientGroup.fromJson(json["patient_group"]),
     );
   }
 
@@ -137,6 +140,6 @@ class UserModel {
         "app_form_answered": appFormAanswered,
         "exercise_type": exerciseType,
         "speaks": speaks,
-        "patient_group": patientGroup,
+        "patient_group": patientGroup == null ? null : patientGroup!.toJson(),
       };
 }

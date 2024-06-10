@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:winhealth_admin_v2/models/user_model.dart';
 import 'package:winhealth_admin_v2/screens/auth/login_screen.dart';
+import 'package:winhealth_admin_v2/screens/partner_module/partner_landing_screen.dart';
 import 'package:winhealth_admin_v2/screens/slot/batch_slot_update.dart';
 import 'package:winhealth_admin_v2/screens/forms/foms_home.dart';
 import 'package:winhealth_admin_v2/screens/pre/landing_screen.dart';
@@ -39,11 +40,19 @@ class _InitialRouterState extends State<InitialRouter> {
       } else {
         UserModel? currentUser = await BaseService.getCurrentUser();
         if (currentUser != null) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => const LandingScreen(),
-            ),
-          );
+          if (currentUser.role == "881dbecd-f779-4c65-927d-b07d39b336cb") {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const PartnerLandingScreen(),
+              ),
+            );
+          } else {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const LandingScreen(),
+              ),
+            );
+          }
           // Navigator.of(context).pushReplacement(
           //   MaterialPageRoute(
           //     builder: (context) => BatchSlotUpdate(currentUser: currentUser),

@@ -113,7 +113,7 @@ class _ReportSummaryState extends State<ReportSummary> {
                                     ) ??
                                     0)
                                 .toList(),
-                            "Weeks",
+                            "",
                             "Intensity",
                           ),
                         )
@@ -183,98 +183,101 @@ class _ReportSummaryState extends State<ReportSummary> {
             height: 28,
           ),
           SizedBox(
-            height: 180,
+            height: 193,
             width: MediaQuery.of(context).size.width,
-            child: LineChart(
-              LineChartData(
-                titlesData: FlTitlesData(
-                  //dynamic data
-                  bottomTitles: AxisTitles(
-                    axisNameWidget: Text(xAxisLabel),
-                    sideTitles: SideTitles(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32),
+              child: LineChart(
+                LineChartData(
+                  titlesData: FlTitlesData(
+                    //dynamic data
+                    bottomTitles: AxisTitles(
+                      axisNameWidget: Text(xAxisLabel),
+                      sideTitles: SideTitles(
+                          showTitles: true,
+                          interval: 1.0,
+                          getTitlesWidget: (val, meta) {
+                            return Padding(
+                              padding: const EdgeInsets.only(top: 4),
+                              child: Text(
+                                xAxis!.elementAt(val.toInt()),
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            );
+                          }),
+                    ),
+                    leftTitles: AxisTitles(
+                      axisNameWidget: Text(yAxisLabel),
+                      sideTitles: SideTitles(
                         showTitles: true,
                         interval: 1.0,
+                        reservedSize: 40,
                         getTitlesWidget: (val, meta) {
-                          return Padding(
-                            padding: const EdgeInsets.only(top: 4),
-                            child: Text(
-                              xAxis!.elementAt(val.toInt()),
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 10,
-                              ),
+                          return Text(
+                            yAxis!.elementAt(val.toInt()).toString(),
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 10,
                             ),
                           );
-                        }),
-                  ),
-                  leftTitles: AxisTitles(
-                    axisNameWidget: Text(yAxisLabel),
-                    sideTitles: SideTitles(
-                      showTitles: true,
-                      interval: 1.0,
-                      reservedSize: 40,
-                      getTitlesWidget: (val, meta) {
-                        return Text(
-                          yAxis!.elementAt(val.toInt()).toString(),
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 10,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  //Constant data
-                  rightTitles: const AxisTitles(
-                    sideTitles: SideTitles(showTitles: false),
-                  ),
-                  topTitles: const AxisTitles(
-                    sideTitles: SideTitles(showTitles: false),
-                  ),
-                ),
-                maxX: xAxis!.length.toDouble() - 1.0,
-                maxY: yAxis!.length.toDouble() - 1.0,
-                //Constant data
-                lineTouchData: const LineTouchData(enabled: false),
-                minX: 0,
-                minY: 0,
-                borderData: FlBorderData(
-                    border: Border.all(color: Colors.grey, width: 1)),
-                gridData: const FlGridData(
-                  horizontalInterval: 1.0,
-                  verticalInterval: 1.0,
-                ),
-                baselineX: 0,
-                baselineY: 0,
-                lineBarsData: [
-                  //dynamic
-                  LineChartBarData(
-                    spots: spotGenerator(
-                        data!.length, data, yAxis.last, yAxis.length - 1),
-                    //constant
-                    color: primaryColor,
-                    lineChartStepData:
-                        const LineChartStepData(stepDirection: 1),
-                    preventCurveOvershootingThreshold: 1,
-                    preventCurveOverShooting: true,
-                    isCurved: true,
-                    isStrokeCapRound: true,
-                    barWidth: 2,
-                    belowBarData: BarAreaData(
-                      show: false,
-                    ),
-                    dotData: FlDotData(
-                      show: true,
-                      getDotPainter: (spot, percent, barData, index) =>
-                          FlDotCirclePainter(
-                        radius: 3,
-                        color: primaryColor,
-                        strokeColor: Colors.black,
+                        },
                       ),
                     ),
+                    //Constant data
+                    rightTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                    topTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
                   ),
-                ],
+                  maxX: xAxis!.length.toDouble() - 1.0,
+                  maxY: yAxis!.length.toDouble() - 1.0,
+                  //Constant data
+                  lineTouchData: const LineTouchData(enabled: false),
+                  minX: 0,
+                  minY: 0,
+                  borderData: FlBorderData(
+                      border: Border.all(color: Colors.grey, width: 1)),
+                  gridData: const FlGridData(
+                    horizontalInterval: 1.0,
+                    verticalInterval: 1.0,
+                  ),
+                  baselineX: 0,
+                  baselineY: 0,
+                  lineBarsData: [
+                    //dynamic
+                    LineChartBarData(
+                      spots: spotGenerator(
+                          data!.length, data, yAxis.last, yAxis.length - 1),
+                      //constant
+                      color: primaryColor,
+                      lineChartStepData:
+                          const LineChartStepData(stepDirection: 1),
+                      preventCurveOvershootingThreshold: 1,
+                      preventCurveOverShooting: true,
+                      isCurved: true,
+                      isStrokeCapRound: true,
+                      barWidth: 2,
+                      belowBarData: BarAreaData(
+                        show: false,
+                      ),
+                      dotData: FlDotData(
+                        show: true,
+                        getDotPainter: (spot, percent, barData, index) =>
+                            FlDotCirclePainter(
+                          radius: 3,
+                          color: primaryColor,
+                          strokeColor: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           )
