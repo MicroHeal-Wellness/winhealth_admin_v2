@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   chips_choice: ^3.0.1
+  country_code_picker: ^3.0.0
   cupertino_icons: ^1.0.2
   file_picker: ^6.1.1
   file_saver: ^0.2.9
@@ -26,7 +27,6 @@ dependencies:
   url_launcher: ^6.2.4
 
 dev_dependencies:
-
   flutter_lints: ^3.0.1
   flutter_test:
     sdk: flutter

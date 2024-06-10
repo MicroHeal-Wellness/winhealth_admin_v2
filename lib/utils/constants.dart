@@ -3,6 +3,15 @@ import 'package:flutter/material.dart';
 const primaryColor = Color(0xFFE85462);
 const primaryColor2 = Color(0xFFFF8692);
 
+const roundedGreyBorder = OutlineInputBorder(
+  borderSide: BorderSide(
+    width: 1,
+    color: Colors.grey,
+  ),
+  borderRadius: BorderRadius.all(
+    Radius.circular(10.0),
+  ),
+);
 
 const accessSpecifiers = {
   "appointment": "Appointment",

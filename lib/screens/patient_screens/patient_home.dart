@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:winhealth_admin_v2/components/patient_info_card.dart';
 import 'package:winhealth_admin_v2/components/patient_info_card_2.dart';
 import 'package:winhealth_admin_v2/models/answer.dart';
 import 'package:winhealth_admin_v2/models/patient_group.dart';
 import 'package:winhealth_admin_v2/models/user_model.dart';
+import 'package:winhealth_admin_v2/screens/patient_screens/create_patient_screen.dart';
 import 'package:winhealth_admin_v2/screens/patient_screens/diet_home.dart';
 import 'package:winhealth_admin_v2/screens/patient_screens/weekly_patient_report_home.dart';
 import 'package:winhealth_admin_v2/services/partner_group_service.dart';
@@ -32,6 +34,7 @@ class _PatientHomeState extends State<PatientHome> {
   String? patientGroupId;
 
   UserModel? selectedPatient;
+
   @override
   void initState() {
     scrollController.addListener(() {
@@ -126,17 +129,48 @@ class _PatientHomeState extends State<PatientHome> {
               padding: const EdgeInsets.all(32.0),
               child: Column(
                 children: [
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      patientGroupId == "1"
-                          ? "Unassigned Patients ($patientCount)"
-                          : "Patients ($patientCount)",
-                      style: const TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
+                  Row(
+                    children: [
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          patientGroupId == "1"
+                              ? "Unassigned Patients ($patientCount)"
+                              : "Patients ($patientCount)",
+                          style: const TextStyle(
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
-                    ),
+                      const Spacer(),
+                      MaterialButton(
+                        onPressed: () async {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CreatePatientScreen(),
+                            ),
+                          );
+                          await getInitData();
+                        },
+                        color: primaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            "Add Patient",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                   const SizedBox(
                     height: 16,
@@ -144,7 +178,7 @@ class _PatientHomeState extends State<PatientHome> {
                   Row(
                     children: [
                       const Text(
-                        "Selected Patient Group:",
+                        "Patient Group:",
                         style: TextStyle(
                           fontSize: 20,
                         ),

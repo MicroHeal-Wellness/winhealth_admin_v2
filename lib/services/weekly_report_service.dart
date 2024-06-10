@@ -8,7 +8,7 @@ class WeeklyReportService {
   static Future<List<WeeklyPatientReportModel>> fetchWeeklyReportByPatientId(
       patientId) async {
     final response = await BaseService.makeAuthenticatedRequest(
-      '${BaseService.BASE_URL}/items/weekly_patient_report?filter={"patient":{"_eq":"$patientId"}}&sort=-date_updated&fields=*,patient.*,user_created.*,user_updated.*',
+      '${BaseService.BASE_URL}/items/weekly_patient_report?filter={"patient":{"_eq":"$patientId"}}&sort=-week&fields=*,patient.*,user_created.*,user_updated.*',
       method: 'GET',
     );
     List<WeeklyPatientReportModel> tasks = [];

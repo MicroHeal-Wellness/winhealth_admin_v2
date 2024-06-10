@@ -95,8 +95,8 @@ class _ReportSummaryState extends State<ReportSummary> {
                         .map(
                           (ent) => getSingleGraph(
                             ent.key.contains("nos")
-                                ? "${ent.key.split("_nos").first.split("_").map((el) => el[0].toUpperCase() + el.substring(1)).join(" ")} Intensity"
-                                : "${ent.key.split("_").map((el) => el[0].toUpperCase() + el.substring(1)).join(" ")} Frequency",
+                                ? "${ent.key.split("_nos").first.split("_").map((el) => el[0].toUpperCase() + el.substring(1)).join(" ")} Frequency"
+                                : "${ent.key.split("_").map((el) => el[0].toUpperCase() + el.substring(1)).join(" ")} Intensity",
                             "",
                             List<String>.generate(
                               widget.reportList.length,

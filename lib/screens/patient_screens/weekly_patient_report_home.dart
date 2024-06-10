@@ -171,44 +171,119 @@ class _WeeklyPatientReportState extends State<WeeklyPatientReportHome> {
                   const SizedBox(
                     height: 16,
                   ),
-                  Expanded(
-                    flex: 1,
-                    child: reportList.isEmpty
-                        ? const Center(
-                            child: Text("No Form Response Found"),
-                          )
-                        : ListView.builder(
-                            shrinkWrap: true,
-                            controller: scrollController,
-                            itemBuilder: (context, index) {
-                              return ReportCard(
-                                  weeklyPatientReport: reportList[index],
-                                  onEdit: () async {
-                                    await Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => EditWeeklyReport(
-                                          weeklyPatientReportModel:
-                                              reportList[index],
-                                        ),
-                                      ),
-                                    );
-                                    await getInitData();
-                                  },
-                                  onView: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            ViewReportResponse(
-                                          weeklyReportResponse:
-                                              reportList[index],
-                                        ),
-                                      ),
-                                    );
-                                  });
-                            },
-                            itemCount: reportList.length,
+                  reportList.isEmpty
+                      ? const Center(
+                          child: Text(
+                            "No reports for selected patient",
+                            style: TextStyle(fontSize: 24),
                           ),
-                  )
+                        )
+                      : Align(
+                          alignment: Alignment.topLeft,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: DataTable(
+                                showBottomBorder: true,
+                                dataRowMinHeight: 32,
+                                dataRowMaxHeight: 64,
+                                border: TableBorder.all(
+                                    width: 2.0, color: Colors.black),
+                                columns: [
+                                  const DataColumn(
+                                    label: Expanded(
+                                      child: Text(
+                                        'Week',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  ...WeeklyPatientReportModel()
+                                      .toJsonList()
+                                      .entries
+                                      .map(
+                                        (ent) => DataColumn(
+                                          label: Expanded(
+                                            child: Text(
+                                              ent.key.contains("nos")
+                                                  ? "${ent.key.split("_nos").first.split("_").map((el) => el[0].toUpperCase() + el.substring(1)).join(" ")} Frequency"
+                                                  : "${ent.key.split("_").map((el) => el[0].toUpperCase() + el.substring(1)).join(" ")} Intensity",
+                                              style: const TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                ],
+                                rows: List.generate(
+                                  reportList.length,
+                                  (index) => DataRow(cells: [
+                                    DataCell(
+                                      Text(reportList[index].week!),
+                                    ),
+                                    ...WeeklyPatientReportModel()
+                                        .toJsonList()
+                                        .entries
+                                        .map(
+                                          (el) => DataCell(
+                                            Text(
+                                              reportList[index]
+                                                  .toJson()[el.key]
+                                                  .toString(),
+                                            ),
+                                          ),
+                                        )
+                                  ]),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+
+                  // Expanded(
+                  //   flex: 1,
+                  //   child: reportList.isEmpty
+                  //       ? const Center(
+                  //           child: Text("No Form Response Found"),
+                  //         )
+                  //       : ListView.builder(
+                  //           shrinkWrap: true,
+                  //           controller: scrollController,
+                  //           itemBuilder: (context, index) {
+                  //             return ReportCard(
+                  //                 weeklyPatientReport: reportList[index],
+                  //                 onEdit: () async {
+                  //                   await Navigator.of(context).push(
+                  //                     MaterialPageRoute(
+                  //                       builder: (context) => EditWeeklyReport(
+                  //                         weeklyPatientReportModel:
+                  //                             reportList[index],
+                  //                       ),
+                  //                     ),
+                  //                   );
+                  //                   await getInitData();
+                  //                 },
+                  //                 onView: () {
+                  //                   Navigator.of(context).push(
+                  //                     MaterialPageRoute(
+                  //                       builder: (context) =>
+                  //                           ViewReportResponse(
+                  //                         weeklyReportResponse:
+                  //                             reportList[index],
+                  //                       ),
+                  //                     ),
+                  //                   );
+                  //                 });
+                  //           },
+                  //           itemCount: reportList.length,
+                  //         ),
+                  // )
                 ],
               ),
             ),

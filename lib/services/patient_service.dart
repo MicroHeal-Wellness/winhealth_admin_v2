@@ -3,6 +3,19 @@ import 'package:winhealth_admin_v2/models/user_model.dart';
 import 'package:winhealth_admin_v2/services/base_service.dart';
 
 class PatientService {
+  static Future<bool> createPatient(payload) async {
+    final response = await BaseService.makeAuthenticatedRequest(
+      '${BaseService.BASE_URL}/users/',
+      method: 'post',
+      body: jsonEncode(payload),
+    );
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   static Future<bool> udpatePatientGroup(
       String patientId, String? patientGroupId) async {
     final response = await BaseService.makeAuthenticatedRequest(
