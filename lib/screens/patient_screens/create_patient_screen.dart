@@ -908,7 +908,7 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
                                 if (formKey.currentState!.validate()) {
                                   final Map<String, dynamic> params = {
                                     'first_name': firstNameController.text,
-                                    'last_name': firstNameController.text,
+                                    'last_name': lastNameController.text,
                                     'email': emailController.text,
                                     'phone_number': phoneController.text,
                                     'dob': dobController.text,

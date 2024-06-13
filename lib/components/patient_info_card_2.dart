@@ -428,7 +428,7 @@ class _PatientInfoCardState extends State<PatientInfoCard2> {
                   ),
                 ),
                 Text(
-                  widget.patient.emailAddress == null
+                  widget.patient.emailAddress != null
                       ? widget.patient.emailAddress!
                       : widget.patient.email!,
                   style: const TextStyle(
