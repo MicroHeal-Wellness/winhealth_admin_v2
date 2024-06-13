@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:winhealth_admin_v2/models/user_model.dart';
 import 'package:winhealth_admin_v2/services/base_service.dart';
 
@@ -12,6 +13,7 @@ class PatientService {
     if (response.statusCode == 200) {
       return true;
     } else {
+      Fluttertoast.showToast(msg: response.body);
       return false;
     }
   }
