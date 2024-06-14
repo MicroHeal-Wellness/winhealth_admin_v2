@@ -27,7 +27,6 @@ class PatientService {
         "patient_group": patientGroupId,
       }),
     );
-    print(response.body);
     if (response.statusCode == 200) {
       return true;
     } else {
