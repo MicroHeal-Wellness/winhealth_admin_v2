@@ -85,6 +85,7 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
   List<String> langs = [
     "english",
     "telugu",
+    "tamil",
     "hindi",
     "kannada",
     "malayalam",

@@ -79,7 +79,6 @@ class _PartnerPatientHomeState extends State<PartnerPatientHome> {
     setState(() {
       loading = true;
     });
-    print(":${widget.currentUser.patientGroup}");
     if (widget.currentUser.patientGroup != null) {
       patientList = await PatientService.getPatientsByPatientGroup(
           widget.currentUser.patientGroup!.id!,

@@ -33,18 +33,18 @@ const accessSpecifiers = {
   "user_directory": "User Directory"
 };
 
-langCode(val) {
+langCode(String val) {
   switch (val) {
     case "english":
       return "English";
-    case "telugu":
-      return "తెలుగు";
-    case "hindi":
-      return "हिंदी";
-    case "urdu":
-      return "اردو";
+    // case "telugu":
+    //   return "తెలుగు";
+    // case "hindi":
+    //   return "हिंदी";
+    // case "urdu":
+    //   return "اردو";
     default:
-      return val;
+      return val[0].toUpperCase() + val.substring(1);
   }
 }
 

@@ -103,7 +103,8 @@ class _ReportSummaryState extends State<ReportSummary> {
                               (int index) => "Week ${index + 1}",
                             ).toList(),
                             List<int>.generate(
-                              11,
+                             ent.key.contains("_nos")
+                                ? 8: 11,
                               (int index) => index,
                             ).toList(),
                             widget.reportList
@@ -114,7 +115,9 @@ class _ReportSummaryState extends State<ReportSummary> {
                                     0)
                                 .toList(),
                             "",
-                            "Intensity",
+                            ent.key.contains("_nos")
+                                ? "Frequency"
+                                : "Intensity",
                           ),
                         )
                         .toList()

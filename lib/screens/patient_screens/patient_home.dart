@@ -220,7 +220,7 @@ class _PatientHomeState extends State<PatientHome> {
                             }
                             setState(() {
                               patientGroupId = value;
-                              page = 1;
+                              page = 2;
                             });
                           },
                           items: patientGroups.map<DropdownMenuItem<String>>(
