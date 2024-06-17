@@ -35,6 +35,23 @@ class QuestionareService {
     }
   }
 
+  static Future<List<QuestionForm>> getAllAppForms() async {
+    final response = await BaseService.makeAuthenticatedRequest(
+      '${BaseService.BASE_URL}/items/forms?fields=*,questions.form_question_id.*&filter={"_and":[{"name":{"_contains":"App"}},{"status":{"_eq":"published"}}]}',
+      method: 'GET',
+    );
+    if (response.statusCode == 200) {
+      final List<QuestionForm> data = [];
+      var responseJson = json.decode(response.body);
+      for (final appointment in responseJson['data']) {
+        data.add(QuestionForm.fromJson(appointment));
+      }
+      return data;
+    } else {
+      return [];
+    }
+  }
+
   static Future<List<QuestionForm>> getAllNonAppForms() async {
     final response = await BaseService.makeAuthenticatedRequest(
       '${BaseService.BASE_URL}/items/forms?fields=*,questions.form_question_id.*&filter[name][_ncontains]=App',

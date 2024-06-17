@@ -34,7 +34,7 @@ class _AddResponsePageState extends State<AddResponsePage> {
     setState(() {
       isLoading = true;
     });
-    forms = await QuestionareService.getAllNonAppForms();
+    forms = await QuestionareService.getAllAppForms();
 
     forms.forEach((element) {
       debugPrint(element.name ?? "");

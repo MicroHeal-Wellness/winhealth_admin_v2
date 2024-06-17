@@ -269,17 +269,6 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
                                 focusedBorder: roundedGreyBorder,
                                 enabledBorder: roundedGreyBorder,
                               ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your email id';
-                                }
-                                if (!RegExp(
-                                        r'^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
-                                    .hasMatch(emailController.text)) {
-                                  return 'Please enter a valid email id';
-                                }
-                                return null;
-                              },
                             ),
                             const SizedBox(
                               height: 16,
@@ -582,7 +571,7 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
                               controller: heightController,
                               textInputAction: TextInputAction.next,
                               keyboardType: TextInputType.number,
-                              readOnly: true,
+                              // readOnly: true,
                               validator: (value) {
                                 if (value == null) {
                                   return "Height must not empty";
@@ -592,67 +581,14 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
                                 }
                                 return null;
                               },
-                              onTap: () {
-                                showModalBottomSheet(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return Container(
-                                        height: 240,
-                                        color: Colors.white,
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            const Padding(
-                                              padding: EdgeInsets.all(16.0),
-                                              child: Text(
-                                                "Centimetre",
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: <Widget>[
-                                                  Expanded(
-                                                    child: CupertinoPicker(
-                                                        scrollController:
-                                                            FixedExtentScrollController(
-                                                                initialItem:
-                                                                    heightCm -
-                                                                        55),
-                                                        itemExtent: 32,
-                                                        backgroundColor:
-                                                            Colors.white,
-                                                        onSelectedItemChanged:
-                                                            (int index) {
-                                                          setState(() {
-                                                            heightCm =
-                                                                55 + index;
-                                                            heightController
-                                                                    .text =
-                                                                "$heightCm";
-                                                          });
-                                                        },
-                                                        children: List<
-                                                                Widget>.generate(
-                                                            200, (int index) {
-                                                          return Center(
-                                                            child: Text(
-                                                                '${55 + index}'),
-                                                          );
-                                                        })),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    });
+                              onChanged: (value) {
+                                if (int.tryParse(value) != null) {
+                                  setState(
+                                    () {
+                                      heightCm = int.parse(value);
+                                    },
+                                  );
+                                }
                               },
                               decoration: const InputDecoration(
                                 contentPadding: EdgeInsets.symmetric(
@@ -704,68 +640,14 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
                               controller: weightController,
                               textInputAction: TextInputAction.next,
                               keyboardType: TextInputType.number,
-                              readOnly: true,
-                              onTap: () {
-                                showModalBottomSheet(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return Container(
-                                        height: 200,
-                                        color: Colors.white,
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            const Padding(
-                                              padding: EdgeInsets.all(16.0),
-                                              child: Text(
-                                                "Kilogram",
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: <Widget>[
-                                                  Expanded(
-                                                    child: CupertinoPicker(
-                                                        scrollController:
-                                                            FixedExtentScrollController(
-                                                                initialItem:
-                                                                    weightKg -
-                                                                        25),
-                                                        itemExtent: 32,
-                                                        backgroundColor:
-                                                            Colors.white,
-                                                        onSelectedItemChanged:
-                                                            (int index) {
-                                                          setState(() {
-                                                            weightKg =
-                                                                25 + index;
-                                                            weightController
-                                                                    .text =
-                                                                "$weightKg";
-                                                          });
-                                                        },
-                                                        children: List<
-                                                                Widget>.generate(
-                                                            125, (int index) {
-                                                          return Center(
-                                                            child: Text(
-                                                                '${25 + index}'),
-                                                          );
-                                                        })),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    });
+                              onChanged: (value) {
+                                if (int.tryParse(value) != null) {
+                                  setState(
+                                    () {
+                                      weightKg = int.parse(value);
+                                    },
+                                  );
+                                }
                               },
                               validator: (value) {
                                 if (value == null) {
