@@ -8,7 +8,7 @@ class WeeklyReportService {
   static Future<List<WeeklyPatientReportModel>> fetchWeeklyReportByPatientId(
       patientId) async {
     final response = await BaseService.makeAuthenticatedRequest(
-      '${BaseService.BASE_URL}/items/weekly_patient_report?filter={"patient":{"_eq":"$patientId"}}&sort=-week&fields=*,patient.*,user_created.*,user_updated.*',
+      '${BaseService.BASE_URL}/items/weekly_patient_report?filter={"patient":{"_eq":"$patientId"}}&fields=*,patient.*,user_created.*,user_updated.*',
       method: 'GET',
     );
     List<WeeklyPatientReportModel> tasks = [];
@@ -20,6 +20,21 @@ class WeeklyReportService {
               WeeklyPatientReportModel.fromJson(element);
           tasks.add(activityItem);
         }
+        tasks.sort((a, b) {
+          int? aWeekNumber = getWeekNumber(a);
+          int? bWeekNumber = getWeekNumber(b);
+
+          if (aWeekNumber == null && bWeekNumber == null) {
+            return 0;
+          } else if (aWeekNumber == null) {
+            return 1;
+          } else if (bWeekNumber == null) {
+            return -1;
+          } else {
+            return aWeekNumber.compareTo(bWeekNumber);
+          }
+        });
+
         return tasks;
       } catch (e) {
         if (kDebugMode) {
@@ -30,6 +45,17 @@ class WeeklyReportService {
     } else {
       return tasks;
     }
+  }
+
+  static int? getWeekNumber(WeeklyPatientReportModel obj) {
+    var parts = obj.week!.split(' ');
+    if (parts.length == 2 && parts[0] == 'Week') {
+      var number = int.tryParse(parts[1]);
+      if (number != null) {
+        return number;
+      }
+    }
+    return null; // Return null for invalid formats
   }
 
   static Future<bool> createWeeklyReport(payload) async {

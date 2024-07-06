@@ -81,217 +81,219 @@ class _WeeklyPatientReportState extends State<WeeklyPatientReportHome> {
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : Padding(
-              padding: const EdgeInsets.all(32.0),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      const BackButton(),
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          "${widget.patient.firstName}'s Weekly Reports",
-                          style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  Row(
-                    children: [
-                      MaterialButton(
-                        onPressed: () async {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ReportSummary(
-                                reportList: reportList,
-                              ),
-                            ),
-                          );
-                          await getInitData();
-                        },
-                        color: primaryColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(32.0),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        const BackButton(),
+                        Align(
+                          alignment: Alignment.topLeft,
                           child: Text(
-                            "View summary",
-                            style: TextStyle(
-                              fontSize: 18,
+                            "${widget.patient.firstName}'s Weekly Reports",
+                            style: const TextStyle(
+                              fontSize: 24,
                               fontWeight: FontWeight.bold,
-                              color: Colors.white,
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(
-                        width: 32,
-                      ),
-                      [
-                        '12b13cd2-5929-47d2-846c-5b6ad05938d4',
-                        '7afc4f86-e282-4eb6-a9f3-b7eb7290b3fb'
-                      ].contains(widget.curentUser.role)
-                          ? MaterialButton(
-                              onPressed: () async {
-                                await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AddWeeklyReport(
-                                      patient: widget.patient,
-                                    ),
-                                  ),
-                                );
-                                await getInitData();
-                              },
-                              color: primaryColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text(
-                                  "Add report",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Row(
+                      children: [
+                        MaterialButton(
+                          onPressed: () async {
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ReportSummary(
+                                  reportList: reportList,
                                 ),
                               ),
-                            )
-                          : const SizedBox()
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  const Divider(),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  reportList.isEmpty
-                      ? const Center(
-                          child: Text(
-                            "No reports for selected patient",
-                            style: TextStyle(fontSize: 24),
+                            );
+                            await getInitData();
+                          },
+                          color: primaryColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
                           ),
-                        )
-                      : Align(
-                          alignment: Alignment.topLeft,
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.vertical,
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: DataTable(
-                                showBottomBorder: true,
-                                dataRowMinHeight: 32,
-                                dataRowMaxHeight: 64,
-                                border: TableBorder.all(
-                                    width: 2.0, color: Colors.black),
-                                columns: [
-                                  const DataColumn(
-                                    label: Expanded(
-                                      child: Text(
-                                        'Week',
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text(
+                              "View summary",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 32,
+                        ),
+                        [
+                          '12b13cd2-5929-47d2-846c-5b6ad05938d4',
+                          '7afc4f86-e282-4eb6-a9f3-b7eb7290b3fb'
+                        ].contains(widget.curentUser.role)
+                            ? MaterialButton(
+                                onPressed: () async {
+                                  await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => AddWeeklyReport(
+                                        patient: widget.patient,
                                       ),
                                     ),
+                                  );
+                                  await getInitData();
+                                },
+                                color: primaryColor,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "Add report",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
                                   ),
-                                  ...WeeklyPatientReportModel()
-                                      .toJsonList()
-                                      .entries
-                                      .map(
-                                        (ent) => DataColumn(
-                                          label: Expanded(
-                                            child: Text(
-                                              ent.key.contains("nos")
-                                                  ? "${ent.key.split("_nos").first.split("_").map((el) => el[0].toUpperCase() + el.substring(1)).join(" ")} Frequency"
-                                                  : "${ent.key.split("_").map((el) => el[0].toUpperCase() + el.substring(1)).join(" ")} Intensity",
-                                              style: const TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
+                                ),
+                              )
+                            : const SizedBox()
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    const Divider(),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    reportList.isEmpty
+                        ? const Center(
+                            child: Text(
+                              "No reports for selected patient",
+                              style: TextStyle(fontSize: 24),
+                            ),
+                          )
+                        : Align(
+                            alignment: Alignment.topLeft,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.vertical,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: DataTable(
+                                  showBottomBorder: true,
+                                  dataRowMinHeight: 32,
+                                  dataRowMaxHeight: 64,
+                                  border: TableBorder.all(
+                                      width: 2.0, color: Colors.black),
+                                  columns: [
+                                    const DataColumn(
+                                      label: Expanded(
+                                        child: Text(
+                                          'Week',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                      )
-                                ],
-                                rows: List.generate(
-                                  reportList.length,
-                                  (index) => DataRow(cells: [
-                                    DataCell(
-                                      Text(reportList[index].week!),
+                                      ),
                                     ),
                                     ...WeeklyPatientReportModel()
                                         .toJsonList()
                                         .entries
                                         .map(
-                                          (el) => DataCell(
-                                            Text(
-                                              reportList[index]
-                                                  .toJson()[el.key]
-                                                  .toString(),
+                                          (ent) => DataColumn(
+                                            label: Expanded(
+                                              child: Text(
+                                                ent.key.contains("nos")
+                                                    ? "${ent.key.split("_nos").first.split("_").map((el) => el[0].toUpperCase() + el.substring(1)).join(" ")} Frequency"
+                                                    : "${ent.key.split("_").map((el) => el[0].toUpperCase() + el.substring(1)).join(" ")} Intensity",
+                                                style: const TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         )
-                                  ]),
+                                  ],
+                                  rows: List.generate(
+                                    reportList.length,
+                                    (index) => DataRow(cells: [
+                                      DataCell(
+                                        Text(reportList[index].week!),
+                                      ),
+                                      ...WeeklyPatientReportModel()
+                                          .toJsonList()
+                                          .entries
+                                          .map(
+                                            (el) => DataCell(
+                                              Text(
+                                                reportList[index]
+                                                    .toJson()[el.key]
+                                                    .toString(),
+                                              ),
+                                            ),
+                                          )
+                                    ]),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
 
-                  // Expanded(
-                  //   flex: 1,
-                  //   child: reportList.isEmpty
-                  //       ? const Center(
-                  //           child: Text("No Form Response Found"),
-                  //         )
-                  //       : ListView.builder(
-                  //           shrinkWrap: true,
-                  //           controller: scrollController,
-                  //           itemBuilder: (context, index) {
-                  //             return ReportCard(
-                  //                 weeklyPatientReport: reportList[index],
-                  //                 onEdit: () async {
-                  //                   await Navigator.of(context).push(
-                  //                     MaterialPageRoute(
-                  //                       builder: (context) => EditWeeklyReport(
-                  //                         weeklyPatientReportModel:
-                  //                             reportList[index],
-                  //                       ),
-                  //                     ),
-                  //                   );
-                  //                   await getInitData();
-                  //                 },
-                  //                 onView: () {
-                  //                   Navigator.of(context).push(
-                  //                     MaterialPageRoute(
-                  //                       builder: (context) =>
-                  //                           ViewReportResponse(
-                  //                         weeklyReportResponse:
-                  //                             reportList[index],
-                  //                       ),
-                  //                     ),
-                  //                   );
-                  //                 });
-                  //           },
-                  //           itemCount: reportList.length,
-                  //         ),
-                  // )
-                ],
+                    // Expanded(
+                    //   flex: 1,
+                    //   child: reportList.isEmpty
+                    //       ? const Center(
+                    //           child: Text("No Form Response Found"),
+                    //         )
+                    //       : ListView.builder(
+                    //           shrinkWrap: true,
+                    //           controller: scrollController,
+                    //           itemBuilder: (context, index) {
+                    //             return ReportCard(
+                    //                 weeklyPatientReport: reportList[index],
+                    //                 onEdit: () async {
+                    //                   await Navigator.of(context).push(
+                    //                     MaterialPageRoute(
+                    //                       builder: (context) => EditWeeklyReport(
+                    //                         weeklyPatientReportModel:
+                    //                             reportList[index],
+                    //                       ),
+                    //                     ),
+                    //                   );
+                    //                   await getInitData();
+                    //                 },
+                    //                 onView: () {
+                    //                   Navigator.of(context).push(
+                    //                     MaterialPageRoute(
+                    //                       builder: (context) =>
+                    //                           ViewReportResponse(
+                    //                         weeklyReportResponse:
+                    //                             reportList[index],
+                    //                       ),
+                    //                     ),
+                    //                   );
+                    //                 });
+                    //           },
+                    //           itemCount: reportList.length,
+                    //         ),
+                    // )
+                  ],
+                ),
               ),
             ),
     );
