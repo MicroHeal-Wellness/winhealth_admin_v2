@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:winhealth_admin_v2/models/user_model.dart';
-import 'package:winhealth_admin_v2/models/weekly_patient_report_model.dart';
-import 'package:winhealth_admin_v2/services/weekly_report_service.dart';
+import 'package:winhealth_admin_v2/models/weekly_patient_nutrient_report_model.dart';
+import 'package:winhealth_admin_v2/services/weekly_nutrient_report_service.dart';
 import 'package:winhealth_admin_v2/utils/constants.dart';
 import 'package:winhealth_admin_v2/utils/wh_slider.dart';
 
 class EditWeeklyReport extends StatefulWidget {
-  final WeeklyPatientReportModel weeklyPatientReportModel;
+  final WeeklyPatientNutrientReportModel weeklyPatientReportModel;
   const EditWeeklyReport({
     super.key,
     required this.weeklyPatientReportModel,
   });
 
   @override
-  State<EditWeeklyReport> createState() => _AddWeeklyhReportState();
+  State<EditWeeklyReport> createState() => _EditWeeklyhReportState();
 }
 
-class _AddWeeklyhReportState extends State<EditWeeklyReport> {
+class _EditWeeklyhReportState extends State<EditWeeklyReport> {
   bool showbtn = false;
   bool loading = true;
   ScrollController scrollController = ScrollController();
@@ -691,8 +690,8 @@ class _AddWeeklyhReportState extends State<EditWeeklyReport> {
                             MaterialButton(
                               onPressed: () async {
                                 if (weekController.text.isNotEmpty) {
-                                  bool resp = await WeeklyReportService
-                                      .updateWeeklyReport(widget.weeklyPatientReportModel.id,
+                                  bool resp = await WeeklyNutrientReportService
+                                      .updateWeeklyNutrientReport(widget.weeklyPatientReportModel.id,
                                     {
                                       "stomach_pain": stomachPain,
                                       "stomach_pain_nos": stomachPainNos,

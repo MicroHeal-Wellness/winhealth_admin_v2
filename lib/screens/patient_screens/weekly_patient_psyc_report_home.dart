@@ -1,28 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:winhealth_admin_v2/components/report_card.dart';
 import 'package:winhealth_admin_v2/models/user_model.dart';
-import 'package:winhealth_admin_v2/models/weekly_patient_report_model.dart';
-import 'package:winhealth_admin_v2/screens/patient_screens/add_weekly_report.dart';
+import 'package:winhealth_admin_v2/models/weekly_patient_nutrient_report_model.dart';
+import 'package:winhealth_admin_v2/models/weekly_patient_psyc_report_model.dart';
+import 'package:winhealth_admin_v2/screens/patient_screens/add_weekly_nutrient_report.dart';
+import 'package:winhealth_admin_v2/screens/patient_screens/add_weekly_psyc_report.dart';
 import 'package:winhealth_admin_v2/screens/patient_screens/edit_weekly_report.dart';
-import 'package:winhealth_admin_v2/screens/patient_screens/report_summary.dart';
+import 'package:winhealth_admin_v2/screens/patient_screens/nutrient_report_summary.dart';
+import 'package:winhealth_admin_v2/screens/patient_screens/psyc_report_summary.dart';
 import 'package:winhealth_admin_v2/screens/patient_screens/view_report_response.dart';
-import 'package:winhealth_admin_v2/services/weekly_report_service.dart';
+import 'package:winhealth_admin_v2/services/weekly_nutrient_report_service.dart';
+import 'package:winhealth_admin_v2/services/weekly_psyc_report_service.dart';
 import 'package:winhealth_admin_v2/utils/constants.dart';
 
-class WeeklyPatientReportHome extends StatefulWidget {
+class WeeklyPatientPsycReportHome extends StatefulWidget {
   final UserModel curentUser;
   final UserModel patient;
-  const WeeklyPatientReportHome(
+  const WeeklyPatientPsycReportHome(
       {super.key, required this.curentUser, required this.patient});
 
   @override
-  State<WeeklyPatientReportHome> createState() => _WeeklyPatientReportState();
+  State<WeeklyPatientPsycReportHome> createState() => _WeeklyPatientReportState();
 }
 
-class _WeeklyPatientReportState extends State<WeeklyPatientReportHome> {
+class _WeeklyPatientReportState extends State<WeeklyPatientPsycReportHome> {
   bool showbtn = false;
   bool loading = false;
-  List<WeeklyPatientReportModel> reportList = [];
+  List<WeeklyPatientPsycReportModel> reportList = [];
   @override
   void initState() {
     scrollController.addListener(() {
@@ -50,7 +54,7 @@ class _WeeklyPatientReportState extends State<WeeklyPatientReportHome> {
     setState(() {
       loading = true;
     });
-    reportList = await WeeklyReportService.fetchWeeklyReportByPatientId(
+    reportList = await WeeklyPsycReportService.fetchWeeklyPsycReportByPatientId(
         widget.patient.id);
     setState(() {
       loading = false;
@@ -92,7 +96,7 @@ class _WeeklyPatientReportState extends State<WeeklyPatientReportHome> {
                         Align(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            "${widget.patient.firstName}'s Weekly Reports",
+                            "${widget.patient.firstName}'s Weekly Psyc Reports",
                             style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
@@ -111,7 +115,7 @@ class _WeeklyPatientReportState extends State<WeeklyPatientReportHome> {
                             await Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ReportSummary(
+                                builder: (context) => PsycReportSummary(
                                   reportList: reportList,
                                 ),
                               ),
@@ -146,7 +150,7 @@ class _WeeklyPatientReportState extends State<WeeklyPatientReportHome> {
                                   await Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => AddWeeklyReport(
+                                      builder: (context) => AddWeeklyPsycReport(
                                         patient: widget.patient,
                                       ),
                                     ),
@@ -210,16 +214,14 @@ class _WeeklyPatientReportState extends State<WeeklyPatientReportHome> {
                                         ),
                                       ),
                                     ),
-                                    ...WeeklyPatientReportModel()
+                                    ...WeeklyPatientPsycReportModel()
                                         .toJsonList()
                                         .entries
                                         .map(
                                           (ent) => DataColumn(
                                             label: Expanded(
                                               child: Text(
-                                                ent.key.contains("nos")
-                                                    ? "${ent.key.split("_nos").first.split("_").map((el) => el[0].toUpperCase() + el.substring(1)).join(" ")} Frequency"
-                                                    : "${ent.key.split("_").map((el) => el[0].toUpperCase() + el.substring(1)).join(" ")} Intensity",
+                                                ent.value,
                                                 style: const TextStyle(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.bold,
@@ -235,7 +237,7 @@ class _WeeklyPatientReportState extends State<WeeklyPatientReportHome> {
                                       DataCell(
                                         Text(reportList[index].week!),
                                       ),
-                                      ...WeeklyPatientReportModel()
+                                      ...WeeklyPatientPsycReportModel()
                                           .toJsonList()
                                           .entries
                                           .map(

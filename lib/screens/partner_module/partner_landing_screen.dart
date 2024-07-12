@@ -4,6 +4,7 @@ import 'package:winhealth_admin_v2/components/side_bar_item.dart';
 import 'package:winhealth_admin_v2/models/user_model.dart';
 import 'package:winhealth_admin_v2/provider/sidebar_provvider.dart';
 import 'package:winhealth_admin_v2/screens/appointment/appointment_home.dart';
+import 'package:winhealth_admin_v2/screens/partner_module/partner_group_summary_screen.dart';
 import 'package:winhealth_admin_v2/screens/partner_module/partner_patient_home.dart';
 import 'package:winhealth_admin_v2/screens/partners/partner_home.dart';
 import 'package:winhealth_admin_v2/screens/pre/defualt_page.dart';
@@ -31,23 +32,9 @@ class _LandingScreenState extends State<PartnerLandingScreen> {
       case -1:
         return const DefaultPage();
       case 0:
-        return AppointmentHome(currentUser: currentUser!);
+        return PartnerGroupSummary(currentUser: currentUser!);
       case 1:
-        return SlotsHome(currentUser: currentUser!);
-      case 2:
         return PartnerPatientHome(currentUser: currentUser!);
-      case 3:
-        return DoctorHome(currentUser: currentUser!);
-      case 4:
-        return PatientFormBuilder();
-      case 5:
-        return UserDirectory(currentUser: currentUser!);
-      case 6:
-        return const AccessMangementHome();
-      case 7:
-        return TaskView(currentUser: currentUser!);
-      case 9:
-        return PartnerHome(currentUser: currentUser!);
       default:
         return const DefaultPage();
     }
@@ -165,8 +152,16 @@ class _LandingScreenState extends State<PartnerLandingScreen> {
                         ),
                         currentUser!.role ==
                                 '881dbecd-f779-4c65-927d-b07d39b336cb'
-                            ?const SideBarItem(
-                                pageKey: 2,
+                            ? const SideBarItem(
+                                pageKey: 0,
+                                iconData: Icons.analytics,
+                                title: "Summary",
+                              )
+                            : const SizedBox(),
+                        currentUser!.role ==
+                                '881dbecd-f779-4c65-927d-b07d39b336cb'
+                            ? const SideBarItem(
+                                pageKey: 1,
                                 iconData: Icons.personal_injury,
                                 title: "Patients",
                               )

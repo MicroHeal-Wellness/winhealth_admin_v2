@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:winhealth_admin_v2/models/weekly_patient_report_model.dart';
+import 'package:winhealth_admin_v2/models/weekly_patient_nutrient_report_model.dart';
+import 'package:winhealth_admin_v2/models/weekly_patient_psyc_report_model.dart';
 import 'package:winhealth_admin_v2/screens/patient_screens/view_report_response.dart';
 import 'package:winhealth_admin_v2/utils/constants.dart';
 
 class ReportCard extends StatelessWidget {
-  final WeeklyPatientReportModel weeklyPatientReport;
+  final WeeklyPatientNutrientReportModel weeklyPatientReport;
   final VoidCallback onEdit;
   final VoidCallback onView;
   const ReportCard({

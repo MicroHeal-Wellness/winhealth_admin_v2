@@ -52,7 +52,7 @@ class _CreatePatientScreenState extends State<CreatePatientScreen> {
       loading = true;
     });
     // patientGroups.add(PatientGroup(id: "0", name: "All"));
-    patientGroups = await PatientGroupService.fetchAllPatientGroups();
+    patientGroups = await PartnerGroupService.fetchAllPatientGroups();
     setState(() {
       selectedPatientGroup = patientGroups.first;
       loading = false;

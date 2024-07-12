@@ -14,7 +14,8 @@ import 'package:winhealth_admin_v2/screens/patient_screens/diet_home.dart';
 import 'package:winhealth_admin_v2/screens/patient_screens/notes_home.dart';
 import 'package:winhealth_admin_v2/screens/patient_screens/report_home.dart';
 import 'package:winhealth_admin_v2/screens/patient_screens/team_notes_home.dart';
-import 'package:winhealth_admin_v2/screens/patient_screens/weekly_patient_report_home.dart';
+import 'package:winhealth_admin_v2/screens/patient_screens/weekly_patient_nutrition_report_home.dart';
+import 'package:winhealth_admin_v2/screens/patient_screens/weekly_patient_psyc_report_home.dart';
 import 'package:winhealth_admin_v2/services/activity_service.dart';
 import 'package:winhealth_admin_v2/services/patient_service.dart';
 import 'package:winhealth_admin_v2/utils/constants.dart';
@@ -231,7 +232,7 @@ class _PatientInfoCardState extends State<PatientInfoCard2> {
                           () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => WeeklyPatientReportHome(
+                            builder: (context) => WeeklyPatientNutritionReportHome(
                               patient: widget.patient,
                               curentUser: widget.currentUser,
                             ),
@@ -241,7 +242,31 @@ class _PatientInfoCardState extends State<PatientInfoCard2> {
                       // : () {
                       //     Fluttertoast.showToast(msg: "Access Denied");
                       //   },
-                      child: const Text('Daily Report'),
+                      child: const Text('Daily Nutrition Report'),
+                    ),
+                    MenuItemButton(
+                      style: const ButtonStyle(
+                        backgroundColor: WidgetStatePropertyAll(Colors.white),
+                      ),
+                      onPressed:
+                          //  (widget.currentUser.access != null &&
+                          //         widget.currentUser.access!.permission!
+                          //             .contains("dietplan"))
+                          //     ?
+                          () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => WeeklyPatientPsycReportHome(
+                              patient: widget.patient,
+                              curentUser: widget.currentUser,
+                            ),
+                          ),
+                        );
+                      },
+                      // : () {
+                      //     Fluttertoast.showToast(msg: "Access Denied");
+                      //   },
+                      child: const Text('Daily Psyc Report'),
                     ),
                     MenuItemButton(
                       style: const ButtonStyle(
@@ -428,7 +453,7 @@ class _PatientInfoCardState extends State<PatientInfoCard2> {
                   ),
                 ),
                 Text(
-                  widget.patient.emailAddress != null
+                  widget.patient.emailAddress != null && widget.patient.emailAddress!.isNotEmpty
                       ? widget.patient.emailAddress!
                       : widget.patient.email!,
                   style: const TextStyle(

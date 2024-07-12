@@ -177,7 +177,7 @@ class _PartnerHomeState extends State<PartnerHome> {
                                             });
                                           } else {
                                             patientGroups =
-                                                await PatientGroupService
+                                                await PartnerGroupService
                                                     .fetchPatientGroupsByPartner(
                                                         partner.id!);
                                             patientGroupsCount.clear();

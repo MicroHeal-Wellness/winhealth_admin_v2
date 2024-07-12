@@ -7,7 +7,7 @@ import 'package:winhealth_admin_v2/models/patient_group.dart';
 import 'package:winhealth_admin_v2/models/user_model.dart';
 import 'package:winhealth_admin_v2/screens/patient_screens/create_patient_screen.dart';
 import 'package:winhealth_admin_v2/screens/patient_screens/diet_home.dart';
-import 'package:winhealth_admin_v2/screens/patient_screens/weekly_patient_report_home.dart';
+import 'package:winhealth_admin_v2/screens/patient_screens/weekly_patient_nutrition_report_home.dart';
 import 'package:winhealth_admin_v2/services/partner_group_service.dart';
 import 'package:winhealth_admin_v2/services/patient_service.dart';
 import 'package:winhealth_admin_v2/utils/constants.dart';

@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:winhealth_admin_v2/models/user_model.dart';
-import 'package:winhealth_admin_v2/models/weekly_patient_report_model.dart';
-import 'package:winhealth_admin_v2/services/weekly_report_service.dart';
+import 'package:winhealth_admin_v2/models/weekly_patient_psyc_report_model.dart';
+import 'package:winhealth_admin_v2/services/weekly_nutrient_report_service.dart';
 import 'package:winhealth_admin_v2/utils/constants.dart';
 import 'package:winhealth_admin_v2/utils/wh_slider.dart';
 
-class AddWeeklyReport extends StatefulWidget {
+class AddWeeklyNutrientReport extends StatefulWidget {
   final UserModel patient;
-  const AddWeeklyReport({super.key, required this.patient});
+  const AddWeeklyNutrientReport({super.key, required this.patient});
 
   @override
-  State<AddWeeklyReport> createState() => _AddWeeklyhReportState();
+  State<AddWeeklyNutrientReport> createState() => _AddWeeklyNutrientReportState();
 }
 
-class _AddWeeklyhReportState extends State<AddWeeklyReport> {
+class _AddWeeklyNutrientReportState extends State<AddWeeklyNutrientReport> {
   bool showbtn = false;
   ScrollController scrollController = ScrollController();
   TextEditingController weekController = TextEditingController();
@@ -89,7 +89,7 @@ class _AddWeeklyhReportState extends State<AddWeeklyReport> {
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "Add weekly patient report",
+                    "Add Weekly Patient Nutrient Report",
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -654,7 +654,7 @@ class _AddWeeklyhReportState extends State<AddWeeklyReport> {
                         onPressed: () async {
                           if (weekController.text.isNotEmpty) {
                             bool resp =
-                                await WeeklyReportService.createWeeklyReport(
+                                await WeeklyNutrientReportService.createWeeklyNutrientReport(
                               {
                                 "stomach_pain": stomachPain,
                                 "stomach_pain_nos": stomachPainNos,

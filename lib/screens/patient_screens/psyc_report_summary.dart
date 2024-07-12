@@ -1,17 +1,19 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:winhealth_admin_v2/models/weekly_patient_report_model.dart';
+import 'package:winhealth_admin_v2/models/weekly_patient_nutrient_report_model.dart';
+import 'package:winhealth_admin_v2/models/weekly_patient_psyc_report_model.dart';
+import 'package:winhealth_admin_v2/screens/patient_screens/weekly_patient_psyc_report_home.dart';
 import 'package:winhealth_admin_v2/utils/constants.dart';
 
-class ReportSummary extends StatefulWidget {
-  final List<WeeklyPatientReportModel> reportList;
-  const ReportSummary({super.key, required this.reportList});
+class PsycReportSummary extends StatefulWidget {
+  final List<WeeklyPatientPsycReportModel> reportList;
+  const PsycReportSummary({super.key, required this.reportList});
 
   @override
-  State<ReportSummary> createState() => _ReportSummaryState();
+  State<PsycReportSummary> createState() => _PsycReportSummaryState();
 }
 
-class _ReportSummaryState extends State<ReportSummary> {
+class _PsycReportSummaryState extends State<PsycReportSummary> {
   bool showbtn = false;
   ScrollController scrollController = ScrollController();
   @override
@@ -36,8 +38,8 @@ class _ReportSummaryState extends State<ReportSummary> {
     super.initState();
   }
 
-  WeeklyPatientReportModel? dummyWeeklyPatientReportModel =
-      WeeklyPatientReportModel();
+  WeeklyPatientPsycReportModel? dummyWeeklyPatientPsycReportModel =
+      WeeklyPatientPsycReportModel();
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +70,7 @@ class _ReportSummaryState extends State<ReportSummary> {
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    "Summary of weekly report",
+                    "Summary of weekly psyc report",
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -89,14 +91,12 @@ class _ReportSummaryState extends State<ReportSummary> {
                 controller: scrollController,
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: dummyWeeklyPatientReportModel!
+                    children: dummyWeeklyPatientPsycReportModel!
                         .toJsonList()
                         .entries
                         .map(
                           (ent) => getSingleGraph(
-                            ent.key.contains("nos")
-                                ? "${ent.key.split("_nos").first.split("_").map((el) => el[0].toUpperCase() + el.substring(1)).join(" ")} Frequency"
-                                : "${ent.key.split("_").map((el) => el[0].toUpperCase() + el.substring(1)).join(" ")} Intensity",
+                            ent.value,
                             "",
                             List<String>.generate(
                               widget.reportList.length,
@@ -117,7 +117,7 @@ class _ReportSummaryState extends State<ReportSummary> {
                             "",
                             ent.key.contains("_nos")
                                 ? "Frequency"
-                                : "Intensity",
+                                : "Scale",
                           ),
                         )
                         .toList()

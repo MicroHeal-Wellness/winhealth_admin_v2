@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:winhealth_admin_v2/models/weekly_patient_report_model.dart';
+import 'package:winhealth_admin_v2/models/weekly_patient_nutrient_report_model.dart';
+import 'package:winhealth_admin_v2/models/weekly_patient_psyc_report_model.dart';
 
 class ViewReportResponse extends StatelessWidget {
-  final WeeklyPatientReportModel weeklyReportResponse;
+  final WeeklyPatientNutrientReportModel weeklyReportResponse;
   const ViewReportResponse({super.key, required this.weeklyReportResponse});
 
   @override

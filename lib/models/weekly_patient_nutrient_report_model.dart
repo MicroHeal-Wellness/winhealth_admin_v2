@@ -6,14 +6,14 @@ import 'dart:convert';
 
 import 'package:winhealth_admin_v2/models/user_model.dart';
 
-List<WeeklyPatientReportModel> weeklyPatientReportFromJson(String str) =>
-    List<WeeklyPatientReportModel>.from(
-        json.decode(str).map((x) => WeeklyPatientReportModel.fromJson(x)));
+List<WeeklyPatientNutrientReportModel> weeklyPatientReportFromJson(String str) =>
+    List<WeeklyPatientNutrientReportModel>.from(
+        json.decode(str).map((x) => WeeklyPatientNutrientReportModel.fromJson(x)));
 
-String weeklyPatientReportToJson(List<WeeklyPatientReportModel> data) =>
+String weeklyPatientReportToJson(List<WeeklyPatientNutrientReportModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class WeeklyPatientReportModel {
+class WeeklyPatientNutrientReportModel {
   String? id;
   UserModel? userCreated;
   DateTime? dateCreated;
@@ -40,7 +40,7 @@ class WeeklyPatientReportModel {
   String? week;
   UserModel? patient;
 
-  WeeklyPatientReportModel({
+  WeeklyPatientNutrientReportModel({
     this.id,
     this.userCreated,
     this.dateCreated,
@@ -68,8 +68,8 @@ class WeeklyPatientReportModel {
     this.patient,
   });
 
-  factory WeeklyPatientReportModel.fromJson(Map<String, dynamic> json) =>
-      WeeklyPatientReportModel(
+  factory WeeklyPatientNutrientReportModel.fromJson(Map<String, dynamic> json) =>
+      WeeklyPatientNutrientReportModel(
         id: json["id"],
         userCreated: (json["user_created"].runtimeType == String ||
                 json["user_created"] == null)
