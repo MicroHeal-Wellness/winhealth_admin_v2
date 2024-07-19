@@ -264,8 +264,9 @@ class _AddWeeklyPsycReportState extends State<AddWeeklyPsycReport> {
                         child: WHSlider(
                           activeColor:
                               Colors.blue, // Replace with your primaryColor2
-                          divisions: 10,
-                          max: 10,
+                          min: 0,
+                          divisions: 500,
+                          max: 500,
                           value: ibsSss,
                           onChanged: (value) {
                             setState(() {
@@ -288,8 +289,9 @@ class _AddWeeklyPsycReportState extends State<AddWeeklyPsycReport> {
                         child: WHSlider(
                           activeColor:
                               Colors.blue, // Replace with your primaryColor2
-                          divisions: 10,
-                          max: 10,
+                          min: 34,
+                          divisions: 170,
+                          max: 170,
                           value: the36Qol,
                           onChanged: (value) {
                             setState(() {
@@ -312,8 +314,9 @@ class _AddWeeklyPsycReportState extends State<AddWeeklyPsycReport> {
                         child: WHSlider(
                           activeColor:
                               Colors.blue, // Replace with your primaryColor2
-                          divisions: 10,
-                          max: 10,
+                          min: 0,
+                          divisions: 63,
+                          max: 63,
                           value: das21,
                           onChanged: (value) {
                             setState(() {
@@ -336,8 +339,9 @@ class _AddWeeklyPsycReportState extends State<AddWeeklyPsycReport> {
                         child: WHSlider(
                           activeColor:
                               Colors.blue, // Replace with your primaryColor2
-                          divisions: 10,
-                          max: 10,
+                          min: 5,
+                          divisions: 25,
+                          max: 25,
                           value: eq5d5l,
                           onChanged: (value) {
                             setState(() {
