@@ -40,6 +40,24 @@ class _PsycReportSummaryState extends State<PsycReportSummary> {
 
   WeeklyPatientPsycReportModel? dummyWeeklyPatientPsycReportModel =
       WeeklyPatientPsycReportModel();
+  var limitList = {
+    "perfectionistict_self_presentation_scale": 189,
+    "perceived_stress_scale": 40,
+    "beck_anxiety_inventory": 63,
+    "beck_depression_inventory": 64,
+    "ibs_sss": 500,
+    "36_qol": 170,
+    "das_21": 63,
+    "eq_5d_5l": 25,
+  };
+  List<int> generateYAxis(int maxValue, int intervals) {
+    int step = (maxValue / intervals).ceil();
+    List<int> yAxisValues = [];
+    for (int i = 0; i <= intervals; i++) {
+      yAxisValues.add(i * step);
+    }
+    return yAxisValues;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,10 +121,7 @@ class _PsycReportSummaryState extends State<PsycReportSummary> {
                               (int index) =>
                                   widget.reportList[index].week ?? "",
                             ).toList(),
-                            List<int>.generate(
-                              ent.key.contains("_nos") ? 8 : 11,
-                              (int index) => index,
-                            ).toList(),
+                            generateYAxis(limitList[ent.key] ?? 10, 10),
                             widget.reportList
                                 .map((report) =>
                                     double.tryParse(
@@ -115,9 +130,7 @@ class _PsycReportSummaryState extends State<PsycReportSummary> {
                                     0)
                                 .toList(),
                             "",
-                            ent.key.contains("_nos")
-                                ? "Frequency"
-                                : "Scale",
+                            ent.key.contains("_nos") ? "Frequency" : "Scale",
                           ),
                         )
                         .toList()

@@ -20,14 +20,14 @@ class _AddWeeklyPsycReportState extends State<AddWeeklyPsycReport> {
   bool showbtn = false;
   ScrollController scrollController = ScrollController();
   TextEditingController weekController = TextEditingController();
-  double perfectionistictSelfPresentationScale = 0;
+  double perfectionistictSelfPresentationScale = 27;
   double perceivedStressScale = 0;
   double beckAnxietyInventory = 0;
   double beckDepressionInventory = 0;
   double ibsSss = 0;
-  double the36Qol = 0;
+  double the36Qol = 34;
   double das21 = 0;
-  double eq5d5l = 0;
+  double eq5d5l = 5;
 
   @override
   void initState() {
@@ -168,8 +168,9 @@ class _AddWeeklyPsycReportState extends State<AddWeeklyPsycReport> {
                         child: WHSlider(
                           activeColor:
                               Colors.blue, // Replace with your primaryColor2
-                          divisions: 10,
-                          max: 10,
+                          min: 27,
+                          divisions: 162,
+                          max: 189,
                           value: perfectionistictSelfPresentationScale,
                           onChanged: (value) {
                             setState(() {
@@ -192,8 +193,9 @@ class _AddWeeklyPsycReportState extends State<AddWeeklyPsycReport> {
                         child: WHSlider(
                           activeColor:
                               Colors.blue, // Replace with your primaryColor2
-                          divisions: 10,
-                          max: 10,
+                          min: 0,
+                          divisions: 40,
+                          max: 40,
                           value: perceivedStressScale,
                           onChanged: (value) {
                             setState(() {
@@ -216,8 +218,9 @@ class _AddWeeklyPsycReportState extends State<AddWeeklyPsycReport> {
                         child: WHSlider(
                           activeColor:
                               Colors.blue, // Replace with your primaryColor2
-                          divisions: 10,
-                          max: 10,
+                          min: 0,
+                          divisions: 63,
+                          max: 63,
                           value: beckAnxietyInventory,
                           onChanged: (value) {
                             setState(() {
@@ -240,8 +243,9 @@ class _AddWeeklyPsycReportState extends State<AddWeeklyPsycReport> {
                         child: WHSlider(
                           activeColor:
                               Colors.blue, // Replace with your primaryColor2
-                          divisions: 10,
-                          max: 10,
+                          min: 0,
+                          divisions: 84,
+                          max: 84,
                           value: beckDepressionInventory,
                           onChanged: (value) {
                             setState(() {
@@ -290,7 +294,7 @@ class _AddWeeklyPsycReportState extends State<AddWeeklyPsycReport> {
                           activeColor:
                               Colors.blue, // Replace with your primaryColor2
                           min: 34,
-                          divisions: 170,
+                          divisions: 136,
                           max: 170,
                           value: the36Qol,
                           onChanged: (value) {
@@ -340,7 +344,7 @@ class _AddWeeklyPsycReportState extends State<AddWeeklyPsycReport> {
                           activeColor:
                               Colors.blue, // Replace with your primaryColor2
                           min: 5,
-                          divisions: 25,
+                          divisions: 20,
                           max: 25,
                           value: eq5d5l,
                           onChanged: (value) {
