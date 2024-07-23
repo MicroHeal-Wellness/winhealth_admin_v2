@@ -22,10 +22,23 @@ class NoteService {
   }
 
   static Future<bool> addNote(payload) async {
-    print(payload);
     final response = await BaseService.makeAuthenticatedRequest(
         '${BaseService.BASE_URL}/items/notes',
         method: 'POST',
+        body: jsonEncode(payload));
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      print(response.body);
+      return false;
+    }
+  }
+
+  static Future<bool> updateNote(id, payload) async {
+    print(payload);
+    final response = await BaseService.makeAuthenticatedRequest(
+        '${BaseService.BASE_URL}/items/notes/$id',
+        method: 'PATCH',
         body: jsonEncode(payload));
     if (response.statusCode == 200) {
       return true;

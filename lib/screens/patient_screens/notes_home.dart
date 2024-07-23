@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:winhealth_admin_v2/components/notes_card.dart';
 import 'package:winhealth_admin_v2/models/notes.dart';
 import 'package:winhealth_admin_v2/models/user_model.dart';
+import 'package:winhealth_admin_v2/screens/patient_screens/edit_notes.dart';
 import 'package:winhealth_admin_v2/services/base_service.dart';
 import 'package:winhealth_admin_v2/services/note_service.dart';
 import 'package:winhealth_admin_v2/utils/constants.dart';
@@ -139,6 +140,17 @@ class _NotesHomeState extends State<NotesHome> {
                                   itemBuilder: (context, index) {
                                     return NotesCard(
                                         note: notes[index],
+                                        onEdit: () async {
+                                          await Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  EditNotesHome(
+                                                note: notes[index],
+                                              ),
+                                            ),
+                                          );
+                                          await getInitData();
+                                        },
                                         onRemove: () async {
                                           Navigator.of(context).pop();
                                           bool resp =

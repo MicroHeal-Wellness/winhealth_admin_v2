@@ -10,7 +10,12 @@ import 'dart:html' as html;
 class NotesCard extends StatelessWidget {
   final Note note;
   final VoidCallback onRemove;
-  const NotesCard({super.key, required this.note, required this.onRemove});
+  final VoidCallback onEdit;
+  const NotesCard(
+      {super.key,
+      required this.note,
+      required this.onRemove,
+      required this.onEdit});
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +40,13 @@ class NotesCard extends StatelessWidget {
                 ),
               ),
               const Spacer(),
+              IconButton(
+                onPressed: onEdit,
+                icon: const Icon(Icons.edit_document),
+              ),
+              const SizedBox(
+                width: 16,
+              ),
               IconButton(
                 onPressed: () {
                   showDialog(

@@ -34,6 +34,19 @@ class TeamNoteService {
     }
   }
 
+  static Future<bool> updateNote(id, payload) async {
+    final response = await BaseService.makeAuthenticatedRequest(
+        '${BaseService.BASE_URL}/items/team_notes/$id',
+        method: 'PATCH',
+        body: jsonEncode(payload));
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      print(response.body);
+      return false;
+    }
+  }
+
   static Future<bool> removeNote(id) async {
     final response = await BaseService.makeAuthenticatedRequest(
       '${BaseService.BASE_URL}/items/team_notes/$id',
