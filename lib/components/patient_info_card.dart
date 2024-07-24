@@ -117,7 +117,7 @@ class _PatientInfoCardState extends State<PatientInfoCard> {
                           ),
                         );
                       },
-                      child: const Text('Daily Nutition Report'),
+                      child: const Text('Weekly Nutition Report'),
                     ),
                     MenuItemButton(
                       style: const ButtonStyle(
@@ -133,7 +133,7 @@ class _PatientInfoCardState extends State<PatientInfoCard> {
                           ),
                         );
                       },
-                      child: const Text('Daily Psyc Report'),
+                      child: const Text('Weekly Psyc Report'),
                     ),
                     MenuItemButton(
                       style: const ButtonStyle(

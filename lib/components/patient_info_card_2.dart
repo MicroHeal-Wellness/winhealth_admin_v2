@@ -242,7 +242,7 @@ class _PatientInfoCardState extends State<PatientInfoCard2> {
                       // : () {
                       //     Fluttertoast.showToast(msg: "Access Denied");
                       //   },
-                      child: const Text('Daily Nutrition Report'),
+                      child: const Text('Weekly Nutrition Report'),
                     ),
                     MenuItemButton(
                       style: const ButtonStyle(
@@ -266,7 +266,7 @@ class _PatientInfoCardState extends State<PatientInfoCard2> {
                       // : () {
                       //     Fluttertoast.showToast(msg: "Access Denied");
                       //   },
-                      child: const Text('Daily Psyc Report'),
+                      child: const Text('Weekly Psyc Report'),
                     ),
                     MenuItemButton(
                       style: const ButtonStyle(
