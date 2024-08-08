@@ -13,15 +13,15 @@ import 'package:winhealth_admin_v2/services/patient_service.dart';
 import 'package:winhealth_admin_v2/utils/constants.dart';
 import 'package:winhealth_admin_v2/utils/drag.dart';
 
-class PartnerPatientHome extends StatefulWidget {
+class PatientGroupHome extends StatefulWidget {
   final UserModel currentUser;
-  const PartnerPatientHome({super.key, required this.currentUser});
+  const PatientGroupHome({super.key, required this.currentUser});
 
   @override
-  State<PartnerPatientHome> createState() => _PartnerPatientHomeState();
+  State<PatientGroupHome> createState() => _PatientGroupHomeState();
 }
 
-class _PartnerPatientHomeState extends State<PartnerPatientHome> {
+class _PatientGroupHomeState extends State<PatientGroupHome> {
   ScrollController scrollController = ScrollController();
   int page = 1;
   bool showbtn = false;
@@ -31,8 +31,6 @@ class _PartnerPatientHomeState extends State<PartnerPatientHome> {
   List<UserModel> patientList = [];
   List<Answer> answer = [];
   UserModel? selectedPatient;
-  String? patientGroupId;
-  List<PatientGroup> patientGroups = [];
 
   @override
   void initState() {
@@ -62,9 +60,9 @@ class _PartnerPatientHomeState extends State<PartnerPatientHome> {
     if (scrollController.position.pixels ==
         scrollController.position.maxScrollExtent) {
       List<UserModel> patientList2 = [];
-      if (widget.currentUser.partner != null) {
+      if (widget.currentUser.patientGroup != null) {
         patientList2 = await PatientService.getPatientsByPatientGroup(
-            patientGroupId!,
+            widget.currentUser.patientGroup!.id!,
             page: page,
             limit: 8);
       }
@@ -81,20 +79,13 @@ class _PartnerPatientHomeState extends State<PartnerPatientHome> {
     setState(() {
       loading = true;
     });
-    if (widget.currentUser.partner != null) {
-      patientGroups =
-          await PartnerGroupService.fetchAllPatientGroupsByPartnerId(
-              widget.currentUser.partner!.id);
-      if (patientGroups.isNotEmpty) {
-        patientGroupId = patientGroups.first.id!;
-        patientList = await PatientService.getPatientsByPatientGroup(
-          patientGroups.first.id!,
+    if (widget.currentUser.patientGroup != null) {
+      patientList = await PatientService.getPatientsByPatientGroup(
+          widget.currentUser.patientGroup!.id!,
           page: 1,
-          limit: 8,
-        );
-      }
-      patientCount = await PartnerGroupService.fetchPatientGroupPatientCount(
-        patientGroups.first.id!,
+          limit: 8);
+      patientCount = await PatientService.getPatientCountByPatientGroup(
+        widget.currentUser.patientGroup!.id!,
       );
     }
     page = page + 1;
@@ -143,65 +134,65 @@ class _PartnerPatientHomeState extends State<PartnerPatientHome> {
                   const SizedBox(
                     height: 16,
                   ),
-                  Row(
-                    children: [
-                      const Text(
-                        "Patient Group:",
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 16,
-                      ),
-                      DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                          value: patientGroupId,
-                          focusColor: Colors.white,
-                          icon: const Icon(Icons.arrow_downward),
-                          elevation: 16,
-                          style: const TextStyle(
-                            color: Colors.deepPurple,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          onChanged: (String? value) async {
-                            if (value == "1") {
-                              patientList =
-                                  await PatientService.getUnassignedPatients(
-                                page: 1,
-                                limit: 8,
-                              );
-                              patientCount = await PatientService
-                                  .getUnassignedPatientsCount();
-                            } else {
-                              patientList = await PatientService
-                                  .getPatientsByPatientGroup(
-                                value!,
-                                page: 1,
-                                limit: 8,
-                              );
-                              patientCount = await PatientService
-                                  .getPatientCountByPatientGroup(
-                                value,
-                              );
-                            }
-                            setState(() {
-                              patientGroupId = value;
-                              page = 2;
-                            });
-                          },
-                          items: patientGroups.map<DropdownMenuItem<String>>(
-                              (PatientGroup value) {
-                            return DropdownMenuItem<String>(
-                              value: value.id,
-                              child: Text(value.name!),
-                            );
-                          }).toList(),
-                        ),
-                      ),
-                    ],
-                  ),
+                  // Row(
+                  //   children: [
+                  //     const Text(
+                  //       "Patient Group:",
+                  //       style: TextStyle(
+                  //         fontSize: 20,
+                  //       ),
+                  //     ),
+                  //     const SizedBox(
+                  //       width: 16,
+                  //     ),
+                  //     DropdownButtonHideUnderline(
+                  //       child: DropdownButton<String>(
+                  //         value: patientGroupId,
+                  //         focusColor: Colors.white,
+                  //         icon: const Icon(Icons.arrow_downward),
+                  //         elevation: 16,
+                  //         style: const TextStyle(
+                  //           color: Colors.deepPurple,
+                  //           fontSize: 20,
+                  //           fontWeight: FontWeight.bold,
+                  //         ),
+                  //         onChanged: (String? value) async {
+                  //           if (value == "1") {
+                  //             patientList =
+                  //                 await PatientService.getUnassignedPatients(
+                  //               page: 1,
+                  //               limit: 8,
+                  //             );
+                  //             patientCount = await PatientService
+                  //                 .getUnassignedPatientsCount();
+                  //           } else {
+                  //             patientList = await PatientService
+                  //                 .getPatientsByPatientGroup(
+                  //               value!,
+                  //               page: 1,
+                  //               limit: 8,
+                  //             );
+                  //             patientCount = await PatientService
+                  //                 .getPatientCountByPatientGroup(
+                  //               value,
+                  //             );
+                  //           }
+                  //           setState(() {
+                  //             patientGroupId = value;
+                  //             page = 1;
+                  //           });
+                  //         },
+                  //         items: patientGroups.map<DropdownMenuItem<String>>(
+                  //             (PatientGroup value) {
+                  //           return DropdownMenuItem<String>(
+                  //             value: value.id,
+                  //             child: Text(value.name!),
+                  //           );
+                  //         }).toList(),
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
                   const Divider(),
                   const SizedBox(
                     height: 16,

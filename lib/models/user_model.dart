@@ -6,6 +6,7 @@
 
 import 'dart:convert';
 
+import 'package:winhealth_admin_v2/models/partner.dart';
 import 'package:winhealth_admin_v2/models/patient_group.dart';
 import 'package:winhealth_admin_v2/models/role.dart';
 
@@ -40,6 +41,7 @@ class UserModel {
   String? exerciseType;
   List<String>? speaks;
   PatientGroup? patientGroup;
+  Partner? partner;
 
   UserModel({
     this.firstName,
@@ -68,6 +70,7 @@ class UserModel {
     this.exerciseType,
     this.speaks,
     this.patientGroup,
+    this.partner,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -107,6 +110,10 @@ class UserModel {
               json["patient_group"].runtimeType == String)
           ? null
           : PatientGroup.fromJson(json["patient_group"]),
+      partner:
+          (json["partner"] == null || json["partner"].runtimeType == String)
+              ? null
+              : Partner.fromJson(json["partner"]),
     );
   }
 
@@ -141,5 +148,6 @@ class UserModel {
         "exercise_type": exerciseType,
         "speaks": speaks,
         "patient_group": patientGroup == null ? null : patientGroup!.toJson(),
+        "partner": partner == null ? null : partner!.toJson(),
       };
 }

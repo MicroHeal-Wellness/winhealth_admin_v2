@@ -21,7 +21,11 @@ class _LoginScreenState extends State<LoginScreen> {
   // TextEditingController passwordController =
   //     TextEditingController(text: 'dtx1@password');
   // TextEditingController emailController =
-  //     TextEditingController(text: 'jatin.yegurla@winhealth.com');
+  //     TextEditingController(text: 'hardik.kotecha@winhealth.com');
+  // TextEditingController passwordController =
+  //     TextEditingController(text: '12345678');
+  // TextEditingController emailController =
+  //     TextEditingController(text: 'winhealth.partner@winhealth.com');
   // TextEditingController passwordController =
   //     TextEditingController(text: '12345678');
   TextEditingController emailController = TextEditingController();

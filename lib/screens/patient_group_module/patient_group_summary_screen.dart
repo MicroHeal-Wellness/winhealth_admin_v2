@@ -6,15 +6,15 @@ import 'package:winhealth_admin_v2/services/partner_service.dart';
 import 'package:winhealth_admin_v2/services/patient_service.dart';
 import 'package:winhealth_admin_v2/utils/date_time_utils.dart';
 
-class PartnerGroupSummary extends StatefulWidget {
+class PatientGroupSummary extends StatefulWidget {
   final UserModel currentUser;
-  const PartnerGroupSummary({super.key, required this.currentUser});
+  const PatientGroupSummary({super.key, required this.currentUser});
 
   @override
-  State<PartnerGroupSummary> createState() => _PartnerGroupSummaryState();
+  State<PatientGroupSummary> createState() => _PatientGroupSummaryState();
 }
 
-class _PartnerGroupSummaryState extends State<PartnerGroupSummary> {
+class _PatientGroupSummaryState extends State<PatientGroupSummary> {
   bool isLoading = true;
   int totalPatients = 0;
   int totalPatientsGlobal = 0;
@@ -32,18 +32,18 @@ class _PartnerGroupSummaryState extends State<PartnerGroupSummary> {
   Future<void> fetchData() async {
     // Update with actual data fetching logic
     totalPatientsGlobal = await PatientService.getTotalPatientCount();
-    totalPatients = await PartnerGroupService.fetchPartnerGroupPatientCount(
-        widget.currentUser.partner!.id);
+    totalPatients = await PartnerGroupService.fetchPatientGroupPatientCount(
+        widget.currentUser.patientGroup!.id);
 
     paidSubscriptionPatients =
-        await PartnerGroupService.fetchPartnerGroupPatientPaidSubscribedCount(
-            widget.currentUser.partner!.id);
+        await PartnerGroupService.fetchPatientGroupPatientPaidSubscribedCount(
+            widget.currentUser.patientGroup!.id);
     clinicalTrialPatients =
-        await PartnerGroupService.fetchPartnerGroupPatientTrailSubscribedCount(
-            widget.currentUser.partner!.id);
+        await PartnerGroupService.fetchPatientGroupPatientTrailSubscribedCount(
+            widget.currentUser.patientGroup!.id);
     subscriptionHistory =
         await PartnerGroupService.fetchPartnerGroupPatientSubcription(
-            widget.currentUser.partner!.id);
+            widget.currentUser.patientGroup!.id);
     setState(() {
       noSubscriptionPatients =
           totalPatients - paidSubscriptionPatients - clinicalTrialPatients;
@@ -76,7 +76,6 @@ class _PartnerGroupSummaryState extends State<PartnerGroupSummary> {
                       clinicalTrialPatients),
                   buildSummaryCard(
                       'Your Non Subscription Patients', noSubscriptionPatients),
-                  buildSummaryCard('Total Fees Registerd', 0),
                   const SizedBox(height: 32),
                   Text(
                     'Subscription Purchase History (${subscriptionHistory.length})',
@@ -133,7 +132,6 @@ class _PartnerGroupSummaryState extends State<PartnerGroupSummary> {
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Patient Group: ${item.patient!.patientGroup!.name!}"),
                 Text(
                     "Subscibed on: ${DateTimeUtils.apiFormattedDate(item.dateCreated!.toLocal().toString())}"),
                 Text(

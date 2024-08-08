@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:winhealth_admin_v2/models/user_model.dart';
 import 'package:winhealth_admin_v2/screens/auth/login_screen.dart';
 import 'package:winhealth_admin_v2/screens/partner_module/partner_landing_screen.dart';
+import 'package:winhealth_admin_v2/screens/patient_group_module/patient_group_landing_screen.dart';
 import 'package:winhealth_admin_v2/screens/slot/batch_slot_update.dart';
 import 'package:winhealth_admin_v2/screens/forms/foms_home.dart';
 import 'package:winhealth_admin_v2/screens/pre/landing_screen.dart';
@@ -44,6 +45,13 @@ class _InitialRouterState extends State<InitialRouter> {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                 builder: (context) => const PartnerLandingScreen(),
+              ),
+            );
+          } else if (currentUser.role ==
+              "1143c29d-1d63-439a-9cf6-8ed130d42af1") {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const PatientGroupLandingScreen(),
               ),
             );
           } else {
