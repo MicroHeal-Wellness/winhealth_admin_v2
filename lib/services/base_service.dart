@@ -8,7 +8,7 @@ import 'package:winhealth_admin_v2/models/user_model.dart';
 
 class BaseService {
   // ignore: constant_identifier_names
-  static const BASE_URL = "https://api.winhealth.agpro.co.in";
+  static const BASE_URL = "https://api.microheal.in";
   // static const BASE_URL = "http://localhost:3001";
   static final Map<String, String> headers = {
     "Content-Type": "application/json"
